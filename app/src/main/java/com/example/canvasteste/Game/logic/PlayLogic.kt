@@ -15,9 +15,11 @@ import kotlinx.coroutines.flow.update
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class PlayLogic(viewport: Viewport ) {
+class PlayLogic(viewport: Viewport) {
     private var posLI: MutableList<Int> = mutableListOf()
-    private val default: Player = Player(viewport.height, 36.dp, 70.dp, 0f )
+    private var posLIR: MutableList<Int> = mutableListOf()
+
+    private val default: Player = Player(viewport.height, 36.dp, 70.dp, 0f)
     private val _playPosition = MutableStateFlow<Player>(default)
     val player: StateFlow<Player> = _playPosition
 
@@ -37,7 +39,6 @@ class PlayLogic(viewport: Viewport ) {
     }
 
 
-
     fun girarando(gira: Boolean) {
         _playPosition.update { player ->
             var newY = gira
@@ -54,6 +55,7 @@ class PlayLogic(viewport: Viewport ) {
     }
 
 
+    @Composable
     fun updateLimparnit(
         listaAtual: MutableList<Offset3>,
         posL: List<Int>,
@@ -61,43 +63,68 @@ class PlayLogic(viewport: Viewport ) {
     ): MutableList<Int> {
         posLI.clear()
         updateLimpar(listaAtual, posL, init)
-
         return posLI
     }
 
+    @Composable
     fun updateLimpar(listaAtual: MutableList<Offset3>, posL: List<Int>, init: Int) {
-
         if (posLI.contains(init)) return
-
-
         posLI.add(init)
-
         var lista = listaAtual
         var listaI = posL.filter { it -> !posLI.contains(it) && it != 0 }
         var posLD: MutableList<Int> = mutableListOf()
 
-        try {
-
-
             for (i in 0..listaI.size - 1) {
-
-                //sqrt( pow( x2 - x1, 2 ) + pow( y2 - y1, 2 ) )
                 var m1 = (lista[listaI[i]].x - lista[init].x).pow(2)
                 var m2 = (lista[listaI[i]].y - lista[init].y).pow(2)
                 var d: Float = sqrt((m1 + m2))
-                if (d < 111) {
+                if (d < 50.dp.toPx()) {
                     posLD.add(listaI[i])
                 }
             }
-        } catch (e: Exception) {
 
-            Log.e("ERRO", e.message.toString())
-        }
         for (i in 0..posLD.size - 1) {
             updateLimpar(listaAtual, posL, posLD[i])
         }
-
-
     }
+
+
+
+
+
+    @Composable
+    fun updateLimparRamosinit(
+        listaAtual: MutableList<Offset3>,
+        posL: List<Int>,
+        init: Int
+    ): MutableList<Int> {
+        posLIR.clear()
+        updateLimparRamos(listaAtual, posL, init)
+        return posLIR
+    }
+
+    @Composable
+    fun updateLimparRamos(listaAtual: MutableList<Offset3>, posL: List<Int>, init: Int) {
+        if (posLIR.contains(init)) return
+        posLIR.add(init)
+        var lista = listaAtual
+        var listaI = posL.filter { it -> !posLIR.contains(it) && it != 0 }
+        var posLD: MutableList<Int> = mutableListOf()
+
+            for (i in 0..listaI.size - 1) {
+                var m1 = (lista[listaI[i]].x - lista[init].x).pow(2)
+                var m2 = (lista[listaI[i]].y - lista[init].y).pow(2)
+                var d: Float = sqrt((m1 + m2))
+                if (d < 50.dp.toPx()) {
+                    posLD.add(listaI[i])
+                }
+            }
+
+        for (i in 0..posLD.size - 1) {
+            updateLimparRamos(listaAtual, posL, posLD[i])
+        }
+    }
+    
+    
 
 }

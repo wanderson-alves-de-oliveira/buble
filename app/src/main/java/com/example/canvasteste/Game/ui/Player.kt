@@ -29,7 +29,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerInputChange
-import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
@@ -54,7 +53,7 @@ internal fun Player(
     playerLogic: PlayLogic,
     abilite: AAbilite,
     cores: CCores,
-    coresSeparacao:CCoresSeparacao,
+    coresSeparacao: CCoresSeparacao,
     viewport: Viewport,
     tela: Tela
 ) {
@@ -82,6 +81,8 @@ internal fun Player(
     var subir: Boolean by remember { mutableStateOf(false) }
 
     var listaCoresOff: MutableList<Int> = cs.value.cores
+
+    var listaCorteRamos: MutableList<Int> = ab.value.posRamo
 
     var litOffset = MutableList<Offset3>(179) { Offset3(0f, 1000f, false, 0) }
     var litOffsetExt: MutableList<Int> = ab.value.pos
@@ -127,7 +128,7 @@ internal fun Player(
                             }
                         },
                         onDrag = { change: PointerInputChange, dragAmount: Offset ->
-                            if (up<=0.dp) {
+                            if (up <= 0.dp) {
                                 offsetX += dragAmount.x * 7
                                 offsetX2 += dragAmount.x * 7
                                 offsetY += dragAmount.y
@@ -173,7 +174,6 @@ internal fun Player(
             )
 
 
-
         })
 
     if (!subir) {
@@ -194,9 +194,11 @@ internal fun Player(
     }
 
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .offset(-10.dp, up)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .offset(-10.dp, up)
+    ) {
         var yyPlay: Float by remember { mutableStateOf((qtd * unidadeT).toFloat()) }
         var litOffset2 = mutableListOf<Offset>()
         var litORef = mutableListOf<Offset3>(
@@ -212,7 +214,7 @@ internal fun Player(
         var interiy = 1
         var tam = 36.dp.toPx()
         var tamMeio = 18.dp.toPx()
-        if(subir && up>0.dp)up-=100.dp
+        if (subir && up > 0.dp) up -= 100.dp
         for (i in 0..178) {
             var xp = interi * tam.toInt()
             var yp = interiy * tam.toInt()
@@ -241,15 +243,13 @@ internal fun Player(
                 id = corT
             }
 
-
             var offf: Offset3 = Offset3(
                 xp.toFloat() + (15 * tela.densidade),
-                yp+ (15 * tela.densidade),
+                yp + (15 * tela.densidade),
                 vazio,
                 i,
 
-            )
-
+                )
 
 
             var image = R.drawable.car
@@ -258,12 +258,11 @@ internal fun Player(
             } else if (!vazio) {
                 image = id
             }
-            if(i<=9){
+            if (i <= 9) {
                 image = R.drawable.car
             }
 
-            if(i>9 && listPrev.contains(i) && tocou ){
-
+            if (i > 9 && listPrev.contains(i) && tocou) {
 
 
                 image = R.drawable.tranp
@@ -293,7 +292,6 @@ internal fun Player(
             )
 
 
-
 //            Text(i.toString(),     modifier = modifier
 //                .offset {
 //                    IntOffset(
@@ -302,9 +300,6 @@ internal fun Player(
 //                    )
 //                })
             interi++
-
-
-
 
 
         }
@@ -358,21 +353,16 @@ internal fun Player(
             var s = 10.dp
             var xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
             var yc = (i * unidadeT).toInt()
-            if(yc<=0)yc=0
+            if (yc <= 0) yc = 0
             if (i == qtd || (yyPlay.toInt() < yc && yyPlay.toInt() >= yc - 30.dp.toPx())) {
                 s = 36.dp
                 xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
             }
             litOffset2.add(Offset(xc.toFloat(), yc.toFloat()))
             var mostrar = true
-//            for (j in 0..litOffset.size - 1) {
-//                if (litOffset[0].y > 0 && subir)
-//                    litOffset[j].y -= 10.dp.toPx()
-//
-//
-//            }
 
-            if(subir) {
+
+            if (subir) {
                 for (j in 0..litOffset.size - 1) {
 
 
@@ -380,7 +370,7 @@ internal fun Player(
                         var m1 = (litOffset[j].x - xc.toFloat()).pow(2)
                         var m2 = (litOffset[j].y - yc.toFloat()).pow(2)
                         var d: Float = sqrt((m1 + m2))
-                        if (d < 80) {
+                        if (d < 30.dp.toPx()) {
                             mostrar = false
                             var litOffset3 = mutableListOf<Offset3>()
                             var lado = 0
@@ -413,18 +403,16 @@ internal fun Player(
                             if (litOffset4.size > 0) {
                                 for (k in 0..litOffset4.size - 1) {
                                     var posArray = litOffset2.size - 2
-                                    try {
-                                        var m3 = (litOffset4[k].x - litOffset2[posArray].x).pow(2)
-                                        var m4 = (litOffset4[k].y - litOffset2[posArray].y).pow(2)
-                                        var d2: Float = sqrt((m3 + m4))
-                                        if (d2 < 80) {
-                                            lado = litOffset.indexOf(litOffset4[k])
-                                            positionEnd = litOffset[lado]
-                                            break
-                                        }
-                                    } catch (e: Exception) {
-                                        gameouver = true
+
+                                    var m3 = (litOffset4[k].x - litOffset2[posArray].x).pow(2)
+                                    var m4 = (litOffset4[k].y - litOffset2[posArray].y).pow(2)
+                                    var d2: Float = sqrt((m3 + m4))
+                                    if (d2 < 30.dp.toPx()) {
+                                        lado = litOffset.indexOf(litOffset4[k])
+                                        positionEnd = litOffset[lado]
+                                        break
                                     }
+
                                 }
                             }
                             intPreviewMarcado = j
@@ -446,6 +434,8 @@ internal fun Player(
                             }
 
                             playerLogic.updatePrev(listaCoresOff)
+
+
 //                        }else{
 //
 //                            var lpp= mutableListOf(1000)
@@ -480,7 +470,7 @@ internal fun Player(
                 break
             }
 
-            if (tocou || go || i == qtd ) {
+            if (tocou || go || i == qtd) {
                 Image(
                     painterResource(id = intPreviewCor),
                     contentDescription = null,
@@ -508,8 +498,8 @@ internal fun Player(
 
         if (go) {
 
-            var lpp= mutableListOf(0)
-           coresSeparacao.onUpdate(lpp)
+            var lpp = mutableListOf(0)
+            coresSeparacao.onUpdate(lpp)
 
             lt = player.value.posRebote
             dir =
@@ -522,27 +512,54 @@ internal fun Player(
                 go = false
                 listCoresExt.add(intPreviewCor)
                 litOffsetExt.add(intPreview)
-                listaCoresOff = listaCoresOff.filter { it->it>9 }.toMutableList()
+                listaCoresOff = listaCoresOff.filter { it -> it > 9 }.toMutableList()
 
-                if(listaCoresOff[0]==0 && listaCoresOff.size==1){
-                    var mesmaCorf= litOffsetExt.filter { it-> listCoresExt[litOffsetExt.indexOf(it)] == intPreviewCor}
+                if (listaCoresOff[0] == 0 && listaCoresOff.size == 1) {
+                    var mesmaCorf =
+                        litOffsetExt.filter { it -> listCoresExt[litOffsetExt.indexOf(it)] == intPreviewCor }
                     listaCoresOff = playerLogic.updateLimparnit(litOffset, mesmaCorf, intPreview)
 
                 }
 
-                for(iy in 0..listaCoresOff.size-1) {
-                    if(listaCoresOff.size<3 )break
+                for (iy in 0..listaCoresOff.size - 1) {
+                    if (listaCoresOff.size < 3) break
                     litOffset[listaCoresOff[iy]].vazio = false
-try {
+//                    try {
+//
+//
+//                        listCoresExt.removeAt(litOffsetExt.indexOf(listaCoresOff[iy]))
+//                        litOffsetExt.removeAt(litOffsetExt.indexOf(listaCoresOff[iy]))
+//                        cores.onUpdate(listCoresExt)
+//                        abilite.onUpdate(litOffsetExt)
+//
+//
+//                    } catch (e: Exception) {
+//                        Log.e("WAO", e.message.toString() + " " + e.stackTrace)
+//                    }
 
 
-    listCoresExt.removeAt(litOffsetExt.indexOf(listaCoresOff[iy]))
-    litOffsetExt.removeAt(litOffsetExt.indexOf(listaCoresOff[iy]))
-    cores.onUpdate(listCoresExt)
-    abilite.onUpdate(litOffsetExt)
-}catch (e:Exception){
-    Log.e("WAO",e.message.toString()+" "+e.stackTrace)
-}
+                    listaCorteRamos = playerLogic.updateLimparRamosinit(
+                        listaAtual = litOffset,
+                        posL = litOffsetExt,
+                        init = 0
+                    )
+                    var listd = litOffsetExt.filter { it -> !listaCorteRamos.contains(it) } as MutableList<Int>
+//                    for (iy in 0..listd.size - 1) {
+//                        listCoresExt.removeAt(litOffsetExt.indexOf(listd[iy]))
+//                        litOffsetExt.removeAt(litOffsetExt.indexOf(listd[iy]))
+//                        cores.onUpdate(listCoresExt)
+//                        abilite.onUpdate(litOffsetExt)
+//                    }
+
+
+                    // abilite.onUpdate(listd)
+
+                    var listRA: MutableList<Int> = listd
+
+                        listRA.addAll(listaCoresOff)
+
+
+                  abilite.onUpdateRamos(listRA)
                 }
 
                 intPreviewCor = listCores[(0..3).random()]
