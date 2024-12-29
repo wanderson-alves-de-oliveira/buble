@@ -115,11 +115,11 @@ class PlayLogic(viewport: Viewport) {
                 var m1 = (lista[listaI[i]].x - lista[init].x).pow(2)
                 var m2 = (lista[listaI[i]].y - lista[init].y).pow(2)
                 var d: Float = sqrt((m1 + m2))
-                if (d < 50.dp.toPx()) {
+                if (d < 60.dp.toPx()) {
                     posLD.add(listaI[i])
                 }
             }
-
+        if(init<10 && posLD.size==0) updateLimparRamos(listaAtual, posL, init+1)
         for (i in 0..posLD.size - 1) {
             updateLimparRamos(listaAtual, posL, posLD[i])
         }

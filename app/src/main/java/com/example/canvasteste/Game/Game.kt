@@ -69,7 +69,7 @@ fun Game(context: Context,modifier: Modifier = Modifier) {
                         )
         {
            Background(di.timeManager)
-            Player(Modifier, playerLogic,abilite,cores,coresSeparacao,viewPort,tela)
+            Player(Modifier, playerLogic,abilite,cores,coresSeparacao,viewPort,tela,di.timeManager)
 
 
         }

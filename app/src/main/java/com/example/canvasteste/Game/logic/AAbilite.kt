@@ -1,6 +1,7 @@
 package com.example.canvasteste.Game.logic
 
 
+import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
 import com.example.canvasteste.Game.model.Abilite
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -54,20 +55,30 @@ private val _AAbilite = MutableStateFlow<Abilite>(default)
     val Abilite: StateFlow<Abilite> = _AAbilite
 
 
-     fun onUpdate(list: List<Int>) {
+     fun onUpdate(list: MutableList<Int>) {
          _AAbilite.update { abilite ->
-            var new =  abilite.pos
+            var new =  list
 
              abilite.copy(pos = new)
         }
     }
 
 
-    fun onUpdateRamos(list: List<Int>) {
+    fun onUpdateRamos(list: MutableList<Int>) {
         _AAbilite.update { abilite ->
-            var new =  abilite.pos
+            var new =  list
 
             abilite.copy(posRamo = new)
+        }
+    }
+
+
+
+    fun onUpdateMove(list: MutableList<Offset3>) {
+        _AAbilite.update { abilite ->
+            var new = list
+
+            abilite.copy(posMove = new)
         }
     }
 
