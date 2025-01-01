@@ -70,6 +70,8 @@ internal fun Player(
     val cr = cores.Cores.collectAsState()
     val cs = coresSeparacao.Cores.collectAsState()
     var gameouver: Boolean by remember { mutableStateOf(false) }
+    var index: Boolean by remember { mutableStateOf(true) }
+
     val off = tela.getTamanhoTela()
     var ii: Float = (viewport.width / 2).toPx()
     var offsetX: Float by remember { mutableStateOf(ii) }
@@ -118,39 +120,45 @@ internal fun Player(
     var tam = 36.dp.toPx()
     var tamMeio = 18.dp.toPx()
     if (subir && up > 0.dp) up -= 100.dp
-    for (i in 0..178) {
-        var xp = interi * tam.toInt()
-        var yp = interiy * tam.toInt()
-        if (interiy % 2 == 0) {
-            if (litOffsetExtFI2.contains(i)) {
-                interi = 0
-                interiy++
-                xp = tamMeio.toInt()
-                yp = interiy * tam.toInt()
+
+
+    if(index) {
+        for (i in 0..178) {
+            var xp = interi * tam.toInt()
+            var yp = interiy * tam.toInt()
+            if (interiy % 2 == 0) {
+                if (litOffsetExtFI2.contains(i)) {
+                    interi = 0
+                    interiy++
+                    xp = tamMeio.toInt()
+                    yp = interiy * tam.toInt()
+                }
+            } else {
+                xp += tamMeio.toInt()
+                if (litOffsetExtFI.contains(i)) {
+                    interi = 0
+                    interiy++
+                    xp = 0
+                    yp = interiy * tam.toInt()
+                }
             }
-        } else {
-            xp += tamMeio.toInt()
-            if (litOffsetExtFI.contains(i)) {
-                interi = 0
-                interiy++
-                xp = 0
-                yp = interiy * tam.toInt()
+            var vazio = true
+            if (litOffsetExt.contains(i) || litOffsetExtS.contains(i)) {
+                vazio = false
             }
+            var offf: Offset3 = Offset3(
+                xp.toFloat() + (15 * tela.densidade),
+                yp + (15 * tela.densidade),
+                vazio,
+                i,
+            )
+            litOffset[i] = offf
+            interi++
         }
-        var vazio = true
-        if (litOffsetExt.contains(i) || litOffsetExtS.contains(i)) {
-            vazio = false
-        }
-        var offf: Offset3 = Offset3(
-            xp.toFloat() + (15 * tela.densidade),
-            yp + (15 * tela.densidade),
-            vazio,
-            i,
-        )
-        litOffset[i] = offf
-        interi++
+        abilite.onUpdateMove(litOffset)
     }
-    abilite.onUpdateMove(litOffset)
+
+
     var litOffsetMove = if (ab.value.posMove.size > 1) ab.value.posMove else litOffset
     LaunchedEffect(key1 = Unit) {
         timeManager.deltaTime.collect { it ->
