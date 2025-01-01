@@ -100,8 +100,25 @@ private val _AAbilite = MutableStateFlow<Abilite>(default)
             abilite.copy(posMoveReset = new)
         }
     }
+    fun onUpdateUltimaLinha(it : Int) {
+        _AAbilite.update { abilite ->
+            var new = it
 
-     fun setonUpdateMoveDefault() : MutableList<Offset3>{
+            abilite.copy(ultimaLinha = new)
+        }
+    }
+
+    fun onUpdatePosRef(it : Offset3) {
+        _AAbilite.update { abilite ->
+            var new = it
+
+            abilite.copy(posRef = new)
+        }
+    }
+
+
+
+    fun setonUpdateMoveDefault() : MutableList<Offset3>{
 
         var interi = 0
         var interiy = 1
@@ -140,6 +157,7 @@ private val _AAbilite = MutableStateFlow<Abilite>(default)
                 yp + m,
                 vazio,
                 i,
+                interiy
             )
             litOffset[i] = offf
             interi++
