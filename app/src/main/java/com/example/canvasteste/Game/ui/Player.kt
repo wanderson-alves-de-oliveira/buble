@@ -236,12 +236,12 @@ internal fun Player(
                 if ( modo  == 0 && litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y > 600) {
                     litOffsetMove[i].y -= 10
                     abilite.onUpdateMove(litOffsetMove)
-                    offsetX2 = 0f
+                    offsetX2 -= 1f
                 } else  if ( modo  == 1 && litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y < 600) {
                     litOffsetMove[i].y += 10
                     abilite.onUpdateMove(litOffsetMove)
 
-                    offsetX2 = 0f
+                    offsetX2 -=1f
                 }else{
                     modo  = -1
                 }
@@ -276,7 +276,7 @@ internal fun Player(
                     cores.onUpdate(listCoresExt)
                     abilite.onUpdate(litOffsetExt)
                     abilite.onUpdateRamos(listaCorteRamos)
-                    modo = 1
+
                 } else {
                     litOffsetMove[i].y += op
                     offsetX2 -= 2
@@ -284,7 +284,7 @@ internal fun Player(
 
 
                 if(listaCorteRamos.size==0){
-                    posMoveReset
+                    modo = 1
 
                     for (iu in 0..posMoveReset.size - 1) {
                         var move:Offset3 = posMoveReset[iu]
