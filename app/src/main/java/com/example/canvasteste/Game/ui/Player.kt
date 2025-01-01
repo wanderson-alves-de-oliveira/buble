@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import com.example.canvasteste.Game.di.engeni.TimeManager
 import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
 import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
+import com.example.canvasteste.Game.di.engeni.ferramentas.Tela.Companion.toF
 import com.example.canvasteste.Game.logic.AAbilite
 import com.example.canvasteste.Game.logic.CCores
 import com.example.canvasteste.Game.logic.CCoresSeparacao
@@ -106,7 +107,7 @@ internal fun Player(
     var dir: Float by remember { mutableStateOf(70f) }
     var xxPlay: Float by remember { mutableStateOf(xc.toFloat()) }
     var tocou: Boolean by remember { mutableStateOf(false) }
-    var modo: Int by remember { mutableStateOf(-1) }
+    var modo: Int by remember { mutableStateOf(0) }
 
     var yyPlay: Float by remember { mutableStateOf((qtd * unidadeT).toFloat()) }
     var litOffset2 = mutableListOf<Offset>()
@@ -122,6 +123,8 @@ internal fun Player(
     var interi = 0
     var interiy = 1
     var tam = 36.dp.toPx()
+    var media = 200.dp
+    var mediay = media.toPx()
     var tamMeio = 18.dp.toPx()
     if (subir && up > 0.dp) {
         up -= 100.dp
@@ -233,11 +236,11 @@ internal fun Player(
             var litOffsetMoveR = litOffsetMove[i]
 
             if(modo > -1) {
-                if ( modo  == 0 && litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y > 600) {
+                if ( modo  == 0 && litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y > mediay) {
                     litOffsetMove[i].y -= 10
                     abilite.onUpdateMove(litOffsetMove)
                     offsetX2 -= 1f
-                } else  if ( modo  == 1 && litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y < 600) {
+                } else  if ( modo  == 1 && litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y < mediay) {
                     litOffsetMove[i].y += 10
                     abilite.onUpdateMove(litOffsetMove)
 
@@ -285,7 +288,11 @@ internal fun Player(
 
                 if(listaCorteRamos.size==0){
                     modo = 1
-
+                    if ( litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y > 600) {
+                        modo = 0
+                    } else  if ( litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y < 600) {
+                        modo = 1
+                    }
                     for (iu in 0..posMoveReset.size - 1) {
                         var move:Offset3 = posMoveReset[iu]
                         litOffsetMove[move.pos] = move
@@ -483,7 +490,7 @@ internal fun Player(
                 listCoresExt.add(litOffsetExt.indexOf(intPreview),intPreviewCor)
 
                 listaCoresOff = listaCoresOff.filter { it -> it > 9 }.toMutableList()
-                if (listaCoresOff[0] == 0 && listaCoresOff.size == 1) {
+                if (listaCoresOff.size == 1 && listaCoresOff[0] == 0 ) {
                     var mesmaCorf =
                         litOffsetExt.filter { it -> listCoresExt[litOffsetExt.indexOf(it)] == intPreviewCor }
                     listaCoresOff = playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, intPreview)

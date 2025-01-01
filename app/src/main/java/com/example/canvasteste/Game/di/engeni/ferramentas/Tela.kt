@@ -8,12 +8,13 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.example.canvasteste.Game.ui.toPx
 
 
 class Tela(context: Context) {
 
-    private val context: Context = context
+      val context: Context = context
      var densidade:Float = 0f
 
     val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -33,12 +34,19 @@ class Tela(context: Context) {
     }
 
     companion object {
-         val displayMetrics = DisplayMetrics()
+
         @Composable
-        fun Dp.toF(): Float {
+        fun Dp.toF(context: Context): Float {
+            val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val displayMetrics = DisplayMetrics()
+            windowManager.getDefaultDisplay().getMetrics(displayMetrics)
+
             val scale = displayMetrics.density
             return (this / scale).toPx()
         }
+
+
+
 
     }
 }
