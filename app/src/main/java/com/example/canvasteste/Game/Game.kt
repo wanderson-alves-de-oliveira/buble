@@ -57,9 +57,9 @@ fun Game(context: Context,modifier: Modifier = Modifier) {
         }
         val tela = Tela(context)
         val playerLogic = PlayLogic(viewPort)
-        val abilite = AAbilite()
-        val cores = CCores()
-        val coresSeparacao = CCoresSeparacao()
+        val abilite = AAbilite(context)
+        val cores = CCores(context)
+        val coresSeparacao = CCoresSeparacao(context)
 
 
         val di = rememberDI(viewPort)

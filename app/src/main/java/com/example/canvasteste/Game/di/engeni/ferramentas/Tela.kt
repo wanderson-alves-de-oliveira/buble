@@ -5,7 +5,10 @@ import android.os.Build
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Dp
+import com.example.canvasteste.Game.ui.toPx
 
 
 class Tela(context: Context) {
@@ -13,12 +16,12 @@ class Tela(context: Context) {
     private val context: Context = context
      var densidade:Float = 0f
 
+    val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val displayMetrics = DisplayMetrics()
 
     @RequiresApi(Build.VERSION_CODES.R)
     fun getTamanhoTela(): Offset {
 
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val displayMetrics = DisplayMetrics()
 
         windowManager.getDefaultDisplay().getMetrics(displayMetrics)
         val w = displayMetrics.widthPixels
@@ -29,4 +32,13 @@ class Tela(context: Context) {
         return Offset(w.toFloat(), h.toFloat())
     }
 
+    companion object {
+         val displayMetrics = DisplayMetrics()
+        @Composable
+        fun Dp.toF(): Float {
+            val scale = displayMetrics.density
+            return (this / scale).toPx()
+        }
+
+    }
 }
