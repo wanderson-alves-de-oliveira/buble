@@ -251,6 +251,9 @@ internal fun Player(
 
                 var difLinha = (ultimaLinha - litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].linha) + litOffsetMove[i].linha
 
+
+
+
                 if ( modo  == 0 && litOffsetMove[i].y > mediay+(difLinha * velocidade)) {
                          litOffsetMove[i].y -= velocidade
 
@@ -351,13 +354,13 @@ internal fun Player(
                         rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
                     }
             )
-            Text(i.toString(), modifier = modifier
-                .offset {
-                    IntOffset(
-                        x = litOffsetMoveR.x.toInt(),
-                        y = litOffsetMoveR.y.toInt()
-                    )
-                })
+//            Text(i.toString(), modifier = modifier
+//                .offset {
+//                    IntOffset(
+//                        x = litOffsetMoveR.x.toInt(),
+//                        y = litOffsetMoveR.y.toInt()
+//                    )
+//                })
         }
         ///////////////////////////////////////////
         while (i > 0) {
