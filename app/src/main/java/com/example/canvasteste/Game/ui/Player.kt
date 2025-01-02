@@ -473,12 +473,12 @@ internal fun Player(
                             var mesmaCorf =
                                 litOffsetExt.filter { it -> listCoresExt[litOffsetExt.indexOf(it)] == intPreviewCor }
 
-                            if (lado != 0) {
+                       //     if (lado != 0) {
                                 listaCoresOff =
                                     playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, lado)
-                            } else {
-                                listaCoresOff = playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, j)
-                            }
+//                            } else {
+//                                listaCoresOff = playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, j)
+//                            }
                             playerLogic.updatePrev(listaCoresOff)
                             break
                         }
