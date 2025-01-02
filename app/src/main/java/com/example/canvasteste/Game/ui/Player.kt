@@ -260,7 +260,7 @@ internal fun Player(
 
 
                     offsetX2 -= 1f
-                } else  if ( modo  == 1 && difLinha>0 && litOffsetMove[i].y < posRef.y+(difLinha * velocidade)) {
+                } else  if (litOffsetMove[0].y< velocidade*8 && modo  == 1 && difLinha>0 && litOffsetMove[i].y < posRef.y+(difLinha * velocidade)) {
 
 
                         litOffsetMove[i].y += velocidade
@@ -354,18 +354,18 @@ internal fun Player(
                         rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
                     }
             )
-//            Text(i.toString(), modifier = modifier
-//                .offset {
-//                    IntOffset(
-//                        x = litOffsetMoveR.x.toInt(),
-//                        y = litOffsetMoveR.y.toInt()
-//                    )
-//                })
+            Text(i.toString(), modifier = modifier
+                .offset {
+                    IntOffset(
+                        x = litOffsetMoveR.x.toInt(),
+                        y = litOffsetMoveR.y.toInt()
+                    )
+                })
         }
         ///////////////////////////////////////////
         while (i > 0) {
             var xxi = (ii + (xi * (qtd - i))).toInt()
-            if (xxi < 0) {
+            if (xxi <= 0) {
                 xxi *= -1
                 litORef[0].x = xxi.toFloat()
                 litORef[0].y = (i * unidadeT).toFloat()
@@ -379,7 +379,7 @@ internal fun Player(
                 litORef[0].vazio = false
                 litORef[0].pos = 0
             }
-            if (xxi < 0) {
+            if (xxi <=0) {
                 xxi *= -1
                 litORef[1].x = xxi.toFloat()
                 litORef[1].y = (i * unidadeT).toFloat()
@@ -393,7 +393,7 @@ internal fun Player(
                 litORef[1].vazio = false
                 litORef[1].pos = 1
             }
-            if (xxi < 0) {
+            if (xxi <=0) {
                 xxi *= -1
                 litORef[2].x = xxi.toFloat()
                 litORef[2].y = (i * unidadeT).toFloat()
