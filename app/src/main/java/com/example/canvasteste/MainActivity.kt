@@ -31,8 +31,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             CanvasTesteTheme {
                       Surface (modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.onSurface) {
-                          Game(baseContext)
-
+                         Game(baseContext)
+                       //   teste()
                       }
 
             }

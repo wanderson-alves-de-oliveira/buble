@@ -10,9 +10,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 
@@ -139,10 +143,13 @@ internal fun Player(
 
     var tamMeio = 18.dp.toPx()
     if (subir && up > 0.dp) {
-        up -= 100.dp
+        up -= if(up>10.dp)(up/10.dp).dp else 10.dp
     }
     val posMoveReset: MutableList<Offset3> = ab.value.posMoveReset
-
+    val yfinal = ((tela.getTamanhoTela().y/2) -  100.dp.toPx()).toFloat().toInt()
+    var fy = 1200.dp.toPx()
+    var yfinalP: Float by remember { mutableStateOf(fy) }
+    var fimp : Boolean by remember { mutableStateOf(false) }
 
     val RT = mutableListOf(
         0, 1, 2,
@@ -246,7 +253,10 @@ internal fun Player(
                             coroutineScope.launch {
                                 interaction?.run {
 
-                                    if (intPreviewMarcado != intPreview ||   (litOffsetExtFI.contains(intPreviewMarcado) || litOffsetExtFI2.contains(intPreviewMarcado) )) {
+                                    if (intPreviewMarcado != intPreview || (litOffsetExtFI.contains(
+                                            intPreviewMarcado
+                                        ) || litOffsetExtFI2.contains(intPreviewMarcado))
+                                    ) {
                                         go = true
                                         tocou = false
                                     }
@@ -417,13 +427,13 @@ internal fun Player(
                             rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
                         }
                 )
-                Text(i.toString(), modifier = modifier
-                    .offset {
-                        IntOffset(
-                            x = litOffsetMoveR.x.toInt(),
-                            y = litOffsetMoveR.y.toInt()
-                        )
-                    })
+//                Text(i.toString(), modifier = modifier
+//                    .offset {
+//                        IntOffset(
+//                            x = litOffsetMoveR.x.toInt(),
+//                            y = litOffsetMoveR.y.toInt()
+//                        )
+//                    })
             }
             ///////////////////////////////////////////
             while (i > 0) {
@@ -654,15 +664,32 @@ internal fun Player(
         }
     }else{
 
-        Text("Fim de jogo", modifier = modifier
-            .offset {
+
+        if(yfinalP>yfinal){
+            var dist = yfinalP - yfinal
+            yfinalP -= (dist/10).dp.toPx()
+
+            if(dist < 10){
+                fimp = true
+            }
+        }
+
+
+        Column(
+            modifier = modifier.size(200.dp, 250.dp).offset {
                 IntOffset(
-                    x = 150,
-                    y = 600
+                    x = ((tela.getTamanhoTela().x/2) -  100.dp.toPx()).toInt(),
+                    y = yfinalP.toInt()
                 )
-            }, color = Color.White, fontSize = 60.sp)
+            },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Card(tela.context, modifier = modifier,"->","Nivel 1",fimp)
 
 
+        }
 
     }
 
