@@ -1,6 +1,7 @@
 package com.example.canvasteste.Game
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
@@ -8,8 +9,10 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
@@ -44,13 +47,16 @@ import com.example.canvasteste.Game.logic.CCoresSeparacao
 import com.example.canvasteste.Game.logic.PlayLogic
 import com.example.canvasteste.Game.model.Viewport
 import com.example.canvasteste.Game.ui.Background
+import com.example.canvasteste.Game.ui.Card
 import com.example.canvasteste.Game.ui.Player
+import com.example.canvasteste.Game.ui.toPx
+import com.example.canvasteste.R
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
-fun Game(navController: androidx.navigation.NavController,context: Context,modifier: Modifier = Modifier) {
+fun Mapa(navController: androidx.navigation.NavController,context: Context,modifier: Modifier = Modifier) {
     BoxWithConstraints(modifier = modifier) {
         val viewPort = remember {
             Viewport(maxWidth, maxHeight)
@@ -69,7 +75,30 @@ fun Game(navController: androidx.navigation.NavController,context: Context,modif
                         )
         {
            Background(di.timeManager)
-            Player(Modifier, playerLogic,abilite,cores,coresSeparacao,viewPort,tela,di.timeManager,navController)
+
+
+            Column(
+                modifier = modifier
+                    .size(250.dp, 310.dp)              ,
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                val res = tela.context.resources
+                var b = BitmapFactory.decodeResource(res, R.drawable.blue)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Card(b,tela.context, modifier = modifier,"->","Nivel 1",true,"TELA DO MAPA", onclick = {
+
+
+                        navController.navigate("game")
+                    })
+                }
+
+
+            }
+
+
+
 
 
         }

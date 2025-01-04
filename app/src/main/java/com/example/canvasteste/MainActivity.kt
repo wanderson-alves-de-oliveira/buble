@@ -16,7 +16,11 @@ import androidx.compose.runtime.Composable
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.canvasteste.Game.Game
+import com.example.canvasteste.Game.Mapa
 
 import com.example.canvasteste.ui.theme.CanvasTesteTheme
 
@@ -30,10 +34,17 @@ class MainActivity : ComponentActivity() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContent {
             CanvasTesteTheme {
-                      Surface (modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.onSurface) {
-                         Game(baseContext)
-                       //   teste()
-                      }
+//                      Surface (modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.onSurface) {
+//                         Game(baseContext)
+//                       //   teste()
+//                      }
+
+                val navController = rememberNavController()
+                NavHost(navController = navController,startDestination = "mapa") {
+
+                    composable(route = "game") { Game(navController,baseContext) }
+                    composable(route = "mapa") { Mapa(navController,baseContext) }
+                }
 
             }
         }

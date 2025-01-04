@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.canvasteste"
-        minSdk = 24
+        minSdk = 31
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidthings)
     implementation(libs.androidx.window)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -41,10 +41,10 @@ import com.example.canvasteste.R
 
 
 @Composable
-internal fun Botao(modifier: Modifier,text:String){
+internal fun Botao(onClick : () -> Unit,modifier: Modifier,text:String){
 
     ElevatedButton (
-        onClick = {teste2()},
+        onClick = onClick,
         modifier = Modifier
             .height(56.dp)
             .width(100.dp),
@@ -76,18 +76,3 @@ internal fun Botao(modifier: Modifier,text:String){
 
 }
 
-@Preview
-@Composable
-fun teste(){
-
-    Botao (modifier = Modifier,"->")
-
-
-}
-
-
-fun teste2():Unit{
-
-
-
-}
