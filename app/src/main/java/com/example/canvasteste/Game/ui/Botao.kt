@@ -1,5 +1,4 @@
 package com.example.canvasteste.Game.ui
-
 import android.content.res.Resources
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 @Composable
 internal fun Botao(onClick : () -> Unit,modifier: Modifier,text:String){
-
     ElevatedButton (
         onClick = onClick,
         modifier = Modifier
@@ -44,12 +42,5 @@ internal fun Botao(onClick : () -> Unit,modifier: Modifier,text:String){
         )
 
     }
-
-
-
-
-
-
-
 }
 

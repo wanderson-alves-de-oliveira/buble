@@ -1,11 +1,7 @@
 package com.example.canvasteste.Game.logic
-
-
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
-import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
 import com.example.canvasteste.Game.model.Player
 import com.example.canvasteste.Game.model.Viewport
 import com.example.canvasteste.Game.ui.toPx
@@ -14,47 +10,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.math.pow
 import kotlin.math.sqrt
-
 class PlayLogic(viewport: Viewport) {
     private var posLI: MutableList<Int> = mutableListOf()
     private var posLIR: MutableList<Int> = mutableListOf()
-
     private val default: Player = Player(viewport.height, 36.dp, 70.dp, 0f)
     private val _playPosition = MutableStateFlow<Player>(default)
     val player: StateFlow<Player> = _playPosition
-
-    fun onUpdate(deltaTime: Float) {
-        _playPosition.update { player ->
-            var newY =
-                player.y + (player.speed * deltaTime + 0.5 * Player.acceleration * deltaTime * deltaTime).dp
-            var newSpeed = player.speed + Player.acceleration * deltaTime
-
-            if (newY > 2000.dp) {
-                newY = 0.dp
-                newSpeed = 0f
-            }
-
-            player.copy(y = newY, speed = newSpeed)
-        }
-    }
-
-
-    fun girarando(gira: Boolean) {
-        _playPosition.update { player ->
-            var newY = gira
-            player.copy(girar = newY)
-        }
-    }
-
-
     fun updatePrev(posL: List<Int>) {
         _playPosition.update { player ->
             var new = posL
             player.copy(posprev = new)
         }
     }
-
-
     @Composable
     fun updateLimparnit(
         listaAtual: MutableList<Offset3>,
@@ -87,11 +54,6 @@ class PlayLogic(viewport: Viewport) {
             updateLimpar(listaAtual, posL, posLD[i])
         }
     }
-
-
-
-
-
     @Composable
     fun updateLimparRamosinit(
         listaAtual: MutableList<Offset3>,
@@ -102,7 +64,6 @@ class PlayLogic(viewport: Viewport) {
         updateLimparRamos(listaAtual, posL, init)
         return posLIR
     }
-
     @Composable
     fun updateLimparRamos(listaAtual: MutableList<Offset3>, posL: List<Int>, init: Int) {
         if (posLIR.contains(init)) return
@@ -124,7 +85,6 @@ class PlayLogic(viewport: Viewport) {
             updateLimparRamos(listaAtual, posL, posLD[i])
         }
     }
-    
-    
+
 
 }

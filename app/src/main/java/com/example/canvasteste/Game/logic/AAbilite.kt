@@ -2,23 +2,16 @@ package com.example.canvasteste.Game.logic
 
 
 import android.content.Context
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.dp
 import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
 import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
-import com.example.canvasteste.Game.di.engeni.ferramentas.Tela.Companion
-import com.example.canvasteste.Game.di.engeni.ferramentas.Tela.Companion.toF
 
 import com.example.canvasteste.Game.model.Abilite
-import com.example.canvasteste.Game.ui.toPx
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-
 class AAbilite(context: Context ) {
      val context: Context = context
       val tela : Tela = Tela(context)
-
     private val default : Abilite = Abilite(mutableListOf( 0,1,2,
     3,
     4,
@@ -65,8 +58,6 @@ class AAbilite(context: Context ) {
     129),mutableListOf( 0),setonUpdateMoveDefault()  )
 private val _AAbilite = MutableStateFlow<Abilite>(default)
     val Abilite: StateFlow<Abilite> = _AAbilite
-
-
      fun onUpdate(list: MutableList<Int>) {
          _AAbilite.update { abilite ->
             var new =  list
@@ -74,8 +65,6 @@ private val _AAbilite = MutableStateFlow<Abilite>(default)
              abilite.copy(pos = new)
         }
     }
-
-
     fun onUpdateRamos(list: MutableList<Int>) {
         _AAbilite.update { abilite ->
             var new =  list
@@ -83,9 +72,6 @@ private val _AAbilite = MutableStateFlow<Abilite>(default)
             abilite.copy(posRamo = new)
         }
     }
-
-
-
     fun onUpdateMove(list: MutableList<Offset3>) {
         _AAbilite.update { abilite ->
             var new = list
@@ -115,9 +101,6 @@ private val _AAbilite = MutableStateFlow<Abilite>(default)
             abilite.copy(posRef = new)
         }
     }
-
-
-
     fun setonUpdateMoveDefault() : MutableList<Offset3>{
 
         var interi = 0
@@ -129,8 +112,6 @@ private val _AAbilite = MutableStateFlow<Abilite>(default)
         var litOffsetExtS = mutableListOf<Int>()
         var m:Float =15 * tela.densidade
         var litOffset = MutableList<Offset3>(179) { Offset3(0f, 1000f, false, 0) }
-
-
         for (i in 0..178) {
             var xp = tam *interi
             var yp = tam *interiy
@@ -162,11 +143,6 @@ private val _AAbilite = MutableStateFlow<Abilite>(default)
             litOffset[i] = offf
             interi++
         }
-
         return litOffset
-
     }
-
-
-
 }

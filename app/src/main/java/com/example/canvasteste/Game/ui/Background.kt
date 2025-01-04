@@ -1,8 +1,5 @@
 package com.example.canvasteste.Game.ui
-
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context.*
 import android.graphics.Bitmap
 import android.graphics.BitmapShader
 import android.graphics.Shader
@@ -10,11 +7,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Paint
@@ -24,12 +16,8 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import androidx.window.layout.WindowMetricsCalculator
 import com.example.canvasteste.Game.di.engeni.TimeManager
 import com.example.canvasteste.R
-import android.app.Activity as Context
-
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun Background(timeManager: TimeManager) {
