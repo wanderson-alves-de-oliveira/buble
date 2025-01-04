@@ -74,15 +74,18 @@ fun Mapa(navController: androidx.navigation.NavController,context: Context,modif
             },
             onDrag = { change: PointerInputChange, dragAmount: Offset ->
 
-
+var dist = dragAmount.getDistance()
                 if(dragAmount.y>0 ){
-                    scrollX += 5f
-                    distancia+= 5f
+                    scrollX += dist
+                    distancia+= dist
                 }else if(distancia>0f){
-                    scrollX -=5f
-                    distancia-= 5f
+                    scrollX -=dist
+                    distancia-= dist
                 }
-
+                if(distancia<0f){
+                    scrollX =0f
+                    distancia=0f
+                }
 
             },
             onDragCancel = {
