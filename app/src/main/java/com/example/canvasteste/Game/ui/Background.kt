@@ -1,12 +1,18 @@
 package com.example.canvasteste.Game.ui
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
 import android.graphics.Shader
+import android.os.Build
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Paint
@@ -16,7 +22,10 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.example.canvasteste.Game.di.GameDI.Companion.rememberDI
 import com.example.canvasteste.Game.di.engeni.TimeManager
+import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
 import com.example.canvasteste.R
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
@@ -77,3 +86,13 @@ fun Dp.toPx(): Float {
         toPx()
     }
 }
+
+
+
+
+
+
+
+
+
+

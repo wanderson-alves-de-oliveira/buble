@@ -72,8 +72,7 @@ internal fun Player(
     var offsetX2: Float by remember { mutableStateOf(ii) }
     var offsetX3: Float by remember { mutableStateOf(ii) }
     var offsetY by remember { mutableStateOf(off.y * 0.9) }
-    val listCores =
-        mutableListOf(R.drawable.red, R.drawable.blue, R.drawable.yaelow, R.drawable.pink)
+    val listCores = cr.value.listCores
     var intPreviewCor: Int by remember { mutableStateOf(listCores[(0..3).random()]) }
     var up: Dp by remember { mutableStateOf(1000.dp) }
     var rotation: Float by remember { mutableStateOf(-90f) }
@@ -526,7 +525,7 @@ internal fun Player(
                         abilite.onUpdateMoveReset(rest)
                         abilite.onUpdateRamos(novalista)
                     }
-                    intPreviewCor = listCores[(0..3).random()]
+                    intPreviewCor = listCores[(0..4).random()]
                     cores.onUpdate(listCoresExt)
                     abilite.onUpdate(litOffsetExt)
                     xxPlay = 0f
@@ -554,7 +553,7 @@ internal fun Player(
                         Card(b,
                             tela.context,
                             modifier = modifier,
-                            "->",
+                            "",
                             "Nivel 1",
                             fimp,
                             "Derrube todas\n as bolas",
@@ -579,7 +578,7 @@ internal fun Player(
             var restMedia = 300.dp.toPx()
             var b = BitmapFactory.decodeResource(res, R.drawable.blue)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                Card(b, tela.context, modifier = modifier, "->", "Nivel 1", fimp, onclick = {
+                Card(b, tela.context, modifier = modifier, "", "Nivel 1", fimp, onclick = {
 
 
                     navController.navigate("mapa")
