@@ -536,36 +536,50 @@ internal fun Player(
             }
         }
         if (!subir) {
-            Box(
-                modifier = modifier
-                    .fillMaxSize()
-                    .offset(-10.dp, 0.dp)
-            ) {
-                Column(
-                    modifier = modifier
-                        .size(250.dp, 310.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    val res = tela.context.resources
-                    var b = BitmapFactory.decodeResource(res, R.drawable.red)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        Card(b,
-                            tela.context,
-                            modifier = modifier,
-                            "",
-                            "Nivel 1",
-                            fimp,
-                            "Derrube todas\n as bolas",
-                            onclick = {
-                                yfinalP = fy
-                                fimp = false
-                                subir = true
-                            })
-                    }
-                }
-            }
+//            Box(
+//                modifier = modifier
+//                    .fillMaxSize()
+//                    .offset(-10.dp, 0.dp)
+//            ) {
+//                Column(
+//                    modifier = modifier
+//                        .size(250.dp, 310.dp),
+//                    verticalArrangement = Arrangement.Center,
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//                    val res = tela.context.resources
+//                    var b = BitmapFactory.decodeResource(res, R.drawable.red)
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//                        Card(b,
+//                            tela.context,
+//                            modifier = modifier,
+//                            "",
+//                            "Nivel 1",
+//                            fimp,
+//                            "Derrube todas\n as bolas",
+//                            onclick = {
+//                                yfinalP = fy
+//                                fimp = false
+//                                subir = true
+//                            })
+//                    }
+//                }
+//            }
+
+     Thread.sleep(1000)
+
+     subir = true
+
         }
+
+
+
+
+
+
+
+
+
     } else {
         Column(
             modifier = modifier
