@@ -55,7 +55,8 @@ internal fun Card(
     fim: Boolean,
     msg: String = "",
     imageBt:Int= R.drawable.seta,
-    onclick: () -> Unit
+    onclick: () -> Unit,
+    onclickX: () -> Unit
 ) {
     val context: Context = context
      var tela: Tela = Tela(context)
@@ -73,13 +74,8 @@ internal fun Card(
             )
 
         }
-        val result = remember {
-            textMeasurer.measure(
-                text = textCard,
-                style = TextStyle(fontSize = 22.sp, color = Color(0xFFFAEFEF)),
-                overflow = TextOverflow.Ellipsis
-            )
-        }
+
+
 
         val yfinal = ((tela.getTamanhoTela().y / 2) - 100.dp.toPx()).toFloat().toInt()
         val fy = 1200.dp.toPx()
@@ -126,7 +122,14 @@ internal fun Card(
                 overflow = TextOverflow.Ellipsis
             )
         }
-
+        val textocr= textCard
+        var result = remember {
+            textMeasurer.measure(
+                text = textocr,
+                style = TextStyle(fontSize = 22.sp, color = Color(0xFFFAEFEF)),
+                overflow = TextOverflow.Ellipsis
+            )
+        }
 
         Column(
             modifier = Modifier
@@ -139,8 +142,6 @@ internal fun Card(
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-
 
 
             Canvas(modifier = Modifier.size(230.dp, 210.dp)) {
@@ -169,229 +170,62 @@ internal fun Card(
                 )
 
 
+                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                if (msg != "") {
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        if(msg!=""){
-
-            var b1 = BitmapFactory.decodeResource(res, R.drawable.green)
-            var b2 = BitmapFactory.decodeResource(res, R.drawable.red)
-            var b3 = BitmapFactory.decodeResource(res, R.drawable.blue)
-
-
-            val paint = Paint().asFrameworkPaint().apply {
-                shader = BitmapShader(
-                    b1.resizeTo(45.dp.toPx().toInt()),
-                    android.graphics.Shader.TileMode.DECAL,
-                    android.graphics.Shader.TileMode.DECAL
-                )
-
-            }
+                    var b1 = BitmapFactory.decodeResource(res, R.drawable.green)
+                    var b2 = BitmapFactory.decodeResource(res, R.drawable.red)
+                    var b3 = BitmapFactory.decodeResource(res, R.drawable.blue)
 
 
-            val paint2 = Paint().asFrameworkPaint().apply {
-                shader = BitmapShader(
-                    b2.resizeTo(45.dp.toPx().toInt()),
-                    android.graphics.Shader.TileMode.DECAL,
-                    android.graphics.Shader.TileMode.DECAL
-                )
+                    val paint = Paint().asFrameworkPaint().apply {
+                        shader = BitmapShader(
+                            b1.resizeTo(45.dp.toPx().toInt()),
+                            android.graphics.Shader.TileMode.DECAL,
+                            android.graphics.Shader.TileMode.DECAL
+                        )
 
-            }
-
-            val paint3 = Paint().asFrameworkPaint().apply {
-                shader = BitmapShader(
-                    b3.resizeTo(45.dp.toPx().toInt()),
-                    android.graphics.Shader.TileMode.DECAL,
-                    android.graphics.Shader.TileMode.DECAL
-                )
-
-            }
+                    }
 
 
-            drawIntoCanvas {
-                it.save()
-                it.translate((10.dp.toPx()), (20.dp.toPx()))
+                    val paint2 = Paint().asFrameworkPaint().apply {
+                        shader = BitmapShader(
+                            b2.resizeTo(45.dp.toPx().toInt()),
+                            android.graphics.Shader.TileMode.DECAL,
+                            android.graphics.Shader.TileMode.DECAL
+                        )
 
-                it.nativeCanvas.drawPaint(
-                    paint
-                )
+                    }
 
-                it.restore()
-            }
+                    val paint3 = Paint().asFrameworkPaint().apply {
+                        shader = BitmapShader(
+                            b3.resizeTo(45.dp.toPx().toInt()),
+                            android.graphics.Shader.TileMode.DECAL,
+                            android.graphics.Shader.TileMode.DECAL
+                        )
 
-
-
-            drawIntoCanvas {
-                it.save()
-                it.translate((75.dp.toPx()), (0.dp.toPx()))
-                it.scale(1.5f, 1.5f)
-                it.nativeCanvas.drawPaint(
-                    paint2
-
-                )
-
-                it.restore()
-
-
-            }
-
-
-            drawIntoCanvas {
-
-                it.save()
-                it.translate((160.dp.toPx()), (20.dp.toPx()))
-
-
-                it.nativeCanvas.drawPaint(
-                    paint3
-                )
-
-                it.restore()
-            }
-            drawRoundRect(
-                color = Color(0xFF75ACDA),
-                topLeft = Offset(5.dp.toPx(), 75.dp.toPx()),
-                size = Size(width = 205.dp.toPx(), height = 80.dp.toPx()),
-                cornerRadius = CornerRadius(45.0f),
-                style = Fill,
-                colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
-                blendMode = DefaultBlendMode
-            )
-
-
-            drawRoundRect(
-                color = Color(Color(255,220,200,150).toArgb()),
-                topLeft = Offset(5.dp.toPx(), 75.dp.toPx()),
-                size = Size(width = 205.dp.toPx(), height = 75.dp.toPx()),
-                cornerRadius = CornerRadius(45.0f),
-                style = Fill,
-                colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
-                blendMode = DefaultBlendMode
-            )
-
-            drawIntoCanvas {
-                it.save()
-                it.translate((30.dp.toPx()), 115.dp.toPx())
-
-                it.nativeCanvas.drawPaint(
-                    paint4
-                )
-
-                it.restore()
-
-            }
-            drawText(
-                textLayoutResult = msgem,
-                topLeft = Offset(80.dp.toPx(), 105.dp.toPx())
-            )
-
-
-
-
-
-        }else{
-
-            var b = BitmapFactory.decodeResource(res, R.drawable.estrela)
-            var bf = BitmapFactory.decodeResource(res, R.drawable.estrelafosca)
-
-
-            val paint5 = Paint().asFrameworkPaint().apply {
-                shader = BitmapShader(
-                    b.resizeTo(45.dp.toPx().toInt()),
-                    android.graphics.Shader.TileMode.DECAL,
-                    android.graphics.Shader.TileMode.DECAL
-                )
-
-            }
-
-            val paint6 = Paint().asFrameworkPaint().apply {
-                shader = BitmapShader(
-                    bf.resizeTo(45.dp.toPx().toInt()),
-                    android.graphics.Shader.TileMode.DECAL,
-                    android.graphics.Shader.TileMode.DECAL
-                )
-
-            }
-
-            drawIntoCanvas {
-                it.save()
-                it.translate((10.dp.toPx()), (20.dp.toPx()))
-
-                it.nativeCanvas.drawPaint(
-                    paint6
-                )
-
-                it.restore()
-            }
-
-
-            drawIntoCanvas {
-                it.save()
-                it.translate((75.dp.toPx()), (0.dp.toPx()))
-                it.scale(1.5f,1.5f)
-
-                it.nativeCanvas.drawPaint(
-                    paint6
-                )
-
-                it.restore()
-            }
-
-            drawIntoCanvas {
-                it.save()
-                it.translate((160.dp.toPx()), (20.dp.toPx()))
-
-                it.nativeCanvas.drawPaint(
-                    paint6
-                )
-
-                it.restore()
-            }
-
-            if (fimp ) {
-                //  Thread.sleep(1)
-                time++
-
-
-
-                if (time > 1) {
-
-
-                    xvc = if (xvc < 1f) xvc + 0.2f else 1f
-
-                    xvcP = if (xvcP > 10f) xvcP - 2f else 10f
-                    yvcP = if (yvcP < 20f) yvcP + 2f else 20f
+                    }
 
 
                     drawIntoCanvas {
                         it.save()
-                        it.translate((xvcP.dp.toPx()), (yvcP.dp.toPx()))
-                        it.scale(xvc.toFloat(), xvc.toFloat())
+                        it.translate((10.dp.toPx()), (20.dp.toPx()))
 
                         it.nativeCanvas.drawPaint(
-                            paint5
+                            paint
                         )
 
                         it.restore()
                     }
-                }
-                if (time > 11) {
-
-
-                    xvc2 = if (xvc2 < 1.5f) xvc2 + 0.2f else 1.5f
-
-
-                    xvcP2 = if (xvcP2 > 75f) xvcP2 - 2f else 75f
-                    yvcP2 = if (yvcP2 > 0f) yvcP2 - 2f else 0f
 
 
 
                     drawIntoCanvas {
                         it.save()
-                        it.translate((xvcP2.dp.toPx()), (yvcP2.dp.toPx()))
-
-                        it.scale(xvc2.toFloat(), xvc2.toFloat())
+                        it.translate((75.dp.toPx()), (0.dp.toPx()))
+                        it.scale(1.5f, 1.5f)
                         it.nativeCanvas.drawPaint(
-                            paint5
+                            paint2
 
                         )
 
@@ -399,91 +233,249 @@ internal fun Card(
 
 
                     }
-                }
-                if (time > 21) {
-
-
-                    xvc3 = if (xvc3 < 1f) xvc3 + 0.2f else 1f
-
-
-                    xvcP3 = if (xvcP3 > 160f) xvcP3 - 2f else 160f
-                    yvcP3 = if (yvcP3 < 20f) yvcP3 + 2f else 20f
-
 
 
                     drawIntoCanvas {
 
                         it.save()
-                        it.translate((xvcP3.dp.toPx()), (yvcP3.dp.toPx()))
+                        it.translate((160.dp.toPx()), (20.dp.toPx()))
 
-                        it.scale(xvc3.toFloat(), xvc3.toFloat())
 
                         it.nativeCanvas.drawPaint(
-                            paint5
+                            paint3
                         )
 
                         it.restore()
                     }
+                    drawRoundRect(
+                        color = Color(0xFF75ACDA),
+                        topLeft = Offset(5.dp.toPx(), 75.dp.toPx()),
+                        size = Size(width = 205.dp.toPx(), height = 80.dp.toPx()),
+                        cornerRadius = CornerRadius(45.0f),
+                        style = Fill,
+                        colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
+                        blendMode = DefaultBlendMode
+                    )
+
+
+                    drawRoundRect(
+                        color = Color(Color(255, 220, 200, 150).toArgb()),
+                        topLeft = Offset(5.dp.toPx(), 75.dp.toPx()),
+                        size = Size(width = 205.dp.toPx(), height = 75.dp.toPx()),
+                        cornerRadius = CornerRadius(45.0f),
+                        style = Fill,
+                        colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
+                        blendMode = DefaultBlendMode
+                    )
+
+                    drawIntoCanvas {
+                        it.save()
+                        it.translate((30.dp.toPx()), 115.dp.toPx())
+
+                        it.nativeCanvas.drawPaint(
+                            paint4
+                        )
+
+                        it.restore()
+
+                    }
+                    drawText(
+                        textLayoutResult = msgem,
+                        topLeft = Offset(80.dp.toPx(), 105.dp.toPx())
+                    )
+
+
+                } else {
+
+                    var b = BitmapFactory.decodeResource(res, R.drawable.estrela)
+                    var bf = BitmapFactory.decodeResource(res, R.drawable.estrelafosca)
+
+
+                    val paint5 = Paint().asFrameworkPaint().apply {
+                        shader = BitmapShader(
+                            b.resizeTo(45.dp.toPx().toInt()),
+                            android.graphics.Shader.TileMode.DECAL,
+                            android.graphics.Shader.TileMode.DECAL
+                        )
+
+                    }
+
+                    val paint6 = Paint().asFrameworkPaint().apply {
+                        shader = BitmapShader(
+                            bf.resizeTo(45.dp.toPx().toInt()),
+                            android.graphics.Shader.TileMode.DECAL,
+                            android.graphics.Shader.TileMode.DECAL
+                        )
+
+                    }
+
+                    drawIntoCanvas {
+                        it.save()
+                        it.translate((10.dp.toPx()), (20.dp.toPx()))
+
+                        it.nativeCanvas.drawPaint(
+                            paint6
+                        )
+
+                        it.restore()
+                    }
+
+
+                    drawIntoCanvas {
+                        it.save()
+                        it.translate((75.dp.toPx()), (0.dp.toPx()))
+                        it.scale(1.5f, 1.5f)
+
+                        it.nativeCanvas.drawPaint(
+                            paint6
+                        )
+
+                        it.restore()
+                    }
+
+                    drawIntoCanvas {
+                        it.save()
+                        it.translate((160.dp.toPx()), (20.dp.toPx()))
+
+                        it.nativeCanvas.drawPaint(
+                            paint6
+                        )
+
+                        it.restore()
+                    }
+
+                    if (fimp) {
+                        //  Thread.sleep(1)
+                        time++
+
+
+
+                        if (time > 1) {
+
+
+                            xvc = if (xvc < 1f) xvc + 0.2f else 1f
+
+                            xvcP = if (xvcP > 10f) xvcP - 2f else 10f
+                            yvcP = if (yvcP < 20f) yvcP + 2f else 20f
+
+
+                            drawIntoCanvas {
+                                it.save()
+                                it.translate((xvcP.dp.toPx()), (yvcP.dp.toPx()))
+                                it.scale(xvc.toFloat(), xvc.toFloat())
+
+                                it.nativeCanvas.drawPaint(
+                                    paint5
+                                )
+
+                                it.restore()
+                            }
+                        }
+                        if (time > 11) {
+
+
+                            xvc2 = if (xvc2 < 1.5f) xvc2 + 0.2f else 1.5f
+
+
+                            xvcP2 = if (xvcP2 > 75f) xvcP2 - 2f else 75f
+                            yvcP2 = if (yvcP2 > 0f) yvcP2 - 2f else 0f
+
+
+
+                            drawIntoCanvas {
+                                it.save()
+                                it.translate((xvcP2.dp.toPx()), (yvcP2.dp.toPx()))
+
+                                it.scale(xvc2.toFloat(), xvc2.toFloat())
+                                it.nativeCanvas.drawPaint(
+                                    paint5
+
+                                )
+
+                                it.restore()
+
+
+                            }
+                        }
+                        if (time > 21) {
+
+
+                            xvc3 = if (xvc3 < 1f) xvc3 + 0.2f else 1f
+
+
+                            xvcP3 = if (xvcP3 > 160f) xvcP3 - 2f else 160f
+                            yvcP3 = if (yvcP3 < 20f) yvcP3 + 2f else 20f
+
+
+
+                            drawIntoCanvas {
+
+                                it.save()
+                                it.translate((xvcP3.dp.toPx()), (yvcP3.dp.toPx()))
+
+                                it.scale(xvc3.toFloat(), xvc3.toFloat())
+
+                                it.nativeCanvas.drawPaint(
+                                    paint5
+                                )
+
+                                it.restore()
+                            }
+                        }
+                    }
+                    drawIntoCanvas {
+                        it.save()
+                        it.translate((30.dp.toPx()), 115.dp.toPx())
+
+                        it.nativeCanvas.drawPaint(
+                            paint4
+                        )
+
+                        it.restore()
+
+                    }
+
+
+
+                    drawRoundRect(
+                        color = Color(0xFF75ACDA),
+                        topLeft = Offset(5.dp.toPx(), 75.dp.toPx()),
+                        size = Size(width = 205.dp.toPx(), height = 80.dp.toPx()),
+                        cornerRadius = CornerRadius(45.0f),
+                        style = Fill,
+                        colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
+                        blendMode = DefaultBlendMode
+                    )
+
+
+                    drawRoundRect(
+                        color = Color(Color(255, 220, 200, 150).toArgb()),
+                        topLeft = Offset(5.dp.toPx(), 75.dp.toPx()),
+                        size = Size(width = 205.dp.toPx(), height = 75.dp.toPx()),
+                        cornerRadius = CornerRadius(45.0f),
+                        style = Fill,
+                        colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
+                        blendMode = DefaultBlendMode
+                    )
+
+                    drawIntoCanvas {
+                        it.save()
+                        it.translate((30.dp.toPx()), 115.dp.toPx())
+
+                        it.nativeCanvas.drawPaint(
+                            paint4
+                        )
+
+                        it.restore()
+
+                    }
+                    drawText(
+                        textLayoutResult = msgem2,
+                        topLeft = Offset(80.dp.toPx(), 105.dp.toPx())
+                    )
+
+
                 }
-            }
-            drawIntoCanvas {
-                it.save()
-                it.translate((30.dp.toPx()), 115.dp.toPx())
-
-                it.nativeCanvas.drawPaint(
-                    paint4
-                )
-
-                it.restore()
-
-            }
-
-
-
-            drawRoundRect(
-                color = Color(0xFF75ACDA),
-                topLeft = Offset(5.dp.toPx(), 75.dp.toPx()),
-                size = Size(width = 205.dp.toPx(), height = 80.dp.toPx()),
-                cornerRadius = CornerRadius(45.0f),
-                style = Fill,
-                colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
-                blendMode = DefaultBlendMode
-            )
-
-
-            drawRoundRect(
-                color = Color(Color(255,220,200,150).toArgb()),
-                topLeft = Offset(5.dp.toPx(), 75.dp.toPx()),
-                size = Size(width = 205.dp.toPx(), height = 75.dp.toPx()),
-                cornerRadius = CornerRadius(45.0f),
-                style = Fill,
-                colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
-                blendMode = DefaultBlendMode
-            )
-
-            drawIntoCanvas {
-                it.save()
-                it.translate((30.dp.toPx()), 115.dp.toPx())
-
-                it.nativeCanvas.drawPaint(
-                    paint4
-                )
-
-                it.restore()
-
-            }
-            drawText(
-                textLayoutResult = msgem2,
-                topLeft = Offset(80.dp.toPx(), 105.dp.toPx())
-            )
-
-
-
-
-
-
-
-        }
                 drawRoundRect(
                     color = Color(0xFF75ACDA),
                     topLeft = Offset(50.dp.toPx(), 165.dp.toPx()),
@@ -498,7 +490,7 @@ internal fun Card(
                 drawRoundRect(
                     color = Color(Color(232, 2, 73, 150).toArgb()),
                     topLeft = Offset(50.dp.toPx(), 160.dp.toPx()),
-                    size = Size(width =110.dp.toPx(), height = 45.dp.toPx()),
+                    size = Size(width = 110.dp.toPx(), height = 45.dp.toPx()),
                     cornerRadius = CornerRadius(45.0f),
                     style = Fill,
                     colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
@@ -512,17 +504,35 @@ internal fun Card(
                 )
 
 
-
             }
 
+            Box(modifier = modifier.offset {
+                IntOffset(
+                    x = ((tela.getTamanhoTela().x / 2) - 120.dp.toPx()).toInt(),
+                    y = -250.dp.toPx().toInt()
+                )
+            }) {
+                Botao(
+                    context = context,
+                    onClick = onclickX,
+                    modifier = Modifier,
+                    text = textButton,
+                    imageBt = imageBt
+                )
+            }
+            Box(modifier = modifier) {
+                Spacer(modifier = modifier.padding(5.dp))
 
+                Botao(
+                    context = context,
+                    onClick = onclick,
+                    modifier = Modifier,
+                    text = textButton,
+                    imageBt = imageBt
+                )
 
-            Spacer(modifier = modifier.padding(10.dp))
-
-            Botao(context = context, onClick = onclick, modifier = Modifier, text = textButton,imageBt = imageBt)
-
+            }
         }
-
     }
 
 

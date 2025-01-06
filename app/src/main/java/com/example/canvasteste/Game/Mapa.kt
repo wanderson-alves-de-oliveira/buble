@@ -72,7 +72,7 @@ fun Mapa (
     val coroutineScope = rememberCoroutineScope()
     val interactionSource = remember { MutableInteractionSource() }
 
-    var xy by remember { mutableStateOf(Offset(0f,0f)) }
+    var xy by remember { mutableStateOf(Offset(0f, 0f)) }
 
     var scrollX by remember { mutableStateOf(0f) }
 
@@ -85,9 +85,7 @@ fun Mapa (
     var yc2 by remember { mutableStateOf(1) }
 
 
-
     val textMeasurer = rememberTextMeasurer()
-
 
 
     var msgem = remember {
@@ -134,7 +132,6 @@ fun Mapa (
                         distancia2 += dist
 
 
-
                     } else if (distancia > 0f) {
                         scrollX -= dist
                         distancia -= dist
@@ -150,11 +147,11 @@ fun Mapa (
 
 
                     msgem = textMeasurer.measure(
-                        text =distancia2.toInt().toString()+"  "+ tela.getTamanhoTela().y.toInt()/5,
+                        text = distancia2.toInt()
+                            .toString() + "  " + tela.getTamanhoTela().y.toInt() / 5,
                         style = TextStyle(fontSize = 16.sp, color = Color(0xFFFAEFEF)),
                         overflow = TextOverflow.Ellipsis
                     )
-
 
 
                 },
@@ -205,7 +202,6 @@ fun Mapa (
         }
 
 
-
     ) {
 
 
@@ -238,7 +234,7 @@ fun Mapa (
 
         }
 
-var yyu =  b1.resizeTo(45.dp.toPx().toInt()).width
+        var yyu = b1.resizeTo(45.dp.toPx().toInt()).width
 
         Canvas(modifier = Modifier.fillMaxSize()) {
             drawIntoCanvas {
@@ -253,16 +249,20 @@ var yyu =  b1.resizeTo(45.dp.toPx().toInt()).width
                 it.restore()
             }
 
-            for(i in 0..10) {
-                var xc = if(i%2==0) tela.getTamanhoTela().x*0.7f else  tela.getTamanhoTela().x*0.3f
+            for (i in 0..10) {
+                var xc =
+                    if (i % 2 == 0) tela.getTamanhoTela().x * 0.7f else tela.getTamanhoTela().x * 0.3f
 
                 drawIntoCanvas {
                     it.save()
-                    it.translate(xc, (( ((yc * i )* -( tela.getTamanhoTela().y*0.2f)))+tela.getTamanhoTela().y*0.9f) +( distancia.dp.toPx()) )
+                    it.translate(
+                        xc,
+                        ((((yc * i) * -(tela.getTamanhoTela().y * 0.2f))) + tela.getTamanhoTela().y * 0.9f) + (distancia.dp.toPx())
+                    )
 
-                    if(distancia2 >= tela.getTamanhoTela().y/5){
+                    if (distancia2 >= tela.getTamanhoTela().y / 5) {
                         yc2++
-                        distancia2=0f
+                        distancia2 = 0f
                     }
                     it.nativeCanvas.drawPaint(
                         paint2
@@ -273,16 +273,20 @@ var yyu =  b1.resizeTo(45.dp.toPx().toInt()).width
             }
 
 
-            for(i in 0..10) {
-                var xc = if(i%2==0) tela.getTamanhoTela().x*0.7f else  tela.getTamanhoTela().x*0.3f
+            for (i in 0..10) {
+                var xc =
+                    if (i % 2 == 0) tela.getTamanhoTela().x * 0.7f else tela.getTamanhoTela().x * 0.3f
 
                 drawIntoCanvas {
                     it.save()
-                    it.translate(xc, (( ((yc2 * i )* -( tela.getTamanhoTela().y*0.2f)))+tela.getTamanhoTela().y*0.9f) +( distancia.dp.toPx()) )
+                    it.translate(
+                        xc,
+                        ((((yc2 * i) * -(tela.getTamanhoTela().y * 0.2f))) + tela.getTamanhoTela().y * 0.9f) + (distancia.dp.toPx())
+                    )
 
-                    if(distancia2 >= tela.getTamanhoTela().y/5){
+                    if (distancia2 >= tela.getTamanhoTela().y / 5) {
                         yc++
-                        distancia2=0f
+                        distancia2 = 0f
                     }
                     it.nativeCanvas.drawPaint(
                         paint2
@@ -300,34 +304,31 @@ var yyu =  b1.resizeTo(45.dp.toPx().toInt()).width
             )
 
 
-
         }
 
 
-
-
     }
 
 
 
 
 
-}
 
-fun Bitmap.resizeTo(maxHeight: Int): Bitmap {
-    val sourceWidth: Int = width
-    val sourceHeight: Int = height
-    val sourceRatio = sourceWidth.toFloat() / sourceHeight.toFloat()
-    val targetWidth = (maxHeight.toFloat() * sourceRatio).toInt()
-    return Bitmap.createScaledBitmap(this, targetWidth, maxHeight, true)
-}
 
-@Composable
-fun Dp.toPx(): Float {
-    return with(LocalDensity.current) {
-        toPx()
+    fun Bitmap.resizeTo(maxHeight: Int): Bitmap {
+        val sourceWidth: Int = width
+        val sourceHeight: Int = height
+        val sourceRatio = sourceWidth.toFloat() / sourceHeight.toFloat()
+        val targetWidth = (maxHeight.toFloat() * sourceRatio).toInt()
+        return Bitmap.createScaledBitmap(this, targetWidth, maxHeight, true)
     }
+
+    @Composable
+    fun Dp.toPx(): Float {
+        return with(LocalDensity.current) {
+            toPx()
+        }
+    }
+
 }
-
-
 

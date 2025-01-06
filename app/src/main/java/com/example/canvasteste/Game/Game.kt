@@ -2,6 +2,7 @@ package com.example.canvasteste.Game
 
 import android.content.Context
 import android.os.Build
+import android.telecom.Call.Details
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -22,8 +23,12 @@ import com.example.canvasteste.Game.ui.Player
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
-fun Game(navController: NavController,context: Context,modifier: Modifier = Modifier) {
-    BoxWithConstraints(modifier = modifier) {
+fun Game(navController: NavController,context: Context,param: String?="" ) {
+
+    BoxWithConstraints(modifier = Modifier) {
+
+
+
         val viewPort = remember {
             Viewport(maxWidth, maxHeight)
         }
@@ -33,15 +38,19 @@ fun Game(navController: NavController,context: Context,modifier: Modifier = Modi
         val cores = CCores(context)
         val coresSeparacao = CCoresSeparacao(context)
 
-
+         val fase:String= if(param!=null) param else ""
         val di = rememberDI(viewPort)
+
 
         Box(
             modifier = Modifier.fillMaxSize()
                         )
         {
+
+
+
            Background(di.timeManager)
-            Player(Modifier, playerLogic,abilite,cores,coresSeparacao,viewPort,tela,di.timeManager,navController)
+            Player(Modifier, playerLogic,abilite,cores,coresSeparacao,viewPort,tela,di.timeManager,navController,fase )
 
 
         }

@@ -59,7 +59,8 @@ internal fun Player(
     viewport: Viewport,
     tela: Tela,
     timeManager: TimeManager,
-    navController: NavController
+    navController: NavController,
+    fase: String
 ) {
     val player = playerLogic.player.collectAsState()
     val ab = abilite.Abilite.collectAsState()
@@ -592,11 +593,11 @@ internal fun Player(
             var restMedia = 300.dp.toPx()
             var b = BitmapFactory.decodeResource(res, R.drawable.blue)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                Card(b, tela.context, modifier = modifier, "", "Nivel 1", fimp, onclick = {
+                Card(b, tela.context, modifier = modifier, "", fase, fimp, onclick = {
 
 
                     navController.navigate("mapa")
-                })
+                },onclickX = { })
             }
         }
     }
