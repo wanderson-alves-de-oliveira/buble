@@ -62,6 +62,8 @@ internal fun Player(
     navController: NavController,
     fase: String
 ) {
+
+
     val player = playerLogic.player.collectAsState()
     val ab = abilite.Abilite.collectAsState()
     val cr = cores.Cores.collectAsState()

@@ -123,7 +123,7 @@ internal fun Card(
             )
         }
         val textocr= textCard
-        var result = remember {
+        val result = remember {
             textMeasurer.measure(
                 text = textocr,
                 style = TextStyle(fontSize = 22.sp, color = Color(0xFFFAEFEF)),
@@ -497,29 +497,42 @@ internal fun Card(
                     blendMode = DefaultBlendMode
                 )
 
-                drawText(
-                    textLayoutResult = result,
-                    topLeft = Offset(70.dp.toPx(), 170.dp.toPx())
 
+                val pincel = android.graphics.Paint()
+                pincel.color = android.graphics.Color.argb(
+                    255,
+                    255,
+                    255 ,
+                    255
                 )
+                pincel.textSize = 20.sp.toPx()
+
+                drawIntoCanvas {
+                    it.save()
+
+                    it.nativeCanvas.drawText("Nível $textCard", 70.dp.toPx(), 190.dp.toPx(), pincel)
+
+                    it.restore()
+
+                }
+
+
+
+
+
+
+
+//
+//                drawText(
+//                    textLayoutResult = result,
+//                    topLeft = Offset(70.dp.toPx(), 170.dp.toPx())
+//
+//                )
 
 
             }
 
-            Box(modifier = modifier.offset {
-                IntOffset(
-                    x = ((tela.getTamanhoTela().x / 2) - 120.dp.toPx()).toInt(),
-                    y = -250.dp.toPx().toInt()
-                )
-            }) {
-                Botao(
-                    context = context,
-                    onClick = onclickX,
-                    modifier = Modifier,
-                    text = textButton,
-                    imageBt = imageBt
-                )
-            }
+
             Box(modifier = modifier) {
                 Spacer(modifier = modifier.padding(5.dp))
 
