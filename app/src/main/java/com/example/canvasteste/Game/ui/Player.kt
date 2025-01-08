@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -234,23 +235,11 @@ internal fun Player(
                     }
                     abilite.onUpdateMove(litOffsetMove)
                 }
-                var id = R.drawable.car
-                var image = R.drawable.car
-                if (litOffsetExt.contains(i) || litOffsetExtS.contains(i)) {
-                    var corT: Int = listCoresExt[litOffsetExt.indexOf(i)]
-                    id = corT
-                }
-                if (i == intPreview && tocou) {
-                    image = R.drawable.tranp
-                } else if (!litOffsetMoveR.vazio) {
-                    image = id
-                }
-                if (i <= 9) {
-                    image = R.drawable.car
-                }
-                if (i > 9 && listPrev.contains(i) && tocou) {
-                    image = R.drawable.tranp
-                }
+
+
+
+//
+
                 if (listaCorteRamos.contains(i)) {
                     var op = 20.dp.toPx().toInt()
                     if (litOffsetMove[i].y >= 700.dp.toPx()) {
@@ -291,7 +280,37 @@ internal fun Player(
                     }
                     abilite.onUpdateMove(litOffsetMove)
                 }
-                Image(
+
+
+
+                var id = R.drawable.car
+                var image = R.drawable.car
+                if (litOffsetExt.contains(i) || litOffsetExtS.contains(i)) {
+                    var corT: Int = listCoresExt[litOffsetExt.indexOf(i)]
+                    id = corT
+                }
+
+                    if (!litOffsetMoveR.vazio) {
+                        image = id
+                    }
+                if (i <= 9) {
+                    image = R.drawable.car
+                }
+
+                if((listaCorteRamos.contains(i) || listaCoresOff.contains(i) || (i > 9 && listPrev.contains(i) && tocou) || (i == intPreview && tocou )) && i != 0){
+                    image = R.drawable.tranp
+                }
+
+
+
+
+
+
+
+
+
+
+                    Image(
                     painterResource(id = image),
                     contentDescription = null,
                     modifier = modifier
@@ -306,12 +325,12 @@ internal fun Player(
                             rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
                         }
                 )
-//                Text(i.toString(), modifier = modifier
-//                    .offset {
+//                 Text(i.toString(), modifier = modifier
+//                     .offset {
 //                        IntOffset(
-//                            x = litOffsetMoveR.x.toInt(),
-//                            y = litOffsetMoveR.y.toInt()
-//                        )
+//                             x = litOffsetMoveR.x.toInt(),
+//                             y = litOffsetMoveR.y.toInt()
+//                         )
 //                    })
             }
             ///////////////////////////////////////////
@@ -422,21 +441,24 @@ internal fun Player(
                                     }
                                 }
                                 intPreviewMarcado = j
-                                if (litOffsetExtFI.contains(j) || litOffsetExtFI2.contains(j)) {
-                                    intPreview = j
-                                } else if (j < 1200 && !go) {
+//                                if (litOffsetExtFI.contains(j) || litOffsetExtFI2.contains(j)) {
+//                                    intPreview = j
+//                                } else
+                              if (j < 1200 && !go) {
                                     intPreview = lado
                                 }
                                 var mesmaCorf =
                                     litOffsetExt.filter { it -> listCoresExt[litOffsetExt.indexOf(it)] == intPreviewCor }
 
                                 //     if (lado != 0) {
+
+                                playerLogic.updatePrev(listaCoresOff)
                                 listaCoresOff =
                                     playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, lado)
 //                            } else {
 //                                listaCoresOff = playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, j)
 //                            }
-                                playerLogic.updatePrev(listaCoresOff)
+                              //  playerLogic.updatePrev(listaCoresOff)
                                 break
                             }
                         }
@@ -509,6 +531,10 @@ internal fun Player(
                         )
                         novalista = litOffsetExt.filter { it -> !listaCorteRamosNovo.contains(it) }
                             .toMutableList()
+
+                        var incluirRemovidosLeft = listRA.filter { it -> !novalista.contains(it) }
+
+                        novalista.addAll(incluirRemovidosLeft)
                         var rest: MutableList<Offset3> = mutableListOf()
                         for (iu in 0..novalista.size - 1) {
                             var move: Offset3 = litOffsetMove[novalista[iu]]
