@@ -1,4 +1,5 @@
 package com.example.canvasteste.Game.ui
+
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.BitmapFactory
@@ -56,7 +57,13 @@ import androidx.compose.ui.unit.sp
 import com.example.canvasteste.R
 
 @Composable
-internal fun Botao(context: Context,onClick : () -> Unit,modifier: Modifier,text:String = "",imageBt:Int= R.drawable.seta){
+internal fun Botao(
+    context: Context,
+    onClick: () -> Unit,
+    modifier: Modifier,
+    text: String = "",
+    imageBt: Int = R.drawable.seta
+) {
 //    ElevatedButton (
 //        onClick = onClick,
 //        modifier = Modifier
@@ -81,7 +88,7 @@ internal fun Botao(context: Context,onClick : () -> Unit,modifier: Modifier,text
     val result = remember {
         textMeasurer.measure(
             text = text,
-            style = TextStyle(fontSize = 22.sp, color = Color(0xFFFAEFEF)),
+            style = TextStyle(fontSize = 25.sp, color = Color(0xFFFAEFEF)),
             overflow = TextOverflow.Ellipsis
         )
     }
@@ -100,74 +107,128 @@ internal fun Botao(context: Context,onClick : () -> Unit,modifier: Modifier,text
 
 
 
-FilledIconButton ( onClick = onClick,modifier = Modifier.size(120.dp, 50.dp), colors = IconButtonColors(
-    Transparent, Transparent, Transparent, Transparent)) {
-
-    Column(
-        modifier = Modifier
-            .offset {
-                IntOffset(
-                    x = 0,
-                    y = 0
-                )
-            },
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
+    FilledIconButton(
+        onClick = onClick, modifier = Modifier.size(120.dp, 50.dp), colors = IconButtonColors(
+            Transparent, Transparent, Transparent, Transparent
+        )
     ) {
 
-
-        Canvas(modifier = Modifier.size(110.dp, 45.dp)) {
-            drawRoundRect(
-                color = Color(0xFF75ACDA),
-                topLeft = Offset(0.dp.toPx(), 0.dp.toPx()),
-                size = Size(width = 90.dp.toPx(), height = 40.dp.toPx()),
-                cornerRadius = CornerRadius(45.0f),
-                style = Fill,
-                colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
-                blendMode = DefaultBlendMode
-            )
-
-
-            drawRoundRect(
-                color = Color(Color(16, 180, 39, 155).toArgb()),
-                topLeft = Offset(0.dp.toPx(), 0.dp.toPx()),
-                size = Size(width = 90.dp.toPx(), height = 45.dp.toPx()),
-                cornerRadius = CornerRadius(45.0f),
-                style = Fill,
-                colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
-                blendMode = DefaultBlendMode
-            )
-
-if(text!="") {
-    drawText(
-        textLayoutResult = result,
-        topLeft = Offset(30.dp.toPx(), 5.dp.toPx())
-
-    )
-}else{
+        Column(
+            modifier = Modifier
+                .offset {
+                    IntOffset(
+                        x = 0,
+                        y = 0
+                    )
+                },
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
 
-    drawIntoCanvas {
-        it.save()
-        it.translate((25.dp.toPx()), 10.dp.toPx())
+            Canvas(modifier = Modifier.size(110.dp, 45.dp)) {
 
-        it.nativeCanvas.drawPaint(
-            paint
-        )
+                if (text == "X") {
+                    drawRoundRect(
+                        color = Color(0xFFDCAC32),
+                        topLeft = Offset(0.dp.toPx(), 0.dp.toPx()),
+                        size = Size(width = 45.dp.toPx(), height = 40.dp.toPx()),
+                        cornerRadius = CornerRadius(45.0f),
+                        style = Fill,
+                        colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
+                        blendMode = DefaultBlendMode
+                    )
 
-        it.restore()
 
-    }
+                    drawRoundRect(
+                        color = Color(Color(229, 26, 26, 255).toArgb()),
+                        topLeft = Offset(0.dp.toPx(), 0.dp.toPx()),
+                        size = Size(width = 45.dp.toPx(), height = 45.dp.toPx()),
+                        cornerRadius = CornerRadius(45.0f),
+                        style = Fill,
+                        colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
+                        blendMode = DefaultBlendMode
+                    )
+
+                    if (text != "") {
+                        drawText(
+                            textLayoutResult = result,
+                            topLeft = Offset(15.dp.toPx(), 5.dp.toPx()),
 
 
+                        )
+                    } else {
 
-}
 
+                        drawIntoCanvas {
+                            it.save()
+                            it.translate((25.dp.toPx()), 10.dp.toPx())
+
+                            it.nativeCanvas.drawPaint(
+                                paint
+                            )
+
+                            it.restore()
+
+                        }
+
+
+                    }
+                } else {
+                    drawRoundRect(
+                        color = Color(0xFF75ACDA),
+                        topLeft = Offset(0.dp.toPx(), 0.dp.toPx()),
+                        size = Size(width = 90.dp.toPx(), height = 40.dp.toPx()),
+                        cornerRadius = CornerRadius(45.0f),
+                        style = Fill,
+                        colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
+                        blendMode = DefaultBlendMode
+                    )
+
+
+                    drawRoundRect(
+                        color = Color(Color(16, 180, 39, 155).toArgb()),
+                        topLeft = Offset(0.dp.toPx(), 0.dp.toPx()),
+                        size = Size(width = 90.dp.toPx(), height = 45.dp.toPx()),
+                        cornerRadius = CornerRadius(45.0f),
+                        style = Fill,
+                        colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
+                        blendMode = DefaultBlendMode
+                    )
+
+                    if (text != "") {
+                        drawText(
+                            textLayoutResult = result,
+                            topLeft = Offset(30.dp.toPx(), 5.dp.toPx())
+
+                        )
+                    } else {
+
+
+                        drawIntoCanvas {
+                            it.save()
+                            it.translate((25.dp.toPx()), 10.dp.toPx())
+
+                            it.nativeCanvas.drawPaint(
+                                paint
+                            )
+
+                            it.restore()
+
+                        }
+
+
+                    }
+
+
+                }
+
+
+            }
         }
+
+
     }
-
-
-}
 
 }
 

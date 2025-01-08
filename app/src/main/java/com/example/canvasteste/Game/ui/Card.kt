@@ -85,9 +85,10 @@ internal fun Card(
 
         if (yfinalP > yfinal) {
             var dist = yfinalP - yfinal
-            yfinalP -= (dist / 10).dp.toPx()
+            yfinalP -= (dist / 8).dp.toPx()
 
             if (dist < 10) {
+                yfinalP = yfinal.toFloat()
                 fimp = true
             }
         }
@@ -259,7 +260,7 @@ internal fun Card(
 
 
                     drawRoundRect(
-                        color = Color(Color(255, 220, 200, 150).toArgb()),
+                        color = Color(Color(229, 146, 225, 150).toArgb()),
                         topLeft = Offset(5.dp.toPx(), 75.dp.toPx()),
                         size = Size(width = 205.dp.toPx(), height = 75.dp.toPx()),
                         cornerRadius = CornerRadius(45.0f),
@@ -270,7 +271,7 @@ internal fun Card(
 
                     drawIntoCanvas {
                         it.save()
-                        it.translate((30.dp.toPx()), 115.dp.toPx())
+                        it.translate((10.dp.toPx()), 125.dp.toPx())
 
                         it.nativeCanvas.drawPaint(
                             paint4
@@ -281,9 +282,21 @@ internal fun Card(
                     }
                     drawText(
                         textLayoutResult = msgem,
-                        topLeft = Offset(80.dp.toPx(), 105.dp.toPx())
+                        topLeft = Offset(40.dp.toPx(), 105.dp.toPx())
                     )
 
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////
 
                 } else {
 
@@ -545,6 +558,29 @@ internal fun Card(
                 )
 
             }
+
+if(msg!="") {
+    Box(modifier = modifier.offset {
+        IntOffset(
+            x = 120.dp.toPx().toInt(),
+            y = -310.dp.toPx().toInt()
+        )
+    }) {
+        Spacer(modifier = modifier.padding(15.dp))
+
+        Botao(
+            context = context,
+            onClick = onclickX,
+            modifier = Modifier.size(45.dp, 45.dp),
+            text = "X",
+            imageBt = imageBt
+        )
+
+    }
+}
+
+
+
         }
     }
 

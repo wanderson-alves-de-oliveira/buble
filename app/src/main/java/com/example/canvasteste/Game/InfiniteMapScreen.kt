@@ -71,12 +71,13 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
     val tela = Tela(context)
     val res = context.resources
     var scrollY by remember { mutableStateOf(0f) }
-    val initialOffset = tela.getTamanhoTela().y * 0.9f
+    val initialOffset = tela.getTamanhoTela().y
     var distancia by remember { mutableStateOf(0f) }
     var itt by remember { mutableStateOf("") }
     var selectede by remember { mutableStateOf(100.dp) }
     var selectedew by remember { mutableStateOf(false) }
     var pointer by remember { mutableStateOf(Offset(0f, 0f)) }
+    var ultimaFase by remember { mutableStateOf(0) }
 
 
     var b = BitmapFactory.decodeResource(res, R.drawable.blue)
@@ -103,16 +104,16 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
         (dirX * 225f),
         (dirX * 260f),
         (dirX * 180f),
-        (dirX * 100f),
-        (dirX * 130f)//11
+        (dirX * 170f),
+        (dirX * 110f)//17
         ,
+        (dirX * 110f),
+        (dirX * 225f),
+        (dirX * 225f),//20
         (dirX * 225f),
         (dirX * 225f),
-        (dirX * 225f),
-        (dirX * 265f),
-        (dirX * 255f),
-        (dirX * 250f),
-        (dirX * 180f),
+        (dirX * 270f),//23
+        (dirX * 235f),
         (dirX * 160f),
         (dirX * 140f),
         (dirX * 170f),
@@ -127,26 +128,31 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
         (dirX * 130f),
         (dirX * 150f),
         (dirX * 200f),
-        (dirX * 240),
-        (dirX * 250),
+        (dirX * 200),//39
+        (dirX * 180),
         (dirX * 245),
         (dirX * 220),
         (dirX * 230),
-        (dirX * 220),
-        (dirX * 130)
+        (dirX * 270),
+        (dirX * 230),//45
+        (dirX * 230),
+        (dirX * 230),
+        (dirX * 230),
+        (dirX * 130),
+        (dirX * 110),
     )
 
     var indexPosX by remember { mutableStateOf(0) }
     var pos by remember { mutableStateOf(0) }
 
-    var b1 = BitmapFactory.decodeResource(res, R.drawable.red)
-
+    if (ultimaFase > 0)
+        scrollOffset = (initialOffset - (ultimaFase + 5) * (dirX * 100)) * -1
 
     val paint = Paint().asFrameworkPaint().apply {
         shader = BitmapShader(
             ImageBitmap.imageResource(id = R.drawable.ma).asAndroidBitmap()
                 .resizeTo(((tela.getTamanhoTela().x) * 6.5).toInt()),
-            Shader.TileMode.REPEAT,
+            Shader.TileMode.CLAMP,
             Shader.TileMode.MIRROR
         )
     }
@@ -154,11 +160,8 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
     var my = 0f
 
     // Gerar posições aleatórias para os níveis
-    val levels = remember {
-        List(400) { index ->
-            var xx: Float = (dirX * 100f)
-
-            if (indexPosX < scrollXList.size) {
+    val levels = remember { List(50) { index -> var xx: Float = (dirX * 100f)
+        if (indexPosX < scrollXList.size) {
                 xx = scrollXList[indexPosX]
                 indexPosX++
             } else {
@@ -168,14 +171,16 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
 
             pos++
 
-            if (pos == 47) {
+            if (pos == 50) {
                 pos = 1
                 my += (dirX * 100f)
             }
             Level(
                 number = index + 1,
                 x = xx,
-                y = initialOffset - index * levelSpacing - my
+             //   y = initialOffset - index * levelSpacing - my
+                y =initialOffset -  (index + 1)*(dirX*100)
+
             )
         }
     }
@@ -201,6 +206,10 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                     },
                     onDrag = { change: PointerInputChange, dragAmount: Offset ->
                         var dist = dragAmount.getDistance()
+
+//
+//                        scrollY += dragAmount.y
+//                        scrollOffset += dragAmount.y
 
 
                         if (dragAmount.y > 0) {
@@ -240,12 +249,34 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                         interaction = DragInteraction.Start()
                         interaction?.run {
                             interactionSource.emit(this)
-                            edd+=1f
+                            edd += 1f
 
                             pointer = Offset(tapOffset.x, tapOffset.y)
                             if (!selectedew) {
-                                val tappedLevel = levels.find {
-                                    val adjustedY = it.y + scrollOffset
+
+                                var index = ((scrollOffset) / (100.dp.toPx())).toInt()
+                                var lista = mutableListOf<Level>()
+                                lista.addAll(levels)
+
+
+                                for (i in 0..index - 1) {
+
+                                    var l: Level = lista[0]
+                                    var novoNum = lista[lista.lastIndex].number + 1
+                                    var novo = Level(
+                                        novoNum,
+                                        l.x,
+                                        initialOffset - (novoNum * 100.dp.toPx())
+                                    )
+                                    lista.add(1, novo)
+                                    lista.removeAt(0)
+                                    lista.sortBy { it.number }
+                                }
+
+
+                                val tappedLevel = lista.find {
+                                    val adjustedY =
+                                        (initialOffset - (it.number) * (dirX * 100)) + scrollOffset
                                     val isTapped =
                                         Offset(it.x, adjustedY).getDistance(tapOffset) < 50f
                                     isTapped
@@ -268,10 +299,6 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                                     pointer.y.toDp() >= 526.dp && pointer.y.toDp() <= 573.dp
                                 ) {
 
-
-                                    yfinalP = fy
-                                    selectedew = false
-                                    navController.navigate("game/${itt}")
                                 }
 
                             }
@@ -307,11 +334,6 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
 
 
 
-
-
-
-
-
   Canvas(modifier = Modifier.fillMaxSize()) {
 
 
@@ -329,7 +351,7 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                 it.restore()
             }
 
-            drawLevels(levels, scrollOffset, size.width, res)
+            drawLevels(levels, scrollOffset, size.width, res,initialOffset)
 
             if (selectedew) {
 
@@ -344,13 +366,6 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                     }
                 }
 
-
-                //  val coroutineScopex = rememberCoroutineScope().async {
-
-             //    roundrect(levels, scrollOffset, tela, res, itt, yfinalP)
-            //    roundrectPainel(levels, scrollOffset, tela, res, itt, yfinalP)
-
-                // }
 
 
 //TODO TESTE
@@ -375,17 +390,44 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
 
         }
 
-     if (selectedew) {
-        Card(b, tela.context, modifier = Modifier, "", itt, selectedew, onclick = {
+
+        Box(
+            Modifier
+                .fillMaxSize()
+                .offset {
+                    IntOffset(
+                        x = ((tela.getTamanhoTela().x / 2) - 170.dp
+                            .toPx()
+                            .toInt()).toInt(),
+                        y = 0.dp
+                            .toPx()
+                            .toInt()
+                    )
+                }
 
 
-            navController.navigate("game/${itt}")
-        }, onclickX = { })
+        ) {
+            if (selectedew) {
+                Card(
+                    b,
+                    tela.context,
+                    modifier = Modifier,
+                    "",
+                    itt,
+                    selectedew,
+                    "Derrube todas as bolas",
+                    onclick = {
+                        navController.navigate("game/${itt}")
+                    },
+                    onclickX = {
+                        yfinalP = fy
+                        selectedew = false
+                    })
+                if (!(edd.toInt() % 2 == 0)) edd++
+            }
 
-         if(!(edd.toInt()%2==0))edd++
-
-             }
-
+        }
+   /////////////////////
 
 
     }
@@ -397,12 +439,34 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
 
 
 fun DrawScope.drawLevels(
-    levels: List<Level>,
-    scrollOffset: Float,
+    lista: List<Level>,
+    scrollOffsetM: Float,
     screenWidth: Float,
     res: Resources,
+    initialOffset:Float
 ) {
+    var scrollOffset = scrollOffsetM
+
+    var index =  ((scrollOffset)/(100.dp.toPx()) ).toInt()
+    var levels = mutableListOf<Level>()
+        levels.addAll(lista)
+
+
+    for (i in 0..index-1) {
+
+       var l:Level = levels[0]
+        var novoNum = levels[levels.lastIndex].number+1
+       var novo = Level(novoNum,l.x,initialOffset-(novoNum*100.dp.toPx()))
+        levels.add(1,novo)
+        levels.removeAt(0)
+        levels.sortBy { it.number }
+    }
+
+
     levels.forEach { level ->
+
+
+
         val adjustedY = level.y + scrollOffset
         val pincel = android.graphics.Paint()
         pincel.color = android.graphics.Color.argb(
