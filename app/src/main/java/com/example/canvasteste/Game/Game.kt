@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.canvasteste.Game.di.GameDI.Companion.rememberDI
+import com.example.canvasteste.Game.di.engeni.ferramentas.Formas
 import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
 import com.example.canvasteste.Game.logic.AAbilite
 import com.example.canvasteste.Game.logic.CCores
@@ -40,14 +41,25 @@ fun Game(navController: NavController,context: Context,param: String?="" ) {
 
          val fase:String= if(param!=null) param else ""
         val di = rememberDI(viewPort)
-
+val formas:Formas = Formas()
 
         Box(
             modifier = Modifier.fillMaxSize()
                         )
         {
 
-var k = fase.toInt()
+
+
+
+            var k = fase.toInt()
+
+            var circulos = formas.pegarFlores()
+            var listt = mutableListOf(circulos)
+
+        abilite.onUpdate(listt[0][0])
+        cores.onUpdate(listt[0][1])
+
+
 var i = if(k%3==0) {
     0
 } else if(k%2==0){

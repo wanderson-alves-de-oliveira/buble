@@ -343,13 +343,13 @@ internal fun Player(
                             rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
                         }
                 )
-//                 Text(i.toString(), modifier = modifier
-//                     .offset {
-//                        IntOffset(
-//                             x = litOffsetMoveR.x.toInt(),
-//                             y = litOffsetMoveR.y.toInt()
-//                         )
-//                    })
+                 Text(i.toString(), modifier = modifier
+                     .offset {
+                        IntOffset(
+                             x = litOffsetMoveR.x.toInt(),
+                             y = litOffsetMoveR.y.toInt()
+                         )
+                    })
             }
             ///////////////////////////////////////////
             while (i > 0) {

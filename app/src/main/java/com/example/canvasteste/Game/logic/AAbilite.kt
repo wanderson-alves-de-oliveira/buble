@@ -34,28 +34,7 @@ class AAbilite(context: Context ) {
     22,
     23,
     24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    30,
-    31,
-    32,
-    33,
-    34,
-    35,
-    36,37,38,39,40,41,42,43,46,47,
-    56,57,58,59,60,
-    66,
-    67,
-    69,
-    80,81,82,83,
-    89,
-    90,
-    91,100,101,110,111,112,113,118,119,120,122,123,124,
-    125,
-    129),mutableListOf( 0),setonUpdateMoveDefault()  )
+    25),mutableListOf( 0),setonUpdateMoveDefault()  )
 private val _AAbilite = MutableStateFlow<Abilite>(default)
     val Abilite: StateFlow<Abilite> = _AAbilite
      fun onUpdate(list: MutableList<Int>) {

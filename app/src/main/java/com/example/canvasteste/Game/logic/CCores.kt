@@ -29,4 +29,16 @@ fun setColors(): MutableList<Int> {
     }
   return llt
 }
+
+
+    fun setColors(list : MutableList<Int>): MutableList<Int> {
+        var inny:Int = (0..3).random()
+        var llt = mutableListOf(listCores[inny])
+        for (i in 1..list.size-1) {
+            var inny: Int = (0..3).random()
+            llt.add(listCores[inny])
+        }
+        return llt
+    }
+
 }
