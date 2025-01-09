@@ -47,9 +47,15 @@ fun Game(navController: NavController,context: Context,param: String?="" ) {
                         )
         {
 
-
-
-           Background(di.timeManager)
+var k = fase.toInt()
+var i = if(k%3==0) {
+    0
+} else if(k%2==0){
+    1
+        }else{
+            2
+        }
+           Background(di.timeManager,tela,i)
             Player(Modifier, playerLogic,abilite,cores,coresSeparacao,viewPort,tela,di.timeManager,navController,fase )
 
 

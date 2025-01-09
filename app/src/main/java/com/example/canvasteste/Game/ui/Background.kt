@@ -29,7 +29,7 @@ import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
 import com.example.canvasteste.R
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-internal fun Background(timeManager: TimeManager) {
+internal fun Background(timeManager: TimeManager,tela: Tela,i :Int) {
     val scrollAmount = 0.2f
 
 
@@ -44,26 +44,38 @@ internal fun Background(timeManager: TimeManager) {
         val paint = Paint().asFrameworkPaint().apply {
             shader = BitmapShader(
                 ImageBitmap.imageResource(id = R.drawable.background).asAndroidBitmap()
-                    .resizeTo(maxHeight.toPx().toInt()),
+                    .resizeTo((tela.getTamanhoTela().y).toInt()),
                 Shader.TileMode.REPEAT,
                 Shader.TileMode.MIRROR
             )
         }
-//        Canvas(modifier = Modifier.fillMaxSize()) {
-//            drawIntoCanvas {
-//                it.translate(0f, scrollX.dp.toPx())
-//                it.nativeCanvas.drawPaint(
-//                    paint
-//                )
-//                it.translate(0f, 0f)
-//            }
-//        }
+
+        val paint2 = Paint().asFrameworkPaint().apply {
+            shader = BitmapShader(
+                ImageBitmap.imageResource(id = R.drawable.backgrounda).asAndroidBitmap()
+                    .resizeTo((tela.getTamanhoTela().y).toInt()),
+                Shader.TileMode.REPEAT,
+                Shader.TileMode.MIRROR
+            )
+        }
+
+        val paint3 = Paint().asFrameworkPaint().apply {
+            shader = BitmapShader(
+                ImageBitmap.imageResource(id = R.drawable.backgroundb).asAndroidBitmap()
+                    .resizeTo((tela.getTamanhoTela().y).toInt()),
+                Shader.TileMode.REPEAT,
+                Shader.TileMode.MIRROR
+            )
+        }
+
+
+ var lista = mutableListOf(paint,paint2,paint3)
 
         Canvas(modifier = Modifier.fillMaxSize()) {
             drawIntoCanvas {
                 it.translate(0f, 0f)
                 it.nativeCanvas.drawPaint(
-                    paint
+                    lista[i]
                 )
                 it.translate(0f, 0f)
             }

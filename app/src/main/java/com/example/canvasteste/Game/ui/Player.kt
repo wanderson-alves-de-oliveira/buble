@@ -1,9 +1,12 @@
 package com.example.canvasteste.Game.ui
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
+import android.graphics.BitmapShader
+import android.graphics.Shader
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.interaction.DragInteraction
@@ -27,9 +30,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -199,6 +208,13 @@ internal fun Player(
                         }
                     )
                 }
+
+
+
+
+
+
+
             Surface(
                 modifier = modifier,
                 interactionSource = interactionSource,
@@ -208,6 +224,8 @@ internal fun Player(
             )
         })
     if (!fim) {
+
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
