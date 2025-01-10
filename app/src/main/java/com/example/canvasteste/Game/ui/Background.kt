@@ -43,27 +43,27 @@ internal fun Background(timeManager: TimeManager,tela: Tela,i :Int) {
 //        }
         val paint = Paint().asFrameworkPaint().apply {
             shader = BitmapShader(
-                ImageBitmap.imageResource(id = R.drawable.background).asAndroidBitmap()
-                    .resizeTo((tela.getTamanhoTela().y).toInt()),
-                Shader.TileMode.REPEAT,
+                ImageBitmap.imageResource(id = R.drawable.coelhosfofos).asAndroidBitmap()
+                    .resizeTo((tela.getTamanhoTela().y*1.18).toInt()),
+                Shader.TileMode.DECAL,
                 Shader.TileMode.MIRROR
             )
         }
 
         val paint2 = Paint().asFrameworkPaint().apply {
             shader = BitmapShader(
-                ImageBitmap.imageResource(id = R.drawable.backgrounda).asAndroidBitmap()
-                    .resizeTo((tela.getTamanhoTela().y).toInt()),
-                Shader.TileMode.REPEAT,
+                ImageBitmap.imageResource(id = R.drawable.gatinhasfofasa).asAndroidBitmap()
+                    .resizeTo((tela.getTamanhoTela().y*1.4).toInt()),
+                Shader.TileMode.DECAL,
                 Shader.TileMode.MIRROR
             )
         }
 
         val paint3 = Paint().asFrameworkPaint().apply {
             shader = BitmapShader(
-                ImageBitmap.imageResource(id = R.drawable.backgroundb).asAndroidBitmap()
+                ImageBitmap.imageResource(id = R.drawable.caofofosc).asAndroidBitmap()
                     .resizeTo((tela.getTamanhoTela().y).toInt()),
-                Shader.TileMode.REPEAT,
+                Shader.TileMode.DECAL,
                 Shader.TileMode.MIRROR
             )
         }

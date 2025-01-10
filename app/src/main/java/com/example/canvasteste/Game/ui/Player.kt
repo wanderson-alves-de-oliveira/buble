@@ -3,6 +3,7 @@ import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
 import android.graphics.Shader
+import android.media.MediaPlayer
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -53,6 +54,8 @@ import com.example.canvasteste.Game.logic.CCoresSeparacao
 import com.example.canvasteste.Game.logic.PlayLogic
 import com.example.canvasteste.Game.model.Viewport
 import com.example.canvasteste.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -68,7 +71,6 @@ internal fun Player(
     coresSeparacao: CCoresSeparacao,
     viewport: Viewport,
     tela: Tela,
-    timeManager: TimeManager,
     navController: NavController,
     fase: String
 ) {
@@ -78,7 +80,6 @@ internal fun Player(
     val ab = abilite.Abilite.collectAsState()
     val cr = cores.Cores.collectAsState()
     val cs = coresSeparacao.Cores.collectAsState()
-    var gameouver: Boolean by remember { mutableStateOf(false) }
     val off = tela.getTamanhoTela()
     var ii: Float = (viewport.width / 2).toPx()
     var offsetX: Float by remember { mutableStateOf(ii) }
@@ -260,6 +261,7 @@ internal fun Player(
 
                 if (listaCorteRamos.contains(i)) {
                     var op = 20.dp.toPx().toInt()
+
                     if (litOffsetMove[i].y >= 700.dp.toPx()) {
                         listCoresExt.removeAt(litOffsetExt.indexOf(i))
                         listaCorteRamos.removeAt(listaCorteRamos.indexOf(i))
@@ -267,6 +269,8 @@ internal fun Player(
                         cores.onUpdate(listCoresExt)
                         abilite.onUpdate(litOffsetExt)
                         abilite.onUpdateRamos(listaCorteRamos)
+                     playerLogic.OnTocarEfeito(listaCorteRamos.size)
+
                     } else {
                         litOffsetMove[i].y += op
                         offsetX2 -= 0.001f
@@ -343,13 +347,13 @@ internal fun Player(
                             rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
                         }
                 )
-                 Text(i.toString(), modifier = modifier
-                     .offset {
-                        IntOffset(
-                             x = litOffsetMoveR.x.toInt(),
-                             y = litOffsetMoveR.y.toInt()
-                         )
-                    })
+//                 Text(i.toString(), modifier = modifier
+//                     .offset {
+//                        IntOffset(
+//                             x = litOffsetMoveR.x.toInt(),
+//                             y = litOffsetMoveR.y.toInt()
+//                         )
+//                    })
             }
             ///////////////////////////////////////////
             while (i > 0) {
@@ -527,26 +531,31 @@ internal fun Player(
                         listaCoresOff =
                             playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, intPreview)
                     }
+
+
+                    listaCorteRamos = playerLogic.updateLimparRamosinit(
+                        listaAtual = litOffsetMove,
+                        posL = litOffsetExt,
+                        init = 0
+                    )
+                    var listd =
+                        litOffsetExt.filter { it -> !listaCorteRamos.contains(it) } as MutableList<Int>
+                    var lista1 = listd.filter { it -> !listaCoresOff.contains(it) }
+                    var listRA: MutableList<Int> = listaCoresOff
+                    listRA.addAll(lista1)
+                    var novalista: MutableList<Int> =
+                        litOffsetExt.filter { it -> !listRA.contains(it) } as MutableList<Int>
+                    var listaCorteRamosNovo = playerLogic.updateLimparRamosinit(
+                        listaAtual = litOffsetMove,
+                        posL = novalista,
+                        init = 0
+                    )
+
                     for (iy in 0..listaCoresOff.size - 1) {
                         if (listaCoresOff.size < 3) break
                         litOffsetMove[listaCoresOff[iy]].vazio = false
-                        listaCorteRamos = playerLogic.updateLimparRamosinit(
-                            listaAtual = litOffsetMove,
-                            posL = litOffsetExt,
-                            init = 0
-                        )
-                        var listd =
-                            litOffsetExt.filter { it -> !listaCorteRamos.contains(it) } as MutableList<Int>
-                        var lista1 = listd.filter { it -> !listaCoresOff.contains(it) }
-                        var listRA: MutableList<Int> = listaCoresOff
-                        listRA.addAll(lista1)
-                        var novalista: MutableList<Int> =
-                            litOffsetExt.filter { it -> !listRA.contains(it) } as MutableList<Int>
-                        var listaCorteRamosNovo = playerLogic.updateLimparRamosinit(
-                            listaAtual = litOffsetMove,
-                            posL = novalista,
-                            init = 0
-                        )
+
+
                         novalista = litOffsetExt.filter { it -> !listaCorteRamosNovo.contains(it) }
                             .toMutableList()
 
@@ -570,6 +579,11 @@ internal fun Player(
                         }
                         novalista.sort()
                         abilite.onUpdateMoveReset(rest)
+
+
+
+
+
                         abilite.onUpdateRamos(novalista)
                     }
                     intPreviewCor = listCores[(0..4).random()]
@@ -583,49 +597,12 @@ internal fun Player(
             }
         }
         if (!subir) {
-//            Box(
-//                modifier = modifier
-//                    .fillMaxSize()
-//                    .offset(-10.dp, 0.dp)
-//            ) {
-//                Column(
-//                    modifier = modifier
-//                        .size(250.dp, 310.dp),
-//                    verticalArrangement = Arrangement.Center,
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//                    val res = tela.context.resources
-//                    var b = BitmapFactory.decodeResource(res, R.drawable.red)
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//                        Card(b,
-//                            tela.context,
-//                            modifier = modifier,
-//                            "",
-//                            "Nivel 1",
-//                            fimp,
-//                            "Derrube todas\n as bolas",
-//                            onclick = {
-//                                yfinalP = fy
-//                                fimp = false
-//                                subir = true
-//                            })
-//                    }
-//                }
-//            }
 
-     Thread.sleep(1000)
+     Thread.sleep(100)
 
      subir = true
 
         }
-
-
-
-
-
-
-
-
 
     } else {
         Column(

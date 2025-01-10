@@ -34,7 +34,7 @@ fun Game(navController: NavController,context: Context,param: String?="" ) {
             Viewport(maxWidth, maxHeight)
         }
         val tela = Tela(context)
-        val playerLogic = PlayLogic(viewPort)
+        val playerLogic = PlayLogic(viewPort,context)
         val abilite = AAbilite(context)
         val cores = CCores(context)
         val coresSeparacao = CCoresSeparacao(context)
@@ -68,7 +68,7 @@ var i = if(k%3==0) {
             2
         }
            Background(di.timeManager,tela,i)
-            Player(Modifier, playerLogic,abilite,cores,coresSeparacao,viewPort,tela,di.timeManager,navController,fase )
+            Player(Modifier, playerLogic,abilite,cores,coresSeparacao,viewPort,tela,navController,fase )
 
 
         }

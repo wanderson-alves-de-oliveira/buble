@@ -1,21 +1,34 @@
 package com.example.canvasteste.Game.logic
+import android.content.Context
+import android.media.MediaPlayer
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.unit.dp
 import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
 import com.example.canvasteste.Game.model.Player
 import com.example.canvasteste.Game.model.Viewport
 import com.example.canvasteste.Game.ui.toPx
+import com.example.canvasteste.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.math.pow
 import kotlin.math.sqrt
-class PlayLogic(viewport: Viewport) {
+
+class PlayLogic(viewport: Viewport,context: Context) {
     private var posLI: MutableList<Int> = mutableListOf()
     private var posLIR: MutableList<Int> = mutableListOf()
     private val default: Player = Player(viewport.height, 36.dp, 70.dp, 0f)
     private val _playPosition = MutableStateFlow<Player>(default)
+    private val context: Context = context
+
+    private var efeitoSonoro: MediaPlayer =  MediaPlayer.create(this.context, R.raw.glassmini)
+    private var efeitoSonoro2: MediaPlayer =  MediaPlayer.create(this.context, R.raw.glass)
     val player: StateFlow<Player> = _playPosition
+    private var songs: Int = 0
+
     fun updatePrev(posL: List<Int>) {
         _playPosition.update { player ->
             var new = posL
@@ -35,11 +48,15 @@ class PlayLogic(viewport: Viewport) {
 
     @Composable
     fun updateLimpar(listaAtual: MutableList<Offset3>, posL: List<Int>, init: Int) {
-        if (posLI.contains(init)) return
-        posLI.add(init)
-        var lista = listaAtual
-        var listaI = posL.filter { it -> !posLI.contains(it) && it != 0 }
-        var posLD: MutableList<Int> = mutableListOf()
+
+        val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+        coroutineScope.run {
+            if (posLI.contains(init)) return
+            posLI.add(init)
+            var lista = listaAtual
+            var listaI = posL.filter { it -> !posLI.contains(it) && it != 0 }
+            var posLD: MutableList<Int> = mutableListOf()
 
             for (i in 0..listaI.size - 1) {
                 var m1 = (lista[listaI[i]].x - lista[init].x).pow(2)
@@ -50,9 +67,11 @@ class PlayLogic(viewport: Viewport) {
                 }
             }
 
-        for (i in 0..posLD.size - 1) {
-            updateLimpar(listaAtual, posL, posLD[i])
+            for (i in 0..posLD.size - 1) {
+                updateLimpar(listaAtual, posL, posLD[i])
+            }
         }
+
     }
     @Composable
     fun updateLimparRamosinit(
@@ -61,16 +80,27 @@ class PlayLogic(viewport: Viewport) {
         init: Int
     ): MutableList<Int> {
         posLIR.clear()
+
         updateLimparRamos(listaAtual, posL, init)
         return posLIR
     }
     @Composable
     fun updateLimparRamos(listaAtual: MutableList<Offset3>, posL: List<Int>, init: Int) {
-        if (posLIR.contains(init)) return
-        posLIR.add(init)
-        var lista = listaAtual
-        var listaI = posL.filter { it -> !posLIR.contains(it) && it != 0 }
-        var posLD: MutableList<Int> = mutableListOf()
+
+
+        val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+        coroutineScope.run {
+
+            if (posLIR.contains(init)) {
+
+
+                return
+            }
+            posLIR.add(init)
+            var lista = listaAtual
+            var listaI = posL.filter { it -> !posLIR.contains(it) && it != 0 }
+            var posLD: MutableList<Int> = mutableListOf()
 
             for (i in 0..listaI.size - 1) {
                 var m1 = (lista[listaI[i]].x - lista[init].x).pow(2)
@@ -80,11 +110,40 @@ class PlayLogic(viewport: Viewport) {
                     posLD.add(listaI[i])
                 }
             }
-        if(init<10 && posLD.size==0) updateLimparRamos(listaAtual, posL, init+1)
-        for (i in 0..posLD.size - 1) {
-            updateLimparRamos(listaAtual, posL, posLD[i])
+            if (init < 10 && posLD.size == 0) updateLimparRamos(listaAtual, posL, init + 1)
+            for (i in 0..posLD.size - 1) {
+                updateLimparRamos(listaAtual, posL, posLD[i])
+            }
+        }
+
+    }
+
+    @Composable
+    fun OnTocarEfeito(intt: Int) {
+        val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+        coroutineScope.run {
+
+            if(songs<3) {
+                songs++
+                if (intt > 7) {
+                    efeitoSonoro2.setVolume(0.2f, 0.2f)
+                    efeitoSonoro2.seekTo(0)
+                    efeitoSonoro2.start()
+
+                } else {
+                    efeitoSonoro.setVolume(0.2f, 0.2f)
+                    efeitoSonoro.seekTo(0)
+                    efeitoSonoro.start()
+
+                }
+            }else{
+                songs=0
+            }
+
         }
     }
+
 
 
 }
