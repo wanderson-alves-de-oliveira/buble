@@ -2,7 +2,6 @@ package com.example.canvasteste.Game
 
 import android.content.Context
 import android.os.Build
-import android.telecom.Call.Details
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -51,13 +50,18 @@ val formas:Formas = Formas()
 
 
 
-            var k = fase.toInt()
+            var k = fase.toInt()-1
+            var quadrado = formas.pegarQuadrado(k)
+            var circulos = formas.pegarCirculos(k)
+            var flores = formas.pegarFlores(k)
+            var maze = formas.pegarMaze(k)
+            var flechas = formas.pegarFlecha(k)
+            var listt = mutableListOf(quadrado,circulos,maze,flores,flechas)
 
-            var circulos = formas.pegarFlores()
-            var listt = mutableListOf(circulos)
+            if(k>listt.size-1) k=listt.size-1
 
-        abilite.onUpdate(listt[0][0])
-        cores.onUpdate(listt[0][1])
+        abilite.onUpdate(listt[k][0])
+        cores.onUpdate(listt[k][1])
 
 
 var i = if(k%3==0) {

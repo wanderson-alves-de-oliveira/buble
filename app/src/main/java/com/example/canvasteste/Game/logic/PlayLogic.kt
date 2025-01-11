@@ -24,8 +24,10 @@ class PlayLogic(viewport: Viewport,context: Context) {
     private val _playPosition = MutableStateFlow<Player>(default)
     private val context: Context = context
 
-    private var efeitoSonoro: MediaPlayer =  MediaPlayer.create(this.context, R.raw.glassmini)
-    private var efeitoSonoro2: MediaPlayer =  MediaPlayer.create(this.context, R.raw.glass)
+    private var efeitoSonoro: MediaPlayer = MediaPlayer.create(this.context, R.raw.glassmini)
+    private var efeitoSonoro2: MediaPlayer = MediaPlayer.create(this.context, R.raw.glass)
+    private var dim: MediaPlayer = MediaPlayer.create(this.context, R.raw.dim)
+    private var zom: MediaPlayer = MediaPlayer.create(this.context, R.raw.zom)
     val player: StateFlow<Player> = _playPosition
     private var songs: Int = 0
 
@@ -35,6 +37,7 @@ class PlayLogic(viewport: Viewport,context: Context) {
             player.copy(posprev = new)
         }
     }
+
     @Composable
     fun updateLimparnit(
         listaAtual: MutableList<Offset3>,
@@ -73,6 +76,7 @@ class PlayLogic(viewport: Viewport,context: Context) {
         }
 
     }
+
     @Composable
     fun updateLimparRamosinit(
         listaAtual: MutableList<Offset3>,
@@ -84,6 +88,7 @@ class PlayLogic(viewport: Viewport,context: Context) {
         updateLimparRamos(listaAtual, posL, init)
         return posLIR
     }
+
     @Composable
     fun updateLimparRamos(listaAtual: MutableList<Offset3>, posL: List<Int>, init: Int) {
 
@@ -124,7 +129,7 @@ class PlayLogic(viewport: Viewport,context: Context) {
 
         coroutineScope.run {
 
-            if(songs<3) {
+            if (songs < 3) {
                 songs++
                 if (intt > 7) {
                     efeitoSonoro2.setVolume(0.2f, 0.2f)
@@ -137,12 +142,62 @@ class PlayLogic(viewport: Viewport,context: Context) {
                     efeitoSonoro.start()
 
                 }
-            }else{
-                songs=0
+            } else {
+                songs = 0
             }
 
         }
     }
+
+    @Composable
+    fun OnDim() {
+        val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+        coroutineScope.run {
+
+
+            dim.setVolume(0.2f, 0.2f)
+            dim.seekTo(0)
+            dim.start()
+
+
+        }
+    }
+
+
+    fun OnZom() {
+        val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+        coroutineScope.run {
+
+
+            zom.setVolume(0.2f, 0.2f)
+            zom.seekTo(0)
+            zom.start()
+
+
+        }
+    }
+        fun verificarCorPresente(lista: MutableList<Int>): MutableList<Int> {
+            val listCores: MutableList<Int> = mutableListOf(
+                R.drawable.red,
+                R.drawable.blue,
+                R.drawable.yaelow,
+                R.drawable.pink,
+                R.drawable.green
+            )
+            var listCoresR: MutableList<Int> = listCores
+
+            val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+            coroutineScope.run {
+
+                listCoresR = listCores.filter { it -> lista.contains(it) } as MutableList<Int>
+
+
+            }
+            return listCoresR
+        }
 
 
 

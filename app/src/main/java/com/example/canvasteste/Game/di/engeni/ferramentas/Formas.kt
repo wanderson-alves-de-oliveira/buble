@@ -1,6 +1,5 @@
 package com.example.canvasteste.Game.di.engeni.ferramentas
 
-import com.example.canvasteste.Game.logic.CCores
 import com.example.canvasteste.R
 
 class Formas() {
@@ -8,89 +7,647 @@ class Formas() {
 
     var litOffsetExtFI = mutableListOf<Int>(42, 73, 105, 136)
 
-    val flores = mutableListOf<Int>(
-          1,1,1,1,1,1,1,1,1,1,//null
-        0,0,1,1,0,1,1,0,1,1,0,
-         0,1,0,1,1,0,1,1,0,1,
-        0,0,1,1,0,1,1,0,1,1,0,
-        0,0,1,1,0,1,1,0,1,1,0,
-        0,1,0,1,1,0,1,1,0,1,
-        0,0,1,1,0,1,1,0,1,1,0,
-         0,1,1,0,1,1,0,1,1,0,
-         0,1,0,1,1,0,1,1,0,1,0,
-        0,1,1,0,1,1,0,1,1,0,
-        0,1,1,0,1,1,0,1,1,0,0,
-          1,0,1,1,0,1,1,0,1,0,
-        0,1,1,0,1,1,0,1,1,0,0,
-          0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,
-          0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0
+
+//
+//    val flechas = mutableListOf<Int>(
+//        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,//null
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0,0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+//    )
+
+
+
+
+
+
+    val ciculos = mutableListOf<Int>(
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,//null
+        0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+        0, 1, 0, 1, 1, 0, 1, 1, 0, 1,
+        0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+        0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+        0, 1, 0, 1, 1, 0, 1, 1, 0, 1,
+        0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+        0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+        0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0,
+        0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+        0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0,
+        1, 0, 1, 1, 0, 1, 1, 0, 1, 0,
+        0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     )
 
     val floress = mutableListOf<Int>(
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,//null
+        0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+        0, 1, 2, 1, 1, 2, 1, 1, 2, 1,
+        0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+
+        0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+        0, 1, 2, 1, 1, 2, 1, 1, 2, 1,
+        0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,//
+
+        0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+        0, 1, 2, 1, 1, 2, 1, 1, 2, 1, 0,
+        0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+
+        0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0,
+        1, 2, 1, 1, 2, 1, 1, 2, 1, 0,
+        0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0,
+
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    )
+
+    val quadrado = mutableListOf<Int>(
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,//null
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+        4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0,
+        0, 0, 5, 5, 5, 5, 5, 5, 0,0,
+        6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+        7, 7, 7, 0,0, 0, 0, 7, 7, 7,
+        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+        0, 0, 0, 9, 9, 9, 9, 0, 0,0,
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+        0, 0, 0, 11, 11, 11, 11, 0, 0, 0,
+        12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     )
 
 
+    val maze = mutableListOf<Int>(
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,//null
+        2, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2,
+        2, 2, 2, 2, 3, 3, 2, 2, 2, 2,
+        2, 2, 2, 2, 2, 3, 3, 3, 2, 2, 2,
+
+        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+        3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+        3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3,//
+
+        4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+        4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+        4, 4, 4, 4, 5, 5, 5, 4, 4, 4,
+
+        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+        5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+        6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    )
+    val flechas = mutableListOf<Int>(
+          1, 1, 1, 1, 1, 1, 1, 1, 1, 1,//null
+        0, 1, 1, 1,2,2, 2, 1, 1, 1, 0,
+          0, 1, 1, 2, 2, 2,2,1, 1, 0,
+        0, 0,0, 1, 2,2, 2, 1, 0,0, 0,
+           0, 0, 0, 1, 2, 2, 1, 0, 0, 0, 0,
+            0, 0, 0, 1, 2, 1, 0, 0, 0, 0,
+          0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0,
+           0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+          0, 2, 2, 2,2, 2, 2, 2, 2, 0, 0,
+        0, 0, 2, 2, 2, 2, 2, 0, 0, 0,
+          0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0,
+           0, 0, 0, 0, 3, 0, 0, 0, 0, 0,
+        0, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0,
+        0, 0, 5, 5, 5, 5, 5, 0, 0, 0,
+        0, 0, 0, 0, 6, 6, 6, 0, 0, 0, 0,
+        0, 0, 0, 0, 6, 6, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    )
+
+    fun pegarFlores(fase: Int): MutableList<MutableList<Int>> {
+        val listCores = mutableListOf(
+            R.drawable.red,
+            R.drawable.blue,
+            R.drawable.yaelow,
+            R.drawable.green,
+            R.drawable.pink
+        )
+        var floresX: MutableList<Int> = mutableListOf()
+        var floresXC: MutableList<Int> = mutableListOf()
+        var nivel = if (fase < 51) 1 else if (fase < 101) 2 else 3
 
 
-    fun pegarFlores():MutableList<MutableList<Int>>{
 
 
-        val listCores = mutableListOf(R.drawable.red, R.drawable.blue, R.drawable.yaelow, R.drawable.green)
-        var floresX:MutableList<Int> = mutableListOf()
-        for(i in 0..flores.size-1){
 
-            if(flores[i]==1){
+        for (i in 0..floress.size - 1) {
+
+            if (floress[i] > 0) {
                 floresX.add(i)
             }
         }
-        var floresXC :MutableList<Int> = mutableListOf()
 
-        var inny:Int = (0..3).random()
-        var nivel:Int = 1
-        var j:Int = 1
 
-        for (ii in 0..floresX.size-1) {
-            if(nivel==1){
-                if(litOffsetExtFI.contains(ii-1)){
-                    inny = (0..3).random()
+        var inny = (0..4).random()
+        var inny2 = if (inny + 1 > 4) 0 else inny + 1
+
+
+        var inny3 = (0..4).random()
+        var inny4 = if (inny3 + 1 > 4) 0 else inny3 + 1
+
+        var inny5 = (0..4).random()
+        var inny6 = if (inny5 + 1 > 4) 0 else inny5 + 1
+
+
+        var inny7 = (0..4).random()
+        var inny8 = if (inny7 + 1 > 4) 0 else inny7 + 1
+
+        for (ii in 0..floress.size - 1) {
+            if (nivel == 1) {
+                if (ii <= 41) {
+                    inny = 4
+                    inny2 = 3
+                } else if (ii <= 72) {
+                    inny = 0
+                    inny2 = 3
+                } else if (ii <= 104) {
+                    inny = 1
+                    inny2 = 0
+                } else if (ii <= 135) {
+                    inny = 2
+                    inny2 = 3
+                }
+                if (floress[ii] > 0) {
+                    if (floress[ii] == 2) {
+                        floresXC.add(listCores[inny2])
+                    } else {
+                        floresXC.add(listCores[inny])
+                    }
                 }
 
-            }else{
-              inny = (0..3).random()
+            } else if (nivel == 2) {
+
+
+                if (ii <= 41) {
+
+                    if (floress[ii] > 0) {
+                        if (floress[ii] == 2) {
+                            floresXC.add(listCores[inny2])
+                        } else {
+                            floresXC.add(listCores[inny])
+                        }
+                    }
+                } else if (ii <= 72) {
+
+
+                    if (floress[ii] > 0) {
+                        if (floress[ii] == 2) {
+                            floresXC.add(listCores[inny4])
+                        } else {
+                            floresXC.add(listCores[inny3])
+                        }
+                    }
+
+
+                } else if (ii <= 104) {
+                    if (floress[ii] > 0) {
+                        if (floress[ii] == 2) {
+                            floresXC.add(listCores[inny6])
+                        } else {
+                            floresXC.add(listCores[inny5])
+                        }
+                    }
+                } else if (ii <= 135) {
+
+                    if (floress[ii] > 0) {
+                        if (floress[ii] == 2) {
+                            floresXC.add(listCores[inny8])
+                        } else {
+                            floresXC.add(listCores[inny7])
+                        }
+                    }
+                }
+
+            } else if (nivel == 3) {
+
+
+                if (ii <= 41) {
+
+                    inny = (0..4).random()
+                    inny2 = if (inny + 1 > 4) 0 else inny + 1
+                } else if (ii <= 72) {
+
+                    inny = (0..4).random()
+                    inny2 = if (inny + 1 > 4) 0 else inny + 1
+                } else if (ii <= 104) {
+
+                    inny = (0..4).random()
+                    inny2 = if (inny + 1 > 4) 0 else inny + 1
+                } else if (ii <= 135) {
+
+                    inny = (0..4).random()
+                    inny2 = if (inny + 1 > 4) 0 else inny + 1
+                }
+
+                if (floress[ii] > 0) {
+                    if (floress[ii] == 2) {
+                        floresXC.add(listCores[inny2])
+                    } else {
+                        floresXC.add(listCores[inny])
+                    }
+                }
+
+
             }
-            floresXC.add(listCores[inny])
+
+
         }
 
-        var cont:MutableList<MutableList<Int>> = mutableListOf()
+
+        var cont: MutableList<MutableList<Int>> = mutableListOf()
         cont.add(floresX)
         cont.add(floresXC)
         return cont
+    }
 
+
+    fun pegarQuadrado(fase: Int): MutableList<MutableList<Int>> {
+        val listCores = mutableListOf(
+            R.drawable.red,
+            R.drawable.blue,
+            R.drawable.yaelow,
+            R.drawable.green,
+            R.drawable.pink
+        )
+        var floresX: MutableList<Int> = mutableListOf()
+        var floresXC: MutableList<Int> = mutableListOf()
+        var nivel = if (fase < 51) 4 else if (fase < 101) 8 else 33
+        var index = 1
+
+
+        for (i in 0..quadrado.size - 1) {
+
+
+            if (quadrado[i] > 0) {
+                floresX.add(i)
+            }
+        }
+
+
+        var inny = (0..4).random()
+
+
+        for (ii in 0..quadrado.size - 1) {
+
+            if (index < nivel) {
+
+
+                if (quadrado[ii] == index) {
+
+                    floresXC.add(listCores[inny])
+
+                } else {
+                    index++
+                    inny = (0..4).random()
+                    floresXC.add(listCores[inny])
+                }
+
+            } else {
+                floresXC.add(listCores[inny])
+            }
+
+
+        }
+
+
+        var cont: MutableList<MutableList<Int>> = mutableListOf()
+        cont.add(floresX)
+        cont.add(floresXC)
+        return cont
+    }
+
+
+    fun pegarCirculos(fase: Int): MutableList<MutableList<Int>> {
+        val listCores = mutableListOf(
+            R.drawable.red,
+            R.drawable.blue,
+            R.drawable.yaelow,
+            R.drawable.green,
+            R.drawable.pink
+        )
+        var floresX: MutableList<Int> = mutableListOf()
+        var floresXC: MutableList<Int> = mutableListOf()
+        var nivel = if (fase < 51) 1 else if (fase < 101) 2 else 3
+
+
+
+
+
+        for (i in 0..ciculos.size - 1) {
+
+            if (ciculos[i] > 0) {
+                floresX.add(i)
+            }
+        }
+
+
+        var inny = (0..4).random()
+        var inny2 = if (inny + 1 > 4) 0 else inny + 1
+
+
+        var inny3 = (0..4).random()
+        var inny4 = if (inny3 + 1 > 4) 0 else inny3 + 1
+
+        var inny5 = (0..4).random()
+        var inny6 = if (inny5 + 1 > 4) 0 else inny5 + 1
+
+
+        var inny7 = (0..4).random()
+        var inny8 = if (inny7 + 1 > 4) 0 else inny7 + 1
+
+        for (ii in 0..ciculos.size - 1) {
+            if (nivel == 1) {
+                if (ii <= 41) {
+                    inny = 4
+                    inny2 = 3
+                } else if (ii <= 72) {
+                    inny = 0
+                    inny2 = 3
+                } else if (ii <= 104) {
+                    inny = 1
+                    inny2 = 0
+                } else if (ii <= 135) {
+                    inny = 2
+                    inny2 = 3
+                }
+                if (ciculos[ii] > 0) {
+                    if (ciculos[ii] == 2) {
+                        floresXC.add(listCores[inny2])
+                    } else {
+                        floresXC.add(listCores[inny])
+                    }
+                }
+
+            } else if (nivel == 2) {
+
+
+                if (ii <= 41) {
+
+                    if (ciculos[ii] > 0) {
+                        if (ciculos[ii] == 2) {
+                            floresXC.add(listCores[inny2])
+                        } else {
+                            floresXC.add(listCores[inny])
+                        }
+                    }
+                } else if (ii <= 72) {
+
+
+                    if (ciculos[ii] > 0) {
+                        if (ciculos[ii] == 2) {
+                            floresXC.add(listCores[inny4])
+                        } else {
+                            floresXC.add(listCores[inny3])
+                        }
+                    }
+
+
+                } else if (ii <= 104) {
+                    if (ciculos[ii] > 0) {
+                        if (ciculos[ii] == 2) {
+                            floresXC.add(listCores[inny6])
+                        } else {
+                            floresXC.add(listCores[inny5])
+                        }
+                    }
+                } else if (ii <= 135) {
+
+                    if (ciculos[ii] > 0) {
+                        if (ciculos[ii] == 2) {
+                            floresXC.add(listCores[inny8])
+                        } else {
+                            floresXC.add(listCores[inny7])
+                        }
+                    }
+                }
+
+            } else if (nivel == 3) {
+
+
+                if (ii <= 41) {
+
+                    inny = (0..4).random()
+                    inny2 = if (inny + 1 > 4) 0 else inny + 1
+                } else if (ii <= 72) {
+
+                    inny = (0..4).random()
+                    inny2 = if (inny + 1 > 4) 0 else inny + 1
+                } else if (ii <= 104) {
+
+                    inny = (0..4).random()
+                    inny2 = if (inny + 1 > 4) 0 else inny + 1
+                } else if (ii <= 135) {
+
+                    inny = (0..4).random()
+                    inny2 = if (inny + 1 > 4) 0 else inny + 1
+                }
+
+                if (ciculos[ii] > 0) {
+                    if (ciculos[ii] == 2) {
+                        floresXC.add(listCores[inny2])
+                    } else {
+                        floresXC.add(listCores[inny])
+                    }
+                }
+
+
+            }
+
+
+        }
+
+
+        var cont: MutableList<MutableList<Int>> = mutableListOf()
+        cont.add(floresX)
+        cont.add(floresXC)
+        return cont
+    }
+
+    fun pegarMaze(fase: Int): MutableList<MutableList<Int>> {
+        val listCores = mutableListOf(
+            R.drawable.red,
+            R.drawable.blue,
+            R.drawable.yaelow,
+            R.drawable.green,
+            R.drawable.pink
+        )
+        var floresX: MutableList<Int> = mutableListOf()
+        var floresXC: MutableList<Int> = mutableListOf()
+
+        var inny = (0..4).random()
+        var inny2 = if (inny + 1 > 4) 0 else inny + 1
+
+
+        var inny3 = (0..4).random()
+        var inny4 = if (inny3 + 1 > 4) 0 else inny3 + 1
+
+        var inny5 = (0..4).random()
+        var inny6 = if (inny5 + 1 > 4) 0 else inny5 + 1
+
+
+        var inny7 = (0..4).random()
+        var inny8 = if (inny7 + 1 > 4) 0 else inny7 + 1
+
+        var innyf = mutableListOf(inny, inny2, inny3, inny4, inny5, inny6, inny7, inny8)
+
+        for (i in 0..maze.size - 1) {
+
+
+            if (maze[i] > 0) {
+                floresX.add(i)
+            }
+        }
+
+        var nivel = if (fase < 51) 1 else if (fase < 101) 2 else 3
+
+        for (ii in 0..maze.size - 1) {
+
+            if (nivel == 1) {
+                if (maze[ii] == 1) {
+                    floresXC.add(listCores[innyf[0]])
+                }
+
+
+                if (maze[ii] == 2) {
+                    floresXC.add(listCores[innyf[1]])
+                }
+
+                if (maze[ii] == 3) {
+                    floresXC.add(listCores[innyf[2]])
+                }
+
+                if (maze[ii] == 4) {
+                    floresXC.add(listCores[innyf[3]])
+                }
+
+                if (maze[ii] == 5) {
+                    floresXC.add(listCores[innyf[4]])
+                }
+
+                if (maze[ii] == 6) {
+                    floresXC.add(listCores[innyf[5]])
+                }
+            }else{
+
+                floresXC.add(listCores[(0..4).random()])
+            }
+        }
+
+        var cont: MutableList<MutableList<Int>> = mutableListOf()
+        cont.add(floresX)
+        cont.add(floresXC)
+        return cont
     }
 
 
 
 
+    fun pegarFlecha(fase: Int): MutableList<MutableList<Int>> {
+        val listCores = mutableListOf(
+            R.drawable.red,
+            R.drawable.blue,
+            R.drawable.yaelow,
+            R.drawable.green,
+            R.drawable.pink
+        )
+        var floresX: MutableList<Int> = mutableListOf()
+        var floresXC: MutableList<Int> = mutableListOf()
 
+        var nivel = if (fase < 51) 1 else if (fase < 101) 2 else 3
+        var inny = (0..4).random()
+        var inny2 = if (inny + 1 > 4) 0 else inny + 1
+
+
+        var inny3 = (0..4).random()
+        var inny4 = if (inny3 + 1 > 4) 0 else inny3 + 1
+
+        var inny5 = (0..4).random()
+        var inny6 = if (inny5 + 1 > 4) 0 else inny5 + 1
+
+
+        var inny7 = (0..4).random()
+        var inny8 = if (inny7 + 1 > 4) 0 else inny7 + 1
+
+        var innyf = mutableListOf(inny, inny2, inny3, inny4, inny5, inny6, inny7, inny8)
+
+        for (i in 0..flechas.size - 1) {
+
+
+            if (flechas[i] > 0) {
+                floresX.add(i)
+            }
+        }
+
+
+        for (ii in 0..flechas.size - 1) {
+
+            if (nivel == 1) {
+
+                if (flechas[ii] == 1) {
+                    floresXC.add(listCores[innyf[0]])
+                }
+
+
+                if (flechas[ii] == 2) {
+                    floresXC.add(listCores[innyf[1]])
+                }
+
+                if (flechas[ii] == 3) {
+                    floresXC.add(listCores[innyf[2]])
+                }
+
+                if (flechas[ii] == 4) {
+                    floresXC.add(listCores[innyf[3]])
+                }
+
+                if (flechas[ii] == 5) {
+                    floresXC.add(listCores[innyf[4]])
+                }
+
+                if (flechas[ii] == 6) {
+                    floresXC.add(listCores[innyf[5]])
+                }
+            }else {
+
+                    floresXC.add(listCores[(0..4).random()])
+
+            }
+        }
+
+
+        var cont: MutableList<MutableList<Int>> = mutableListOf()
+        cont.add(floresX)
+        cont.add(floresXC)
+        return cont
+    }
 
 
 

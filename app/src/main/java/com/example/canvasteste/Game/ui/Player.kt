@@ -1,4 +1,5 @@
 package com.example.canvasteste.Game.ui
+
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
@@ -200,6 +201,7 @@ internal fun Player(
                                         go = true
                                         tocou = false
 
+                                        playerLogic.OnZom()
 
                                     }
 
@@ -256,20 +258,29 @@ internal fun Player(
                 }
 
 
-
 //
 
                 if (listaCorteRamos.contains(i)) {
                     var op = 20.dp.toPx().toInt()
 
                     if (litOffsetMove[i].y >= 700.dp.toPx()) {
-                        listCoresExt.removeAt(litOffsetExt.indexOf(i))
-                        listaCorteRamos.removeAt(listaCorteRamos.indexOf(i))
-                        litOffsetExt.removeAt(litOffsetExt.indexOf(i))
+
+                        if(litOffsetExt.indexOf(i) != -1){
+                            listCoresExt.removeAt(litOffsetExt.indexOf(i))
+                        }
+                        if(listaCorteRamos.indexOf(i) != -1) {
+                            listaCorteRamos.removeAt(listaCorteRamos.indexOf(i))
+                        }
+                        if(litOffsetExt.indexOf(i) != -1) {
+                            litOffsetExt.removeAt(litOffsetExt.indexOf(i))
+                        }
                         cores.onUpdate(listCoresExt)
                         abilite.onUpdate(litOffsetExt)
                         abilite.onUpdateRamos(listaCorteRamos)
-                     playerLogic.OnTocarEfeito(listaCorteRamos.size)
+
+                            playerLogic.OnTocarEfeito(listaCorteRamos.size)
+
+
 
                     } else {
                         litOffsetMove[i].y += op
@@ -304,7 +315,6 @@ internal fun Player(
                 }
 
 
-
                 var id = R.drawable.car
                 var image = R.drawable.car
                 if (litOffsetExt.contains(i) || litOffsetExtS.contains(i)) {
@@ -312,14 +322,17 @@ internal fun Player(
                     id = corT
                 }
 
-                    if (!litOffsetMoveR.vazio) {
-                        image = id
-                    }
+                if (!litOffsetMoveR.vazio) {
+                    image = id
+                }
                 if (i <= 9) {
                     image = R.drawable.car
                 }
 
-                if((listaCorteRamos.contains(i) || listaCoresOff.contains(i) || (i > 9 && listPrev.contains(i) && tocou) || (i == intPreview && tocou )) && i != 0){
+                if ((listaCorteRamos.contains(i) || listaCoresOff.contains(i) || (i > 9 && listPrev.contains(
+                        i
+                    ) && tocou) || (i == intPreview && tocou)) && i != 0
+                ) {
                     image = R.drawable.tranp
                 }
 
@@ -332,7 +345,7 @@ internal fun Player(
 
 
 
-                    Image(
+                Image(
                     painterResource(id = image),
                     contentDescription = null,
                     modifier = modifier
@@ -466,7 +479,7 @@ internal fun Player(
 //                                if (litOffsetExtFI.contains(j) || litOffsetExtFI2.contains(j)) {
 //                                    intPreview = j
 //                                } else
-                              if (j < 1200 && !go) {
+                                if (j < 1200 && !go) {
                                     intPreview = lado
                                 }
                                 var mesmaCorf =
@@ -480,7 +493,7 @@ internal fun Player(
 //                            } else {
 //                                listaCoresOff = playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, j)
 //                            }
-                              //  playerLogic.updatePrev(listaCoresOff)
+                                //  playerLogic.updatePrev(listaCoresOff)
                                 break
                             }
                         }
@@ -580,13 +593,13 @@ internal fun Player(
                         novalista.sort()
                         abilite.onUpdateMoveReset(rest)
 
-
-
-
-
                         abilite.onUpdateRamos(novalista)
                     }
-                    intPreviewCor = listCores[(0..4).random()]
+
+                    playerLogic.OnDim()
+
+                    var newListCor =playerLogic.verificarCorPresente(listCoresExt)
+                    intPreviewCor =   newListCor[(0..newListCor.size-1).random()]
                     cores.onUpdate(listCoresExt)
                     abilite.onUpdate(litOffsetExt)
                     xxPlay = 0f
@@ -598,9 +611,9 @@ internal fun Player(
         }
         if (!subir) {
 
-     Thread.sleep(100)
+            Thread.sleep(100)
 
-     subir = true
+            subir = true
 
         }
 
@@ -620,7 +633,7 @@ internal fun Player(
 
 
                     navController.navigate("mapa")
-                },onclickX = { })
+                }, onclickX = { })
             }
         }
     }
@@ -646,6 +659,7 @@ fun removendoDuplicados(litOffsetExt: MutableList<Int>): MutableList<Int> {
     }
     return litOffsetExtAuxCop
 }
+
 fun MutableList<Int>.cop(): MutableList<Int> {
     var litOffsetExtAux = this
     var litOffsetExtAuxCop: MutableList<Int> = mutableListOf()
