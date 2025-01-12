@@ -2,7 +2,6 @@ package com.example.canvasteste.Game.logic
 import android.content.Context
 import android.media.MediaPlayer
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.unit.dp
 import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
 import com.example.canvasteste.Game.model.Player
@@ -24,10 +23,14 @@ class PlayLogic(viewport: Viewport,context: Context) {
     private val _playPosition = MutableStateFlow<Player>(default)
     private val context: Context = context
 
-    private var efeitoSonoro: MediaPlayer = MediaPlayer.create(this.context, R.raw.glassmini)
-    private var efeitoSonoro2: MediaPlayer = MediaPlayer.create(this.context, R.raw.glass)
+    private var efeitoSonoro: MediaPlayer = MediaPlayer.create(this.context, R.raw.buble)
+    private var efeitoSonoro2: MediaPlayer = MediaPlayer.create(this.context, R.raw.buble)
     private var dim: MediaPlayer = MediaPlayer.create(this.context, R.raw.dim)
     private var zom: MediaPlayer = MediaPlayer.create(this.context, R.raw.zom)
+    var fim: MediaPlayer = MediaPlayer.create(this.context, R.raw.finalyy)
+    var top: MediaPlayer = MediaPlayer.create(this.context, R.raw.top)
+    var topb: MediaPlayer = MediaPlayer.create(this.context, R.raw.topb)
+
     val player: StateFlow<Player> = _playPosition
     private var songs: Int = 0
 
@@ -198,6 +201,74 @@ class PlayLogic(viewport: Viewport,context: Context) {
             }
             return listCoresR
         }
+    fun OnFim(tocou:Boolean) {
+        val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+        coroutineScope.run {
+
+             if(!fim.isPlaying && tocou) {
+                 fim.setVolume(0.2f, 0.2f)
+                 //   fim.seekTo(0)
+
+                 fim.start()
+             }
+
+
+        }
+    }
+
+    fun OnMusica(continuar:Boolean) {
+        val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+        coroutineScope.run {
+
+            if(!top.isPlaying && continuar) {
+                top.setVolume(0.5f, 0.5f)
+                top.seekTo(0)
+                top.start()
+            }else  if(!top.isPlaying && !continuar) {
+
+                top.pause()
+            }
+
+
+        }
+    }
+
+    fun OnMusicaB(continuar:Boolean) {
+        val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+     //   coroutineScope.run {
+
+            if(!topb.isPlaying && continuar && !top.isPlaying) {
+
+
+
+                topb.setVolume(0.5f, 0.5f)
+                topb.seekTo(0)
+                topb.start()
+            }else  if(!topb.isPlaying && !continuar) {
+
+                topb.pause()
+            }
+
+
+      //  }
+    }
+
+
+    fun OnMusicaBP() {
+
+
+            if(!topb.isPlaying ) {
+
+                topb.stop()
+            }
+
+
+    }
+
+
 
 
 

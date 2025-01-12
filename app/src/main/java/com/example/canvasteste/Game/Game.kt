@@ -40,6 +40,18 @@ fun Game(navController: NavController,context: Context,param: String?="" ) {
 
          val fase:String= if(param!=null) param else ""
         val di = rememberDI(viewPort)
+
+//
+//        LaunchedEffect(key1 = Unit) {
+//            di.timeManager.deltaTime.collect { it ->
+//
+//                    playerLogic.OnMusica(true)
+//
+//            }
+//        }
+
+
+
 val formas:Formas = Formas()
 
         Box(
@@ -71,8 +83,10 @@ var i = if(k%3==0) {
         }else{
             2
         }
-           Background(di.timeManager,tela,i)
-            Player(Modifier, playerLogic,abilite,cores,coresSeparacao,viewPort,tela,navController,fase )
+
+
+            Background(di.timeManager,tela,i)
+            Player( Modifier, playerLogic,abilite,cores,coresSeparacao,viewPort,tela,navController,fase)
 
 
         }

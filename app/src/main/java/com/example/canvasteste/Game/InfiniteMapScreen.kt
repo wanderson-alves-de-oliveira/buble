@@ -43,8 +43,10 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.canvasteste.Game.di.GameDI.Companion.rememberDI
 import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
 import com.example.canvasteste.Game.model.Level
+import com.example.canvasteste.Game.model.Viewport
 import com.example.canvasteste.Game.ui.Card
 import com.example.canvasteste.Game.ui.resizeTo
 import com.example.canvasteste.Game.ui.toPx
@@ -59,7 +61,7 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
     val tela = Tela(context)
     val res = context.resources
     var scrollY by remember { mutableStateOf(0f) }
-    val initialOffset = tela.getTamanhoTela().y+100.dp.toPx()
+    val initialOffset = tela.getTamanhoTela().y + 100.dp.toPx()
     var distancia by remember { mutableStateOf(0f) }
     var itt by remember { mutableStateOf("") }
     var selectede by remember { mutableStateOf(100.dp) }
@@ -124,6 +126,12 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
         (dirX * 130),
         (dirX * 110),
     )
+
+    val viewPort = remember {
+        Viewport(tela.getTamanhoTela().x.dp, tela.getTamanhoTela().y.dp)
+    }
+    val di = rememberDI(viewPort)
+
     var indexPosX by remember { mutableStateOf(0) }
     var pos by remember { mutableStateOf(0) }
     if (ultimaFase > 0)
@@ -137,6 +145,16 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
         )
     }
     var my = 0f
+
+//    val playerLogic = PlayLogic(viewPort,context)
+//    LaunchedEffect(key1 = Unit) {
+//        di.timeManager.deltaTime.collect { it ->
+//            playerLogic.OnMusicaB(true)
+//        }
+//    }
+
+
+
     // Gerar posições aleatórias para os níveis
     val levels = remember {
         List(50) { index ->
@@ -162,6 +180,7 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
     }
     val interactionSource = remember { MutableInteractionSource() }
     val coroutineScope = rememberCoroutineScope()
+
     Box(
         Modifier
             .fillMaxSize()
@@ -269,102 +288,95 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                 }
             }
     ) {
-    }
-    Box(
-        Modifier
-            .fillMaxSize()
-    ) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
 
-            //
-            drawRoundRect(
-                color = Color(0xFF171616),
-                topLeft = Offset(0f, 0f),
-                cornerRadius = CornerRadius(45.0f),
-                style = Fill,
-                colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
-                blendMode = DefaultBlendMode
-            )
-
-
-            drawIntoCanvas {
-                it.save()
-                it.translate(0f, (scrollOffset.toInt()).toFloat())
-                it.nativeCanvas.drawPaint(
-                    paint
-                )
-                it.translate(0f, 0f)
-                it.restore()
-            }
-
-
-            drawLevels(levels, scrollOffset, size.width, res, initialOffset)
-            if (selectedew) {
-                if (yfinalP > yfinal) {
-                    var dist = yfinalP - yfinal
-                    yfinalP -= (dist / 10).dp.toPx()
-                    if (dist < 10) {
-                        fimp = true
-                        yfinalP = yfinal.toFloat()
-                    }
-                }
-
-//TODO TESTE
-//    drawCircle(
-//
-//        color = Color.Green,
-//        radius = 50f,
-//        center = pointer, 1f)
-//
-//    drawContext.canvas.nativeCanvas.apply {
-//        drawText(
-//            "x:${pointer.x.toDp()} y:${pointer.y.toDp()}",
-//            100.dp.toPx(),
-//            100.dp.toPx(),
-//            android.graphics.Paint().apply {
-//                color = android.graphics.Color.BLACK
-//                textSize = 25.sp.toPx()
-//            }
-//        )
-//    }
-            }
-
-        }
         Box(
             Modifier
                 .fillMaxSize()
-                .offset {
-                    IntOffset(
-                        x = ((tela.getTamanhoTela().x / 2) - 170.dp
-                            .toPx()
-                            .toInt()).toInt(),
-                        y = 0.dp
-                            .toPx()
-                            .toInt()
-                    )
-                }
         ) {
-            if (selectedew) {
-                Card(
-                    b,
-                    tela.context,
-                    modifier = Modifier,
-                    "",
-                    itt,
-                    selectedew,
-                    "Derrube todas as bolas",
-                    onclick = {
-                        navController.navigate("game/${itt}")
-                    },
-                    onclickX = {
-                        yfinalP = fy
-                        selectedew = false
-                    })
-                if (!(edd.toInt() % 2 == 0)) edd++
+
+
+            coroutineScope.run {
+                Canvas(modifier = Modifier.fillMaxSize()) {
+
+                    //
+                    drawRoundRect(
+                        color = Color(0xFF171616),
+                        topLeft = Offset(0f, 0f),
+                        cornerRadius = CornerRadius(45.0f),
+                        style = Fill,
+                        colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
+                        blendMode = DefaultBlendMode
+                    )
+                    drawIntoCanvas {
+                        it.save()
+                        it.translate(0f, (scrollOffset.toInt()).toFloat())
+                        it.nativeCanvas.drawPaint(
+                            paint
+                        )
+                        it.translate(0f, 0f)
+                        it.restore()
+                    }
+                    drawLevels(levels, scrollOffset, size.width, res, initialOffset)
+                    if (selectedew) {
+                        if (yfinalP > yfinal) {
+                            var dist = yfinalP - yfinal
+                            yfinalP -= (dist / 10).dp.toPx()
+                            if (dist < 10) {
+                                fimp = true
+                                yfinalP = yfinal.toFloat()
+                            }
+                        }
+                    }
+
+                }
             }
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .offset {
+                        IntOffset(
+                            x = ((tela.getTamanhoTela().x / 2) - 170.dp
+                                .toPx()
+                                .toInt()).toInt(),
+                            y = 0.dp
+                                .toPx()
+                                .toInt()
+                        )
+                    }
+            ) {
+                val coroutineScope2 = rememberCoroutineScope()
+                coroutineScope2.run {
+
+                    if (selectedew) {
+                        Card(
+                            b,
+                            tela.context,
+                            modifier = Modifier,
+                            "",
+                            itt,
+                            "Derrube todas as bolas",
+                            onclick = {
+//
+//                                playerLogic.OnMusicaB(false)
+//                                Thread.sleep(100)
+//
+//                                playerLogic.OnMusicaBP()
+                                navController.navigate("game/${itt}")
+                            },
+                            onclickX = {
+                                yfinalP = fy
+                                selectedew = false
+                            })
+                        if (!(edd.toInt() % 2 == 0)) edd++
+                    }
+                }
+            }
+            /////////////////////
         }
-        /////////////////////
+
+
     }
+
 }
 
 fun DrawScope.drawLevels(
@@ -374,10 +386,6 @@ fun DrawScope.drawLevels(
     res: Resources,
     initialOffset: Float
 ) {
-
-
-
-
     var scrollOffset = scrollOffsetM
 
     var index = ((scrollOffset) / (100.dp.toPx())).toInt()
@@ -404,7 +412,7 @@ fun DrawScope.drawLevels(
         levels.sortBy { it.number }
     }
 
-    roud(levels,scrollOffsetM)
+    roud(levels, scrollOffsetM)
 
     levels.forEach { level ->
         val adjustedY = level.y + scrollOffset
@@ -418,25 +426,19 @@ fun DrawScope.drawLevels(
         var b4 = BitmapFactory.decodeResource(res, R.drawable.estrela)
         b4 = Bitmap.createScaledBitmap(b4, 25.dp.toPx().toInt(), 25.dp.toPx().toInt(), true)
         // Ignorar se o ponto está fora da tela
-
-
-
-
         if (adjustedY >= -100 && adjustedY <= size.height.toInt() + 100) {
             // Desenhar o círculo do nível
             drawContext.canvas.save()
             drawCircle(
-                color =  Color(80, 89, 196, 255),
+                color = Color(80, 89, 196, 255),
                 radius = 50f,
                 center = Offset(level.x.coerceIn(100f, screenWidth - 100f), adjustedY)
             )
-
             drawCircle(
-                color =  Color(134, 196, 80, 255),
+                color = Color(134, 196, 80, 255),
                 radius = 40f,
                 center = Offset(level.x.coerceIn(100f, screenWidth - 100f), adjustedY)
             )
-
             // Adicionar texto do número da fase
             drawContext.canvas.nativeCanvas.apply {
                 var tamLetra = 20.sp.toPx()
@@ -472,44 +474,25 @@ fun DrawScope.drawLevels(
             drawContext.canvas.restore()
         }
     }
-
-
-
 }
 
 fun DrawScope.roud(
-    levels: List<Level>,  scrollOffsetM: Float
+    levels: List<Level>, scrollOffsetM: Float
 
 ) {
     drawContext.canvas.nativeCanvas.apply {
-
-
-
         val pincel = android.graphics.Paint()
-        pincel.color = android.graphics.Color.rgb(112,128,144)
+        pincel.color = android.graphics.Color.rgb(112, 128, 144)
         pincel.setStrokeWidth(78f)
-
         this.save()
-
-
-
-
-
-        for (ii in 0..levels.size-2) {
-
+        for (ii in 0..levels.size - 2) {
             this.drawLine(
                 levels[ii].x.toFloat(), levels[ii].y.toFloat() + scrollOffsetM,
-                levels[ii+1].x.toFloat(), levels[ii+1].y.toFloat()+ scrollOffsetM,
+                levels[ii + 1].x.toFloat(), levels[ii + 1].y.toFloat() + scrollOffsetM,
                 pincel
             )
-
-
-
         }
-
-
         this.restore()
-
     }
 }
 
@@ -519,13 +502,6 @@ fun Offset.getDistance(other: Offset): Float {
     ).toFloat()
 }
 
-fun Bitmap.resizeTo(maxHeight: Int): Bitmap {
-    val sourceWidth: Int = width
-    val sourceHeight: Int = height
-    val sourceRatio = sourceWidth.toFloat() / sourceHeight.toFloat()
-    val targetWidth = (maxHeight.toFloat() * sourceRatio).toInt()
-    return Bitmap.createScaledBitmap(this, targetWidth, maxHeight, true)
-}
 
 @Composable
 fun Dp.toPx(): Float {

@@ -2,13 +2,9 @@ package com.example.canvasteste.Game.ui
 
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
-import android.graphics.BitmapShader
-import android.graphics.Shader
-import android.media.MediaPlayer
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.interaction.DragInteraction
@@ -20,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,21 +27,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.canvasteste.Game.di.engeni.TimeManager
 import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
 import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
 import com.example.canvasteste.Game.logic.AAbilite
@@ -55,8 +43,6 @@ import com.example.canvasteste.Game.logic.CCoresSeparacao
 import com.example.canvasteste.Game.logic.PlayLogic
 import com.example.canvasteste.Game.model.Viewport
 import com.example.canvasteste.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -65,6 +51,7 @@ import kotlin.math.sqrt
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 internal fun Player(
+
     modifier: Modifier,
     playerLogic: PlayLogic,
     abilite: AAbilite,
@@ -76,6 +63,7 @@ internal fun Player(
     fase: String
 ) {
 
+    var tocar: Boolean by remember { mutableStateOf(true) }
 
     val player = playerLogic.player.collectAsState()
     val ab = abilite.Abilite.collectAsState()
@@ -93,7 +81,6 @@ internal fun Player(
     var rotation: Float by remember { mutableStateOf(-90f) }
     var intPreview: Int by remember { mutableStateOf(0) }
     var intPreviewMarcado: Int by remember { mutableStateOf(0) }
-    var positionEnd: Offset3 by remember { mutableStateOf(Offset3(0f, 0f, false, 0)) }
     var listPrev: List<Int> = player.value.posprev
     var subir: Boolean by remember { mutableStateOf(false) }
     var listaCoresOff: MutableList<Int> = cs.value.cores
@@ -125,23 +112,18 @@ internal fun Player(
     )
     var litOffsetExtFI = mutableListOf<Int>(10, 31, 52, 73, 94, 115, 136, 157)
     var litOffsetExtFI2 = mutableListOf<Int>(21, 42, 63, 84, 105, 126, 147, 168)
-    var litOffsetExtS = mutableListOf<Int>()
+
     var lt = mutableListOf<Offset3>()
     var valorinicio: Boolean by remember { mutableStateOf(false) }
-    var mediay: Float = 300.dp.toPx()
-    var velocidade = 36.dp.toPx()
+
+
     if (subir && up > 0.dp) {
         up -= if (up > 10.dp) (up / 10.dp).dp else 10.dp
     }
     val posMoveReset: MutableList<Offset3> = ab.value.posMoveReset
-    val fy = 1200.dp.toPx()
-    var yfinalP: Float by remember { mutableStateOf(fy) }
-    var fimp: Boolean by remember { mutableStateOf(false) }
+
     var litOffsetMove = ab.value.posMove
-//    LaunchedEffect(key1 = Unit) {
-//        timeManager.deltaTime.collect { it ->
-//        }
-//    }
+
     Box(modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
         content = {
@@ -212,12 +194,6 @@ internal fun Player(
                     )
                 }
 
-
-
-
-
-
-
             Surface(
                 modifier = modifier,
                 interactionSource = interactionSource,
@@ -226,140 +202,142 @@ internal fun Player(
                 color = Color.Transparent
             )
         })
-    if (!fim) {
+
+        if (!fim) {
 
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .offset(-10.dp, up)
-        ) {
-            for (i in 0..178) {
-                if (litOffsetExt.contains(i) || litOffsetExtS.contains(i)) {
-                    litOffsetMove[i].vazio = false
-                }
-                var litOffsetMoveR = litOffsetMove[i]
-                if (i == 0) {
-                    valorinicio = true
-                }
-                if (modo > -1 && valorinicio) {
-                    var difLinha =
-                        (ultimaLinha - litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].linha) + litOffsetMove[i].linha
-                    if (modo == 0 && litOffsetMove[i].y > mediay + (difLinha * velocidade)) {
-                        litOffsetMove[i].y -= velocidade
-                        offsetX2 -= 0.001f
-                    } else if (litOffsetMove[0].y < velocidade * 8 && modo == 1 && difLinha > 0 && litOffsetMove[i].y < posRef.y + (difLinha * velocidade)) {
-                        litOffsetMove[i].y += velocidade
-                        offsetX2 -= 0.001f
-                    } else {
-                        modo = -1
-                    }
-                    abilite.onUpdateMove(litOffsetMove)
-                }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .offset(-10.dp, up)
+            ) {
+
+                val coroutineScope2 = rememberCoroutineScope()
+                coroutineScope2.run {
 
 
-//
+                    for (i in 0..178) {
 
-                if (listaCorteRamos.contains(i)) {
-                    var op = 20.dp.toPx().toInt()
 
-                    if (litOffsetMove[i].y >= 700.dp.toPx()) {
 
-                        if(litOffsetExt.indexOf(i) != -1){
-                            listCoresExt.removeAt(litOffsetExt.indexOf(i))
+                        if (litOffsetExt.contains(i)) {
+                            litOffsetMove[i].vazio = false
                         }
-                        if(listaCorteRamos.indexOf(i) != -1) {
-                            listaCorteRamos.removeAt(listaCorteRamos.indexOf(i))
+                        var litOffsetMoveR = litOffsetMove[i]
+                        if (i == 0) {
+                            valorinicio = true
                         }
-                        if(litOffsetExt.indexOf(i) != -1) {
-                            litOffsetExt.removeAt(litOffsetExt.indexOf(i))
+                        if (modo > -1 && valorinicio) {
+                            var velocidade = 36.dp.toPx()
+                            var difLinha =
+                                (ultimaLinha - litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].linha) + litOffsetMove[i].linha
+                            if (modo == 0 && litOffsetMove[i].y > 300.dp.toPx() + (difLinha * velocidade)) {
+                                litOffsetMove[i].y -= velocidade
+                                offsetX2 -= 0.001f
+                            } else if (litOffsetMove[0].y < velocidade * 8 && modo == 1 && difLinha > 0 && litOffsetMove[i].y < posRef.y + (difLinha * velocidade)) {
+                                litOffsetMove[i].y += velocidade
+                                offsetX2 -= 0.001f
+                            } else {
+                                modo = -1
+                            }
+                            abilite.onUpdateMove(litOffsetMove)
                         }
-                        cores.onUpdate(listCoresExt)
-                        abilite.onUpdate(litOffsetExt)
-                        abilite.onUpdateRamos(listaCorteRamos)
 
-                            playerLogic.OnTocarEfeito(listaCorteRamos.size)
+                        if (listaCorteRamos.contains(i)) {
+                            var op = 20.dp.toPx().toInt()
+
+                            if (litOffsetMove[i].y >= 700.dp.toPx()) {
+
+                                if (litOffsetExt.indexOf(i) != -1) {
+                                    listCoresExt.removeAt(litOffsetExt.indexOf(i))
+                                }
+                                if (listaCorteRamos.indexOf(i) != -1) {
+                                    listaCorteRamos.removeAt(listaCorteRamos.indexOf(i))
+                                }
+                                if (litOffsetExt.indexOf(i) != -1) {
+                                    litOffsetExt.removeAt(litOffsetExt.indexOf(i))
+                                }
+                                cores.onUpdate(listCoresExt)
+                                abilite.onUpdate(litOffsetExt)
+                                abilite.onUpdateRamos(listaCorteRamos)
+
+                                playerLogic.OnTocarEfeito(listaCorteRamos.size)
 
 
-
-                    } else {
-                        litOffsetMove[i].y += op
-                        offsetX2 -= 0.001f
-                    }
-                    if (listaCorteRamos.size == 0) {
-                        valorinicio = false
-                        if (litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y > 300.dp.toPx()) {
-                            modo = 0
-                        } else if (litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y < 300.dp.toPx()) {
-                            modo = 1
+                            } else {
+                                litOffsetMove[i].y += op
+                                offsetX2 -= 0.001f
+                            }
+                            if (listaCorteRamos.size == 0) {
+                                valorinicio = false
+                                if (litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y > 300.dp.toPx()) {
+                                    modo = 0
+                                } else if (litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y < 300.dp.toPx()) {
+                                    modo = 1
+                                }
+                                posMoveReset.sortBy { it.pos }
+                                abilite.onUpdateUltimaLinha(posMoveReset[posMoveReset.lastIndex].linha)
+                                for (iu in 0..posMoveReset.size - 1) {
+                                    var move: Offset3 = posMoveReset[iu]
+                                    litOffsetMove[move.pos] = move
+                                }
+                                if (posMoveReset.size > 0) {
+                                    var obj =
+                                        Offset3(
+                                            0f + litOffsetMove[0].x,
+                                            0f + litOffsetMove[0].y,
+                                            false,
+                                            0
+                                        )
+                                    abilite.onUpdatePosRef(obj)
+                                }
+                                posMoveReset.clear()
+                                if (litOffsetExt.size < 11) {
+                                    fim = true
+                                    subir = false
+                                    offsetX2 -= 0.001f
+                                }
+                            }
+                            abilite.onUpdateMove(litOffsetMove)
                         }
-                        posMoveReset.sortBy { it.pos }
-                        abilite.onUpdateUltimaLinha(posMoveReset[posMoveReset.lastIndex].linha)
-                        for (iu in 0..posMoveReset.size - 1) {
-                            var move: Offset3 = posMoveReset[iu]
-                            litOffsetMove[move.pos] = move
+
+
+                        var id = R.drawable.car
+                        var image = R.drawable.car
+                        if (litOffsetExt.contains(i)) {
+                            var corT: Int = listCoresExt[litOffsetExt.indexOf(i)]
+                            id = corT
                         }
-                        if (posMoveReset.size > 0) {
-                            var obj =
-                                Offset3(0f + litOffsetMove[0].x, 0f + litOffsetMove[0].y, false, 0)
-                            abilite.onUpdatePosRef(obj)
+
+                        if (!litOffsetMoveR.vazio) {
+                            image = id
                         }
-                        posMoveReset.clear()
-                        if (litOffsetExt.size < 11) {
-                            fim = true
-                            subir = false
-                            offsetX2 -= 0.001f
+                        if (i <= 9) {
+                            image = R.drawable.car
                         }
-                    }
-                    abilite.onUpdateMove(litOffsetMove)
-                }
 
-
-                var id = R.drawable.car
-                var image = R.drawable.car
-                if (litOffsetExt.contains(i) || litOffsetExtS.contains(i)) {
-                    var corT: Int = listCoresExt[litOffsetExt.indexOf(i)]
-                    id = corT
-                }
-
-                if (!litOffsetMoveR.vazio) {
-                    image = id
-                }
-                if (i <= 9) {
-                    image = R.drawable.car
-                }
-
-                if ((listaCorteRamos.contains(i) || listaCoresOff.contains(i) || (i > 9 && listPrev.contains(
-                        i
-                    ) && tocou) || (i == intPreview && tocou)) && i != 0
-                ) {
-                    image = R.drawable.tranp
-                }
-
-
-
-
-
-
-
-
-
-
-                Image(
-                    painterResource(id = image),
-                    contentDescription = null,
-                    modifier = modifier
-                        .offset {
-                            IntOffset(
-                                x = litOffsetMoveR.x.toInt(),
-                                y = litOffsetMoveR.y.toInt()
-                            )
+                        if ((listaCorteRamos.contains(i) || listaCoresOff.contains(i) || (i > 9 && listPrev.contains(
+                                i
+                            ) && tocou) || (i == intPreview && tocou)) && i != 0
+                        ) {
+                            image = R.drawable.tranp
                         }
-                        .size(36.dp)
-                        .graphicsLayer {
-                            rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
-                        }
-                )
+
+                        Image(
+                            painterResource(id = image),
+                            contentDescription = null,
+                            modifier = modifier
+                                .offset {
+                                    IntOffset(
+                                        x = litOffsetMoveR.x.toInt(),
+                                        y = litOffsetMoveR.y.toInt()
+                                    )
+                                }
+                                .size(36.dp)
+                                .graphicsLayer {
+                                    rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
+                                }
+                        )
 //                 Text(i.toString(), modifier = modifier
 //                     .offset {
 //                        IntOffset(
@@ -367,282 +345,331 @@ internal fun Player(
 //                             y = litOffsetMoveR.y.toInt()
 //                         )
 //                    })
-            }
-            ///////////////////////////////////////////
-            while (i > 0) {
-                var xxi = (ii + (xi * (qtd - i))).toInt()
-                if (xxi <= 0) {
-                    xxi *= -1
-                    litORef[0].x = xxi.toFloat()
-                    litORef[0].y = (i * unidadeT).toFloat()
-                    litORef[0].vazio = false
-                    litORef[0].pos = 0
+                    }
+
                 }
-                if (xxi >= telaw) {
-                    xxi = ((xxi * -1) + (telaw * 2)).toInt()
-                    litORef[0].x = xxi.toFloat()
-                    litORef[0].y = (i * unidadeT).toFloat()
-                    litORef[0].vazio = false
-                    litORef[0].pos = 0
-                }
-                if (xxi <= 0) {
-                    xxi *= -1
-                    litORef[1].x = xxi.toFloat()
-                    litORef[1].y = (i * unidadeT).toFloat()
-                    litORef[1].vazio = false
-                    litORef[1].pos = 1
-                }
-                if (xxi >= telaw) {
-                    xxi = ((xxi * -1) + (telaw * 2)).toInt()
-                    litORef[1].x = xxi.toFloat()
-                    litORef[1].y = (i * unidadeT).toFloat()
-                    litORef[1].vazio = false
-                    litORef[1].pos = 1
-                }
-                if (xxi <= 0) {
-                    xxi *= -1
-                    litORef[2].x = xxi.toFloat()
-                    litORef[2].y = (i * unidadeT).toFloat()
-                    litORef[2].vazio = false
-                    litORef[2].pos = 2
-                }
-                if (xxi >= telaw) {
-                    xxi = ((xxi * -1) + (telaw * 2)).toInt()
-                    litORef[2].x = xxi.toFloat()
-                    litORef[2].y = (i * unidadeT).toFloat()
-                    litORef[2].vazio = false
-                    litORef[2].pos = 2
-                }
-                var s = 10.dp
-                var xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
-                var yc = (i * unidadeT).toInt()
-                if (yc <= 0) yc = 0
-                if (i == qtd || (yyPlay.toInt() < yc && yyPlay.toInt() >= yc - 30.dp.toPx())) {
-                    s = 36.dp
-                    xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
-                }
-                litOffset2.add(Offset(xc.toFloat(), yc.toFloat()))
-                var mostrar = true
-                if (subir) {
-                    for (j in 0..litOffsetMove.size - 1) {
-                        if (!litOffsetMove[j].vazio) {
-                            var m1 = (litOffsetMove[j].x - xc.toFloat()).pow(2)
-                            var m2 = (litOffsetMove[j].y - yc.toFloat()).pow(2)
-                            var d: Float = sqrt((m1 + m2))
-                            if (d < 30.dp.toPx()) {
-                                mostrar = false
-                                var litOffset3 = mutableListOf<Offset3>()
-                                var lado = j
-                                try {
-                                    if (!litOffsetExtFI.contains(j + 1) && !litOffsetExtFI2.contains(
-                                            j + 1
-                                        )
-                                    ) {
-                                        litOffset3.add(litOffsetMove[j + 1])
+
+                ///////////////////////////////////////////
+                while (i > 0) {
+
+
+                    var xxi = (ii + (xi * (qtd - i))).toInt()
+                    if (xxi <= 0) {
+                        xxi *= -1
+                        litORef[0].x = xxi.toFloat()
+                        litORef[0].y = (i * unidadeT).toFloat()
+                        litORef[0].vazio = false
+                        litORef[0].pos = 0
+                    }
+                    if (xxi >= telaw) {
+                        xxi = ((xxi * -1) + (telaw * 2)).toInt()
+                        litORef[0].x = xxi.toFloat()
+                        litORef[0].y = (i * unidadeT).toFloat()
+                        litORef[0].vazio = false
+                        litORef[0].pos = 0
+                    }
+                    if (xxi <= 0) {
+                        xxi *= -1
+                        litORef[1].x = xxi.toFloat()
+                        litORef[1].y = (i * unidadeT).toFloat()
+                        litORef[1].vazio = false
+                        litORef[1].pos = 1
+                    }
+                    if (xxi >= telaw) {
+                        xxi = ((xxi * -1) + (telaw * 2)).toInt()
+                        litORef[1].x = xxi.toFloat()
+                        litORef[1].y = (i * unidadeT).toFloat()
+                        litORef[1].vazio = false
+                        litORef[1].pos = 1
+                    }
+                    if (xxi <= 0) {
+                        xxi *= -1
+                        litORef[2].x = xxi.toFloat()
+                        litORef[2].y = (i * unidadeT).toFloat()
+                        litORef[2].vazio = false
+                        litORef[2].pos = 2
+                    }
+                    if (xxi >= telaw) {
+                        xxi = ((xxi * -1) + (telaw * 2)).toInt()
+                        litORef[2].x = xxi.toFloat()
+                        litORef[2].y = (i * unidadeT).toFloat()
+                        litORef[2].vazio = false
+                        litORef[2].pos = 2
+                    }
+                    var s = 10.dp
+                    var xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
+                    var yc = (i * unidadeT).toInt()
+                    if (yc <= 0) yc = 0
+                    if (i == qtd || (yyPlay.toInt() < yc && yyPlay.toInt() >= yc - 30.dp.toPx())) {
+                        s = 36.dp
+                        xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
+                    }
+                    litOffset2.add(Offset(xc.toFloat(), yc.toFloat()))
+                    var mostrar = true
+                    if (subir) {
+                        for (j in 0..litOffsetMove.size - 1) {
+                            if (!litOffsetMove[j].vazio) {
+                                var m1 = (litOffsetMove[j].x - xc.toFloat()).pow(2)
+                                var m2 = (litOffsetMove[j].y - yc.toFloat()).pow(2)
+                                var d: Float = sqrt((m1 + m2))
+                                if (d < 30.dp.toPx()) {
+                                    mostrar = false
+                                    var litOffset3 = mutableListOf<Offset3>()
+                                    var lado = j
+                                    try {
+                                        if (!litOffsetExtFI.contains(j + 1) && !litOffsetExtFI2.contains(
+                                                j + 1
+                                            )
+                                        ) {
+                                            litOffset3.add(litOffsetMove[j + 1])
+                                        }
+                                    } catch (e: Exception) {
                                     }
-                                } catch (e: Exception) {
-                                }
-                                try {
-                                    if (!litOffsetExtFI.contains(j) && !litOffsetExtFI2.contains(j)) {
-                                        litOffset3.add(litOffsetMove[j - 1])
+                                    try {
+                                        if (!litOffsetExtFI.contains(j) && !litOffsetExtFI2.contains(
+                                                j
+                                            )
+                                        ) {
+                                            litOffset3.add(litOffsetMove[j - 1])
+                                        }
+                                    } catch (e: Exception) {
                                     }
-                                } catch (e: Exception) {
-                                }
-                                try {
-                                    if (!litOffsetExtFI.contains(j)) {
-                                        litOffset3.add(litOffsetMove[j + 10])
+                                    try {
+                                        if (!litOffsetExtFI.contains(j)) {
+                                            litOffset3.add(litOffsetMove[j + 10])
+                                        }
+                                    } catch (e: Exception) {
                                     }
-                                } catch (e: Exception) {
-                                }
-                                try {
-                                    if (!litOffsetExtFI.contains(j + 11)) {
-                                        litOffset3.add(litOffsetMove[j + 11])
+                                    try {
+                                        if (!litOffsetExtFI.contains(j + 11)) {
+                                            litOffset3.add(litOffsetMove[j + 11])
+                                        }
+                                    } catch (e: Exception) {
                                     }
-                                } catch (e: Exception) {
-                                }
-                                var litOffset4 = litOffset3.filter { it -> it.vazio == true }
-                                if (litOffset4.size > 0) {
-                                    for (k in 0..litOffset4.size - 1) {
-                                        var posArray =
-                                            if (litOffset2.size > 2) litOffset2.size - 2 else 0
-                                        var m3 = (litOffset4[k].x - litOffset2[posArray].x).pow(2)
-                                        var m4 = (litOffset4[k].y - litOffset2[posArray].y).pow(2)
-                                        var d2: Float = sqrt((m3 + m4))
-                                        if (d2 < 30.dp.toPx()) {
-                                            lado = litOffsetMove.indexOf(litOffset4[k])
-                                            positionEnd = litOffsetMove[lado]
-                                            break
+                                    var litOffset4 = litOffset3.filter { it -> it.vazio == true }
+                                    if (litOffset4.size > 0) {
+                                        for (k in 0..litOffset4.size - 1) {
+                                            var posArray =
+                                                if (litOffset2.size > 2) litOffset2.size - 2 else 0
+                                            var m3 =
+                                                (litOffset4[k].x - litOffset2[posArray].x).pow(2)
+                                            var m4 =
+                                                (litOffset4[k].y - litOffset2[posArray].y).pow(2)
+                                            var d2: Float = sqrt((m3 + m4))
+                                            if (d2 < 30.dp.toPx()) {
+                                                lado = litOffsetMove.indexOf(litOffset4[k])
+
+                                                break
+                                            }
                                         }
                                     }
-                                }
-                                intPreviewMarcado = j
+                                    intPreviewMarcado = j
 //                                if (litOffsetExtFI.contains(j) || litOffsetExtFI2.contains(j)) {
 //                                    intPreview = j
 //                                } else
-                                if (j < 1200 && !go) {
-                                    intPreview = lado
-                                }
-                                var mesmaCorf =
-                                    litOffsetExt.filter { it -> listCoresExt[litOffsetExt.indexOf(it)] == intPreviewCor }
+                                    if (j < 1200 && !go) {
+                                        intPreview = lado
+                                    }
+                                    var mesmaCorf =
+                                        litOffsetExt.filter { it ->
+                                            listCoresExt[litOffsetExt.indexOf(
+                                                it
+                                            )] == intPreviewCor
+                                        }
 
-                                //     if (lado != 0) {
+                                    //     if (lado != 0) {
 
-                                playerLogic.updatePrev(listaCoresOff)
-                                listaCoresOff =
-                                    playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, lado)
+                                    playerLogic.updatePrev(listaCoresOff)
+                                    listaCoresOff =
+                                        playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, lado)
 //                            } else {
 //                                listaCoresOff = playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, j)
 //                            }
-                                //  playerLogic.updatePrev(listaCoresOff)
-                                break
+                                    //  playerLogic.updatePrev(listaCoresOff)
+                                    break
+                                }
                             }
                         }
                     }
-                }
-                if (!mostrar) {
-                    break
-                }
-                if (tocou || go || i == qtd) {
-                    Image(
-                        painterResource(id = intPreviewCor),
-                        contentDescription = null,
-                        modifier = modifier
-                            .offset {
-                                IntOffset(
-                                    x = xc.toInt(),
-                                    y = yc.toInt()
-                                )
-                            }
-                            .size(s)
-                            .graphicsLayer {
-                                rotationZ = rotation//(op * 90f).coerceIn(-60f, 60f)
-                            }
-                    )
-                }
-                i--
-            }
-            if (go) {
-                var lpp = mutableListOf(0)
-                coresSeparacao.onUpdate(lpp)
-                lt = player.value.posRebote
-                dir =
-                    ((sqrt((((offsetX - xxPlay).dp.toPx()).pow(2)) + ((offsetY - yyPlay).pow(2)))) / 10).toFloat()
-                if (lt[0].y < yyPlay) {
-                    yyPlay -= 50.dp.toPx()
-                    xxPlay = 500f
-                }
-                if (yyPlay <= lt[0].y) {
-                    go = false
-                    litOffsetExt.add(intPreview)
-                    litOffsetExt.sort()
-                    litOffsetExt = removendoDuplicados(litOffsetExt)
-                    listCoresExt.add(litOffsetExt.indexOf(intPreview), intPreviewCor)
-                    listaCoresOff = listaCoresOff.filter { it -> it > 9 }.toMutableList()
-                    if (listaCoresOff.size == 1 && listaCoresOff[0] == 0) {
-                        var mesmaCorf =
-                            litOffsetExt.filter { it -> listCoresExt[litOffsetExt.indexOf(it)] == intPreviewCor }
-                        listaCoresOff =
-                            playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, intPreview)
+                    if (!mostrar) {
+                        break
                     }
-
-
-                    listaCorteRamos = playerLogic.updateLimparRamosinit(
-                        listaAtual = litOffsetMove,
-                        posL = litOffsetExt,
-                        init = 0
-                    )
-                    var listd =
-                        litOffsetExt.filter { it -> !listaCorteRamos.contains(it) } as MutableList<Int>
-                    var lista1 = listd.filter { it -> !listaCoresOff.contains(it) }
-                    var listRA: MutableList<Int> = listaCoresOff
-                    listRA.addAll(lista1)
-                    var novalista: MutableList<Int> =
-                        litOffsetExt.filter { it -> !listRA.contains(it) } as MutableList<Int>
-                    var listaCorteRamosNovo = playerLogic.updateLimparRamosinit(
-                        listaAtual = litOffsetMove,
-                        posL = novalista,
-                        init = 0
-                    )
-
-                    for (iy in 0..listaCoresOff.size - 1) {
-                        if (listaCoresOff.size < 3) break
-                        litOffsetMove[listaCoresOff[iy]].vazio = false
-
-
-                        novalista = litOffsetExt.filter { it -> !listaCorteRamosNovo.contains(it) }
-                            .toMutableList()
-
-                        var incluirRemovidosLeft = listRA.filter { it -> !novalista.contains(it) }
-
-                        novalista.addAll(incluirRemovidosLeft)
-                        var rest: MutableList<Offset3> = mutableListOf()
-                        for (iu in 0..novalista.size - 1) {
-                            var move: Offset3 = litOffsetMove[novalista[iu]]
-                            var o: Offset3 =
-                                Offset3(move.x + 0, move.y + 0, true, move.pos, move.linha)
-                            rest.add(o)
-                        }
-                        var listakkk = litOffsetMove.filter { it -> it.vazio == false }
-                        var listakkk2 = listakkk.filter { it -> !litOffsetExt.contains(it.pos) }
-                        for (t in 0..listakkk2.size - 1) {
-                            litOffsetMove[listakkk2[t].pos].vazio = true
-                        }
-                        if (listakkk2.size > 0) {
-                            abilite.onUpdateMove(litOffsetMove)
-                        }
-                        novalista.sort()
-                        abilite.onUpdateMoveReset(rest)
-
-                        abilite.onUpdateRamos(novalista)
+                    if (tocou || go || i == qtd) {
+                        Image(
+                            painterResource(id = intPreviewCor),
+                            contentDescription = null,
+                            modifier = modifier
+                                .offset {
+                                    IntOffset(
+                                        x = xc.toInt(),
+                                        y = yc.toInt()
+                                    )
+                                }
+                                .size(s)
+                                .graphicsLayer {
+                                    rotationZ = rotation//(op * 90f).coerceIn(-60f, 60f)
+                                }
+                        )
                     }
+                    i--
 
-                    playerLogic.OnDim()
 
-                    var newListCor =playerLogic.verificarCorPresente(listCoresExt)
-                    intPreviewCor =   newListCor[(0..newListCor.size-1).random()]
-                    cores.onUpdate(listCoresExt)
-                    abilite.onUpdate(litOffsetExt)
-                    xxPlay = 0f
-                    yyPlay = ((qtd * unidadeT).toFloat())
-                    xxPlay = (telaw / 2) - 15.dp.toPx()
-                    yyPlay = ((qtd * unidadeT).toFloat())
+                    //////////////////////////////////////
+                }
+                if (go) {
+                    val coroutineScope6 = rememberCoroutineScope()
+                    coroutineScope6.run {
+
+                        var lpp = mutableListOf(0)
+                        coresSeparacao.onUpdate(lpp)
+                        lt = player.value.posRebote
+                        dir =
+                            ((sqrt(
+                                (((offsetX - xxPlay).dp.toPx()).pow(2)) + ((offsetY - yyPlay).pow(
+                                    2
+                                ))
+                            )) / 10).toFloat()
+                        if (lt[0].y < yyPlay) {
+                            yyPlay -= 50.dp.toPx()
+                            xxPlay = 500f
+                        }
+                        if (yyPlay <= lt[0].y) {
+                            go = false
+                            litOffsetExt.add(intPreview)
+                            litOffsetExt.sort()
+                            litOffsetExt = removendoDuplicados(litOffsetExt)
+                            listCoresExt.add(litOffsetExt.indexOf(intPreview), intPreviewCor)
+                            listaCoresOff = listaCoresOff.filter { it -> it > 9 }.toMutableList()
+                            if (listaCoresOff.size == 1 && listaCoresOff[0] == 0) {
+                                var mesmaCorf =
+                                    litOffsetExt.filter { it -> listCoresExt[litOffsetExt.indexOf(it)] == intPreviewCor }
+                                listaCoresOff =
+                                    playerLogic.updateLimparnit(
+                                        litOffsetMove,
+                                        mesmaCorf,
+                                        intPreview
+                                    )
+                            }
+
+
+                            listaCorteRamos = playerLogic.updateLimparRamosinit(
+                                listaAtual = litOffsetMove,
+                                posL = litOffsetExt,
+                                init = 0
+                            )
+                            var listd =
+                                litOffsetExt.filter { it -> !listaCorteRamos.contains(it) } as MutableList<Int>
+                            var lista1 = listd.filter { it -> !listaCoresOff.contains(it) }
+                            var listRA: MutableList<Int> = listaCoresOff
+                            listRA.addAll(lista1)
+                            var novalista: MutableList<Int> =
+                                litOffsetExt.filter { it -> !listRA.contains(it) } as MutableList<Int>
+                            var listaCorteRamosNovo = playerLogic.updateLimparRamosinit(
+                                listaAtual = litOffsetMove,
+                                posL = novalista,
+                                init = 0
+                            )
+
+                            for (iy in 0..listaCoresOff.size - 1) {
+                                if (listaCoresOff.size < 3) break
+                                litOffsetMove[listaCoresOff[iy]].vazio = false
+
+
+                                novalista =
+                                    litOffsetExt.filter { it -> !listaCorteRamosNovo.contains(it) }
+                                        .toMutableList()
+
+                                var incluirRemovidosLeft =
+                                    listRA.filter { it -> !novalista.contains(it) }
+
+                                novalista.addAll(incluirRemovidosLeft)
+                                var rest: MutableList<Offset3> = mutableListOf()
+                                for (iu in 0..novalista.size - 1) {
+                                    var move: Offset3 = litOffsetMove[novalista[iu]]
+                                    var o: Offset3 =
+                                        Offset3(move.x + 0, move.y + 0, true, move.pos, move.linha)
+                                    rest.add(o)
+                                }
+                                var listakkk = litOffsetMove.filter { it -> it.vazio == false }
+                                var listakkk2 =
+                                    listakkk.filter { it -> !litOffsetExt.contains(it.pos) }
+                                for (t in 0..listakkk2.size - 1) {
+                                    litOffsetMove[listakkk2[t].pos].vazio = true
+                                }
+                                if (listakkk2.size > 0) {
+                                    abilite.onUpdateMove(litOffsetMove)
+                                }
+                                novalista.sort()
+                                abilite.onUpdateMoveReset(rest)
+
+                                abilite.onUpdateRamos(novalista)
+                            }
+
+                            playerLogic.OnDim()
+
+                            var newListCor = playerLogic.verificarCorPresente(listCoresExt)
+                            intPreviewCor = newListCor[(0..newListCor.size - 1).random()]
+                            cores.onUpdate(listCoresExt)
+                            abilite.onUpdate(litOffsetExt)
+                            xxPlay = 0f
+                            yyPlay = ((qtd * unidadeT).toFloat())
+                            xxPlay = (telaw / 2) - 15.dp.toPx()
+                            yyPlay = ((qtd * unidadeT).toFloat())
+                        }
+                    }
+                    //////////////////////////////////
                 }
             }
-        }
-        if (!subir) {
+            if (!subir) {
 
-            Thread.sleep(100)
+           //     Thread.sleep(100)
 
-            subir = true
+                subir = true
 
-        }
+            }
 
-    } else {
-        Column(
-            modifier = modifier
-                .size(250.dp, 310.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            offsetX2 -= 0.001f
-            val res = tela.context.resources
-            var restMedia = 300.dp.toPx()
-            var b = BitmapFactory.decodeResource(res, R.drawable.blue)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                Card(b, tela.context, modifier = modifier, "", fase, fimp, onclick = {
+        } else {
 
+            playerLogic.OnFim(tocar)
+            tocar = false
+            Column(
+                modifier = modifier
+                    .size(250.dp, 310.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-                    navController.navigate("mapa")
-                }, onclickX = { })
+                val coroutineScope7 = rememberCoroutineScope()
+                coroutineScope7.run {
+                    offsetX2 -= 0.001f
+
+                    val res = tela.context.resources
+                 //   var restMedia = 300.dp.toPx()
+                    var b = BitmapFactory.decodeResource(res, R.drawable.blue)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        CardFim(b, tela.context, modifier = modifier, "", fase, onclick = {
+
+                            playerLogic.OnMusica(false)
+                            navController.navigate("mapa")
+                        })
+                    }
+                }
+
+                //////////////////
             }
         }
-    }
+
+
+    //////////////////////////////
 }
 
 fun removendoDuplicados(litOffsetExt: MutableList<Int>): MutableList<Int> {
     var litOffsetExtAux = litOffsetExt
     var litOffsetExtAuxCop: MutableList<Int> = litOffsetExt.cop()
     var litOffsetExtAuxCopR: MutableList<Int> = mutableListOf()
+
+
+
     for (i in 1..litOffsetExt.size - 1) {
         if (litOffsetExtAux[i] == litOffsetExt[i - 1]) {
             litOffsetExtAuxCopR.add(litOffsetExtAux[i])
@@ -657,11 +684,13 @@ fun removendoDuplicados(litOffsetExt: MutableList<Int>): MutableList<Int> {
             }
         }
     }
+
+
     return litOffsetExtAuxCop
 }
 
 fun MutableList<Int>.cop(): MutableList<Int> {
-    var litOffsetExtAux = this
+  //  var litOffsetExtAux = this
     var litOffsetExtAuxCop: MutableList<Int> = mutableListOf()
     for (i in 0..this.size - 1) {
         litOffsetExtAuxCop.add(this[i] + 0)
