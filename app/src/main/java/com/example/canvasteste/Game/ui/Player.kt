@@ -5,8 +5,10 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,19 +31,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
 import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
+import com.example.canvasteste.Game.getDistance
 import com.example.canvasteste.Game.logic.AAbilite
 import com.example.canvasteste.Game.logic.CCores
 import com.example.canvasteste.Game.logic.CCoresSeparacao
 import com.example.canvasteste.Game.logic.PlayLogic
+import com.example.canvasteste.Game.model.Level
 import com.example.canvasteste.Game.model.Viewport
 import com.example.canvasteste.R
 import kotlinx.coroutines.launch
@@ -77,6 +84,9 @@ internal fun Player(
     var offsetY by remember { mutableStateOf(off.y * 0.9) }
     val listCores = cr.value.listCores
     var intPreviewCor: Int by remember { mutableStateOf(listCores[(0..3).random()]) }
+    var intPreviewCor2: Int by remember { mutableStateOf(listCores[(0..3).random()]) }
+    var pointer by remember { mutableStateOf(Offset(0f, 0f)) }
+
     var up: Dp by remember { mutableStateOf(1000.dp) }
     var rotation: Float by remember { mutableStateOf(-90f) }
     var intPreview: Int by remember { mutableStateOf(0) }
@@ -115,7 +125,9 @@ internal fun Player(
 
     var lt = mutableListOf<Offset3>()
     var valorinicio: Boolean by remember { mutableStateOf(false) }
-
+    var valorinicioTotal: Boolean by remember { mutableStateOf(true) }
+    val interactionSource = remember { MutableInteractionSource() }
+    val coroutineScope = rememberCoroutineScope()
 
     if (subir && up > 0.dp) {
         up -= if (up > 10.dp) (up / 10.dp).dp else 10.dp
@@ -124,96 +136,285 @@ internal fun Player(
 
     var litOffsetMove = ab.value.posMove
 
-    Box(modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-        content = {
-            val interactionSource = remember { MutableInteractionSource() }
-            val coroutineScope = rememberCoroutineScope()
-            val modifier = Modifier
-                .offset {
-                    IntOffset(
-                        x = 0,
-                        y = 0
-                    )
-                }
-                .size(off.y.dp)
-                .pointerInput(Unit) {
-                    var interaction: DragInteraction.Start? = null
-                    detectDragGestures(
-                        onDragStart = {
-                            coroutineScope.launch {
-                                interaction = DragInteraction.Start()
-                                interaction?.run {
-                                    interactionSource.emit(this)
-                                }
-                            }
-                        },
-                        onDrag = { change: PointerInputChange, dragAmount: Offset ->
-                            if (up <= 0.dp) {
-                                offsetX += dragAmount.x * 7
-                                offsetX2 += dragAmount.x * 7
-                                offsetX3 += dragAmount.x * 7
-                                offsetY += dragAmount.y
-                                tocou = true
-                                if (dragAmount.x > 0 && rotation < 0) {
-                                    rotation += 3
-                                } else if (dragAmount.x < 0 && rotation > -180) {
-                                    rotation -= 3
-                                }
-                            }
-                        },
-                        onDragCancel = {
-                            coroutineScope.launch {
-                                interaction?.run {
-                                    interactionSource.emit(DragInteraction.Cancel(this))
-                                    tocou = false
-                                    up = 0.dp
-
-                                }
-                            }
-                        },
-                        onDragEnd = {
-                            coroutineScope.launch {
-                                interaction?.run {
-
-                                    if (intPreviewMarcado != intPreview || (litOffsetExtFI.contains(
-                                            intPreviewMarcado
-                                        ) || litOffsetExtFI2.contains(intPreviewMarcado))
-                                    ) {
-                                        go = true
-                                        tocou = false
-
-                                        playerLogic.OnZom()
-
-                                    }
-
-                                    interactionSource.emit(DragInteraction.Stop(this))
-                                }
-                            }
-                        }
-                    )
-                }
-
-            Surface(
-                modifier = modifier,
-                interactionSource = interactionSource,
-                onClick = {},
-                content = {},
-                color = Color.Transparent
-            )
-        })
-
         if (!fim) {
+
 
 
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .offset(-10.dp, up)
+                    .pointerInput(Unit) {
+                        var interaction: DragInteraction.Start? = null
+                        detectDragGestures(
+                            onDragStart = {
+                                coroutineScope.launch {
+                                    interaction = DragInteraction.Start()
+                                    interaction?.run {
+                                        interactionSource.emit(this)
+                                    }
+                                }
+                            },
+                            onDrag = { change: PointerInputChange, dragAmount: Offset ->
+                                if (up <= 0.dp) {
+
+                                        offsetX += dragAmount.x * 7
+                                        offsetX2 += dragAmount.x * 7
+                                        offsetX3 += dragAmount.x * 7
+                                        offsetY += dragAmount.y
+
+
+                                    tocou = true
+                                    if (dragAmount.x > 0 && rotation < 0) {
+                                        rotation += 3
+                                    } else if (dragAmount.x < 0 && rotation > -180) {
+                                        rotation -= 3
+                                    }
+                                }
+                            },
+                            onDragCancel = {
+                                coroutineScope.launch {
+                                    interaction?.run {
+                                        interactionSource.emit(DragInteraction.Cancel(this))
+                                        tocou = false
+                                        up = 0.dp
+
+                                    }
+                                }
+                            },
+                            onDragEnd = {
+                                coroutineScope.launch {
+                                    interaction?.run {
+
+                                        if (intPreviewMarcado != intPreview || (litOffsetExtFI.contains(
+                                                intPreviewMarcado
+                                            ) || litOffsetExtFI2.contains(intPreviewMarcado))
+                                        ) {
+                                            go = true
+                                            tocou = false
+
+                                            playerLogic.OnZom()
+
+                                        }
+
+                                        interactionSource.emit(DragInteraction.Stop(this))
+                                    }
+                                }
+                            }
+                        )
+
+
+                    }
+                    .pointerInput(Unit) {
+
+
+                        var interaction: DragInteraction.Start? = null
+                        detectTapGestures { tapOffset ->
+                            coroutineScope.launch {
+                                interaction = DragInteraction.Start()
+                                interaction?.run {
+                                    interactionSource.emit(this)
+
+                                    pointer = Offset(tapOffset.x, tapOffset.y)
+
+                                    if (pointer.x.toDp() >= 175.dp && pointer.x.toDp() <= 253.dp &&
+                                        pointer.y.toDp() >= 700.dp && pointer.y.toDp() <= 760.dp
+                                    ) {
+
+                                        var aux = intPreviewCor
+                                        intPreviewCor = intPreviewCor2
+                                        intPreviewCor2 = aux
+
+                                    }
+                                }
+
+                            }
+                        }
+
+                    }
             ) {
 
                 val coroutineScope2 = rememberCoroutineScope()
                 coroutineScope2.run {
+
+
+
+
+                    ///////////////////////////////////////////
+                    while (i > 0) {
+                        var xxi = (ii + (xi * (qtd - i))).toInt()
+                        if (xxi <= 0) {
+                            xxi *= -1
+                            litORef[0].x = xxi.toFloat()
+                            litORef[0].y = (i * unidadeT).toFloat()
+                            litORef[0].vazio = false
+                            litORef[0].pos = 0
+                        }
+                        if (xxi >= telaw) {
+                            xxi = ((xxi * -1) + (telaw * 2)).toInt()
+                            litORef[0].x = xxi.toFloat()
+                            litORef[0].y = (i * unidadeT).toFloat()
+                            litORef[0].vazio = false
+                            litORef[0].pos = 0
+                        }
+                        if (xxi <= 0) {
+                            xxi *= -1
+                            litORef[1].x = xxi.toFloat()
+                            litORef[1].y = (i * unidadeT).toFloat()
+                            litORef[1].vazio = false
+                            litORef[1].pos = 1
+                        }
+                        if (xxi >= telaw) {
+                            xxi = ((xxi * -1) + (telaw * 2)).toInt()
+                            litORef[1].x = xxi.toFloat()
+                            litORef[1].y = (i * unidadeT).toFloat()
+                            litORef[1].vazio = false
+                            litORef[1].pos = 1
+                        }
+                        if (xxi <= 0) {
+                            xxi *= -1
+                            litORef[2].x = xxi.toFloat()
+                            litORef[2].y = (i * unidadeT).toFloat()
+                            litORef[2].vazio = false
+                            litORef[2].pos = 2
+                        }
+                        if (xxi >= telaw) {
+                            xxi = ((xxi * -1) + (telaw * 2)).toInt()
+                            litORef[2].x = xxi.toFloat()
+                            litORef[2].y = (i * unidadeT).toFloat()
+                            litORef[2].vazio = false
+                            litORef[2].pos = 2
+                        }
+                        var s = 10.dp
+                        var xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
+                        var yc = (i * unidadeT).toInt()
+                        if (yc <= 0) yc = 0
+                        if (i == qtd || (yyPlay.toInt() < yc && yyPlay.toInt() >= yc - 30.dp.toPx())) {
+                            s = 36.dp
+                            xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
+                        }
+                        litOffset2.add(Offset(xc.toFloat(), yc.toFloat()))
+                        var mostrar = true
+                        if (subir) {
+                            for (j in 0..litOffsetMove.size - 1) {
+                                if (!litOffsetMove[j].vazio) {
+                                    var m1 = (litOffsetMove[j].x - xc.toFloat()).pow(2)
+                                    var m2 = (litOffsetMove[j].y - yc.toFloat()).pow(2)
+                                    var d: Float = sqrt((m1 + m2))
+                                    if (d < 30.dp.toPx()) {
+                                        mostrar = false
+                                        var litOffset3 = mutableListOf<Offset3>()
+                                        var lado = j
+                                        try {
+                                            if (!litOffsetExtFI.contains(j + 1) && !litOffsetExtFI2.contains(
+                                                    j + 1
+                                                )
+                                            ) {
+                                                litOffset3.add(litOffsetMove[j + 1])
+                                            }
+                                        } catch (e: Exception) {
+                                        }
+                                        try {
+                                            if (!litOffsetExtFI.contains(j) && !litOffsetExtFI2.contains(
+                                                    j
+                                                )
+                                            ) {
+                                                litOffset3.add(litOffsetMove[j - 1])
+                                            }
+                                        } catch (e: Exception) {
+                                        }
+                                        try {
+                                            if (!litOffsetExtFI.contains(j)) {
+                                                litOffset3.add(litOffsetMove[j + 10])
+                                            }
+                                        } catch (e: Exception) {
+                                        }
+                                        try {
+                                            if (!litOffsetExtFI.contains(j + 11)) {
+                                                litOffset3.add(litOffsetMove[j + 11])
+                                            }
+                                        } catch (e: Exception) {
+                                        }
+                                        var litOffset4 = litOffset3.filter { it -> it.vazio == true }
+                                        if (litOffset4.size > 0) {
+                                            for (k in 0..litOffset4.size - 1) {
+                                                var posArray =
+                                                    if (litOffset2.size > 2) litOffset2.size - 2 else 0
+                                                var m3 =
+                                                    (litOffset4[k].x - litOffset2[posArray].x).pow(2)
+                                                var m4 =
+                                                    (litOffset4[k].y - litOffset2[posArray].y).pow(2)
+                                                var d2: Float = sqrt((m3 + m4))
+                                                if (d2 < 30.dp.toPx()) {
+                                                    lado = litOffsetMove.indexOf(litOffset4[k])
+
+                                                    break
+                                                }
+                                            }
+                                        }
+                                        intPreviewMarcado = j
+                                        if (j < 1200 && !go) {
+                                            intPreview = lado
+                                        }
+                                        var mesmaCorf =
+                                            litOffsetExt.filter { it ->
+                                                listCoresExt[litOffsetExt.indexOf(
+                                                    it
+                                                )] == intPreviewCor
+                                            }
+                                        playerLogic.updatePrev(listaCoresOff)
+                                        listaCoresOff =
+                                            playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, lado)
+                                        break
+                                    }
+                                }
+                            }
+                        }
+                        if (!mostrar) {
+                            break
+                        }
+                        if (tocou || go || i == qtd) {
+                            Image(
+                                painterResource(id = intPreviewCor),
+                                contentDescription = null,
+                                modifier = modifier
+                                    .offset {
+                                        IntOffset(
+                                            x = xc.toInt(),
+                                            y = yc.toInt()
+                                        )
+                                    }
+                                    .size(s)
+                                    .graphicsLayer {
+                                        rotationZ = rotation//(op * 90f).coerceIn(-60f, 60f)
+                                    }
+                            )
+                        }
+
+                        if ( i == qtd) {
+                            Image(
+                                painterResource(id = intPreviewCor2),
+                                contentDescription = null,
+                                modifier = modifier
+                                    .offset {
+                                        IntOffset(
+                                            x = (xc.toInt() + 35.dp.toPx()).toInt(),
+                                            y = (yc + 20.dp.toPx()).toInt()
+                                        )
+                                    }
+                                    .size(s * 0.7f)
+                                    .graphicsLayer {
+                                        rotationZ = rotation//(op * 90f).coerceIn(-60f, 60f)
+                                    }
+                            )
+                        }
+
+
+
+                        i--
+                        //////////////////////////////////////
+                    }
+
 
 
                     for (i in 0..178) {
@@ -239,8 +440,9 @@ internal fun Player(
                                 offsetX2 -= 0.001f
                             } else {
                                 modo = -1
+                                litOffsetMove[0].y = litOffsetMove[1].y
                             }
-                            abilite.onUpdateMove(litOffsetMove)
+                          //  abilite.onUpdateMove(litOffsetMove)
                         }
 
                         if (listaCorteRamos.contains(i)) {
@@ -270,9 +472,10 @@ internal fun Player(
                             }
                             if (listaCorteRamos.size == 0) {
                                 valorinicio = false
-                                if (litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y > 300.dp.toPx()) {
+
+                                if (litOffsetExt.size>1 && litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y > 300.dp.toPx()) {
                                     modo = 0
-                                } else if (litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y < 300.dp.toPx()) {
+                                } else if (litOffsetExt.size>1 && litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y < 300.dp.toPx()) {
                                     modo = 1
                                 }
                                 posMoveReset.sortBy { it.pos }
@@ -298,8 +501,9 @@ internal fun Player(
                                     offsetX2 -= 0.001f
                                 }
                             }
-                            abilite.onUpdateMove(litOffsetMove)
+                         //   abilite.onUpdateMove(litOffsetMove)
                         }
+                        abilite.onUpdateMove(litOffsetMove)
 
 
                         var id = R.drawable.car
@@ -316,28 +520,52 @@ internal fun Player(
                             image = R.drawable.car
                         }
 
-                        if ((listaCorteRamos.contains(i) || listaCoresOff.contains(i) || (i > 9 && listPrev.contains(
-                                i
-                            ) && tocou) || (i == intPreview && tocou)) && i != 0
+                        if ((listaCorteRamos.contains(i)// ||
+                          //   listaCoresOff.contains(i) ||
+                           //  (i > 9 && listPrev.contains(i) && tocou)   ||
+                                    || (i == intPreview && tocou)
+                                ) && i >9
                         ) {
                             image = R.drawable.tranp
                         }
 
+
+                        var limite = 10.dp.toPx()
+                       if( (!litOffsetMoveR.vazio ||  i == intPreview )&& litOffsetMoveR.y>limite && litOffsetMoveR.y < tela.getTamanhoTela().y-(limite*15)) {
+                           Image(
+                               painterResource(id = image),
+                               contentDescription = null,
+                               modifier = modifier
+                                   .offset {
+                                       IntOffset(
+                                           x = litOffsetMoveR.x.toInt(),
+                                           y = litOffsetMoveR.y.toInt()
+                                       )
+                                   }
+                                   .size(36.dp)
+                                   .graphicsLayer {
+                                       rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
+                                   }
+                           )
+                       }
+                        var yc = (qtd * unidadeT).toInt()
                         Image(
-                            painterResource(id = image),
+                            painterResource(id = R.drawable.arcos),
                             contentDescription = null,
                             modifier = modifier
                                 .offset {
                                     IntOffset(
-                                        x = litOffsetMoveR.x.toInt(),
-                                        y = litOffsetMoveR.y.toInt()
+                                        x = ((tela.getTamanhoTela().x / 2) - 21.dp.toPx()).toInt(),
+                                        y = (yc - 20.dp.toPx()).toInt()
                                     )
                                 }
-                                .size(36.dp)
+                                .size(80.dp)
                                 .graphicsLayer {
-                                    rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
+                                    rotationZ = -360f//(op * 90f).coerceIn(-60f, 60f)
                                 }
                         )
+
+
 //                 Text(i.toString(), modifier = modifier
 //                     .offset {
 //                        IntOffset(
@@ -345,177 +573,43 @@ internal fun Player(
 //                             y = litOffsetMoveR.y.toInt()
 //                         )
 //                    })
-                    }
-
-                }
-
-                ///////////////////////////////////////////
-                while (i > 0) {
 
 
-                    var xxi = (ii + (xi * (qtd - i))).toInt()
-                    if (xxi <= 0) {
-                        xxi *= -1
-                        litORef[0].x = xxi.toFloat()
-                        litORef[0].y = (i * unidadeT).toFloat()
-                        litORef[0].vazio = false
-                        litORef[0].pos = 0
-                    }
-                    if (xxi >= telaw) {
-                        xxi = ((xxi * -1) + (telaw * 2)).toInt()
-                        litORef[0].x = xxi.toFloat()
-                        litORef[0].y = (i * unidadeT).toFloat()
-                        litORef[0].vazio = false
-                        litORef[0].pos = 0
-                    }
-                    if (xxi <= 0) {
-                        xxi *= -1
-                        litORef[1].x = xxi.toFloat()
-                        litORef[1].y = (i * unidadeT).toFloat()
-                        litORef[1].vazio = false
-                        litORef[1].pos = 1
-                    }
-                    if (xxi >= telaw) {
-                        xxi = ((xxi * -1) + (telaw * 2)).toInt()
-                        litORef[1].x = xxi.toFloat()
-                        litORef[1].y = (i * unidadeT).toFloat()
-                        litORef[1].vazio = false
-                        litORef[1].pos = 1
-                    }
-                    if (xxi <= 0) {
-                        xxi *= -1
-                        litORef[2].x = xxi.toFloat()
-                        litORef[2].y = (i * unidadeT).toFloat()
-                        litORef[2].vazio = false
-                        litORef[2].pos = 2
-                    }
-                    if (xxi >= telaw) {
-                        xxi = ((xxi * -1) + (telaw * 2)).toInt()
-                        litORef[2].x = xxi.toFloat()
-                        litORef[2].y = (i * unidadeT).toFloat()
-                        litORef[2].vazio = false
-                        litORef[2].pos = 2
-                    }
-                    var s = 10.dp
-                    var xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
-                    var yc = (i * unidadeT).toInt()
-                    if (yc <= 0) yc = 0
-                    if (i == qtd || (yyPlay.toInt() < yc && yyPlay.toInt() >= yc - 30.dp.toPx())) {
-                        s = 36.dp
-                        xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
-                    }
-                    litOffset2.add(Offset(xc.toFloat(), yc.toFloat()))
-                    var mostrar = true
-                    if (subir) {
-                        for (j in 0..litOffsetMove.size - 1) {
-                            if (!litOffsetMove[j].vazio) {
-                                var m1 = (litOffsetMove[j].x - xc.toFloat()).pow(2)
-                                var m2 = (litOffsetMove[j].y - yc.toFloat()).pow(2)
-                                var d: Float = sqrt((m1 + m2))
-                                if (d < 30.dp.toPx()) {
-                                    mostrar = false
-                                    var litOffset3 = mutableListOf<Offset3>()
-                                    var lado = j
-                                    try {
-                                        if (!litOffsetExtFI.contains(j + 1) && !litOffsetExtFI2.contains(
-                                                j + 1
-                                            )
-                                        ) {
-                                            litOffset3.add(litOffsetMove[j + 1])
-                                        }
-                                    } catch (e: Exception) {
-                                    }
-                                    try {
-                                        if (!litOffsetExtFI.contains(j) && !litOffsetExtFI2.contains(
-                                                j
-                                            )
-                                        ) {
-                                            litOffset3.add(litOffsetMove[j - 1])
-                                        }
-                                    } catch (e: Exception) {
-                                    }
-                                    try {
-                                        if (!litOffsetExtFI.contains(j)) {
-                                            litOffset3.add(litOffsetMove[j + 10])
-                                        }
-                                    } catch (e: Exception) {
-                                    }
-                                    try {
-                                        if (!litOffsetExtFI.contains(j + 11)) {
-                                            litOffset3.add(litOffsetMove[j + 11])
-                                        }
-                                    } catch (e: Exception) {
-                                    }
-                                    var litOffset4 = litOffset3.filter { it -> it.vazio == true }
-                                    if (litOffset4.size > 0) {
-                                        for (k in 0..litOffset4.size - 1) {
-                                            var posArray =
-                                                if (litOffset2.size > 2) litOffset2.size - 2 else 0
-                                            var m3 =
-                                                (litOffset4[k].x - litOffset2[posArray].x).pow(2)
-                                            var m4 =
-                                                (litOffset4[k].y - litOffset2[posArray].y).pow(2)
-                                            var d2: Float = sqrt((m3 + m4))
-                                            if (d2 < 30.dp.toPx()) {
-                                                lado = litOffsetMove.indexOf(litOffset4[k])
-
-                                                break
-                                            }
-                                        }
-                                    }
-                                    intPreviewMarcado = j
-//                                if (litOffsetExtFI.contains(j) || litOffsetExtFI2.contains(j)) {
-//                                    intPreview = j
-//                                } else
-                                    if (j < 1200 && !go) {
-                                        intPreview = lado
-                                    }
-                                    var mesmaCorf =
-                                        litOffsetExt.filter { it ->
-                                            listCoresExt[litOffsetExt.indexOf(
-                                                it
-                                            )] == intPreviewCor
-                                        }
-
-                                    //     if (lado != 0) {
-
-                                    playerLogic.updatePrev(listaCoresOff)
-                                    listaCoresOff =
-                                        playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, lado)
-//                            } else {
-//                                listaCoresOff = playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, j)
+//                        Canvas(modifier = Modifier.fillMaxSize()) {
+//                            drawContext.canvas.nativeCanvas.apply {
+//                                drawText(
+//                                    "  ${pointer.x.toDp()} ${pointer.y.toDp()}",
+//                                    0f,
+//                                    220f,
+//                                    android.graphics.Paint().apply {
+//                                        color = android.graphics.Color.WHITE
+//                                        textSize = 20.sp.toPx()
+//                                    }
+//                                )
 //                            }
-                                    //  playerLogic.updatePrev(listaCoresOff)
-                                    break
-                                }
-                            }
-                        }
-                    }
-                    if (!mostrar) {
-                        break
-                    }
-                    if (tocou || go || i == qtd) {
-                        Image(
-                            painterResource(id = intPreviewCor),
-                            contentDescription = null,
-                            modifier = modifier
-                                .offset {
-                                    IntOffset(
-                                        x = xc.toInt(),
-                                        y = yc.toInt()
-                                    )
-                                }
-                                .size(s)
-                                .graphicsLayer {
-                                    rotationZ = rotation//(op * 90f).coerceIn(-60f, 60f)
-                                }
-                        )
-                    }
-                    i--
+//                            drawCircle(
+//                                color = Color(80, 89, 196, 255),
+//                                radius = 50f,
+//                                center = Offset(pointer.x, pointer.y)
+//                            )
+//
+//                        }
 
 
-                    //////////////////////////////////////
+
+                    }
+
+
+                    if(valorinicioTotal){
+                        go = true
+                        tocou = false
+                        valorinicioTotal = false
+                    }
+
+
                 }
+
+
                 if (go) {
                     val coroutineScope6 = rememberCoroutineScope()
                     coroutineScope6.run {
@@ -535,6 +629,10 @@ internal fun Player(
                         }
                         if (yyPlay <= lt[0].y) {
                             go = false
+                            offsetX =0f
+                            offsetX2 =0f
+                            offsetX3 =0f
+                            offsetY =0.0
                             litOffsetExt.add(intPreview)
                             litOffsetExt.sort()
                             litOffsetExt = removendoDuplicados(litOffsetExt)
@@ -608,7 +706,9 @@ internal fun Player(
                             playerLogic.OnDim()
 
                             var newListCor = playerLogic.verificarCorPresente(listCoresExt)
-                            intPreviewCor = newListCor[(0..newListCor.size - 1).random()]
+                            intPreviewCor = intPreviewCor2
+
+                            intPreviewCor2 = newListCor[(0..newListCor.size - 1).random()]
                             cores.onUpdate(listCoresExt)
                             abilite.onUpdate(litOffsetExt)
                             xxPlay = 0f
@@ -617,6 +717,7 @@ internal fun Player(
                             yyPlay = ((qtd * unidadeT).toFloat())
                         }
                     }
+                    tocou = false
                     //////////////////////////////////
                 }
             }
@@ -650,7 +751,12 @@ internal fun Player(
                         CardFim(b, tela.context, modifier = modifier, "", fase, onclick = {
 
                             playerLogic.OnMusica(false)
-                            navController.navigate("mapa")
+                         //   navController.navigate("mapa")
+
+                            var initnew = fase.toInt()+1
+                            navController.navigate("game/${initnew}")
+
+
                         })
                     }
                 }

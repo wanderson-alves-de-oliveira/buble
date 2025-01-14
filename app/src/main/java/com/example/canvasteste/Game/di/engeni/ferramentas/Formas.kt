@@ -1,6 +1,7 @@
 package com.example.canvasteste.Game.di.engeni.ferramentas
 
 import com.example.canvasteste.R
+import kotlin.random.Random
 
 class Formas() {
 
@@ -80,18 +81,18 @@ class Formas() {
 
     val quadrado = mutableListOf<Int>(
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1,//null
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-        4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 1, 1, 1, 1, 1, 0, 0,0,
+        0, 0, 2, 2, 2, 2, 2, 2, 0,0,
+        0, 0, 3, 3, 3, 3, 3, 3, 0, 0, 0,
+        0, 0, 4, 4, 4, 4, 4, 4, 0, 0, 0,
         0, 0, 5, 5, 5, 5, 5, 5, 0,0,
-        6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-        7, 7, 7, 0,0, 0, 0, 7, 7, 7,
-        8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-        0, 0, 0, 9, 9, 9, 9, 0, 0,0,
-        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
-        0, 0, 0, 11, 11, 11, 11, 0, 0, 0,
-        12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+        0, 0, 6, 6, 6, 6, 6, 6, 0,0,0,
+        0, 0, 7, 7, 7, 7, 7, 7, 0, 0,
+        0, 0, 8, 8, 8,8, 8, 8, 8, 0,0,
+        0, 0, 9, 9, 9, 9, 9, 9, 0,0,
+        0, 0, 10, 10, 10, 10, 10, 10, 10, 0, 0,
+        0, 0, 11, 11, 11, 11, 11, 11, 0, 0,
+        0, 0, 12, 12, 12, 12, 12, 12, 12, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -111,11 +112,11 @@ class Formas() {
 
         4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
         4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-        4, 4, 4, 4, 5, 5, 5, 4, 4, 4,
+        4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 
-        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+        5, 5, 5, 5, 4, 4, 4, 5, 5, 5, 5,
         5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-        6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+        6, 6, 6, 6, 5, 5, 6, 6, 6, 6, 6,
 
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -138,7 +139,7 @@ class Formas() {
         0, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0,
         0, 0, 5, 5, 5, 5, 5, 0, 0, 0,
         0, 0, 0, 0, 6, 6, 6, 0, 0, 0, 0,
-        0, 0, 0, 0, 6, 6, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     )
 
@@ -299,51 +300,42 @@ class Formas() {
         )
         var floresX: MutableList<Int> = mutableListOf()
         var floresXC: MutableList<Int> = mutableListOf()
-        var nivel = if (fase < 51) 4 else if (fase < 101) 8 else 33
-        var index = 1
-
-
         for (i in 0..quadrado.size - 1) {
-
-
             if (quadrado[i] > 0) {
                 floresX.add(i)
             }
         }
-
-
-        var inny = (0..4).random()
-
-
+        var inny = 0
+        var inny2 = 1
+        var inny3 = 2
+        var inny4 = 3
+        var inny5 = 4
+        var inny6 = if (inny5 + 1 > 4) 0 else inny5 + 1
+        var inny7 = (0..4).random()
+        var inny8 = if (inny7 + 1 > 4) 0 else inny7 + 1
         for (ii in 0..quadrado.size - 1) {
 
-            if (index < nivel) {
+            when (quadrado[ii]) {
 
+                1  -> floresXC.add(listCores[inny])
+                2  -> floresXC.add(listCores[inny2])
+                3  -> floresXC.add(listCores[inny3])
+                4  -> floresXC.add(listCores[inny4])
+                5 -> floresXC.add(listCores[inny5])
+                6 -> floresXC.add(listCores[inny6])
+                7 -> floresXC.add(listCores[inny7])
+                8 -> floresXC.add(listCores[inny8])
+                else ->  floresXC.add(listCores[inny8])
 
-                if (quadrado[ii] == index) {
-
-                    floresXC.add(listCores[inny])
-
-                } else {
-                    index++
-                    inny = (0..4).random()
-                    floresXC.add(listCores[inny])
-                }
-
-            } else {
-                floresXC.add(listCores[inny])
             }
-
-
         }
 
+            var cont: MutableList<MutableList<Int>> = mutableListOf()
+            cont.add(floresX)
+            cont.add(floresXC)
+            return cont
 
-        var cont: MutableList<MutableList<Int>> = mutableListOf()
-        cont.add(floresX)
-        cont.add(floresXC)
-        return cont
     }
-
 
     fun pegarCirculos(fase: Int): MutableList<MutableList<Int>> {
         val listCores = mutableListOf(
@@ -651,6 +643,70 @@ class Formas() {
 
 
 
+    fun gerarSequencia(base: Int,interv1:Int,interv2: Int): List<Int> {
 
+
+
+        // Configuramos o gerador com uma semente baseada no número fornecido
+        val random = Random(base)
+
+        // Gerar o tamanho da sequência entre 30 e 80
+        val tamanho = random.nextInt(interv1, interv2)
+
+        // Criar uma lista de números de 0 a 178 e embaralhá-la
+        val numeros = (10..146).toMutableList().shuffled(random)
+
+        // Selecionar os primeiros `tamanho` números da lista embaralhada
+        return numeros.take(tamanho)
+
+
+    }
+
+
+
+    fun pegarMain(fase: Int): MutableList<MutableList<Int>> {
+        val listCores = mutableListOf(
+            R.drawable.red,
+            R.drawable.blue,
+            R.drawable.yaelow,
+            R.drawable.green,
+            R.drawable.pink
+        )
+
+        var sequencia = gerarSequencia(fase,60,167).toMutableList()
+       val incluir: List<Int> = listOf(0,1,2,3,4,5,6,7,8,9)
+       sequencia.addAll(incluir)
+
+
+        var floresX: MutableList<Int> = mutableListOf()
+        var floresXC: MutableList<Int> = mutableListOf()
+        var nivel = if (fase < 51) 4 else if (fase < 101) 8 else 33
+        var index = -1
+
+
+        for (i in 0..sequencia.size - 1) {
+
+                floresX.add(sequencia[i])
+
+        }
+
+
+        var inny = (0..4).random()
+
+
+        for (ii in 0..sequencia.size - 1) {
+
+                    inny = (0..4).random()
+                    floresXC.add(listCores[inny])
+
+
+        }
+
+
+        var cont: MutableList<MutableList<Int>> = mutableListOf()
+        cont.add(floresX)
+        cont.add(floresXC)
+        return cont
+    }
 
 }

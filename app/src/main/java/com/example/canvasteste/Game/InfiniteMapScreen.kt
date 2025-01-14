@@ -273,13 +273,16 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                                 }
                             } else {
                                 if (pointer.x.toDp() >= 275.dp && pointer.x.toDp() <= 316.dp &&
-                                    pointer.y.toDp() >= 249.dp && pointer.y.toDp() <= 296.dp
+                                    pointer.y.toDp() >= 193.dp && pointer.y.toDp() <= 240.dp
                                 ) {
                                     yfinalP = fy
                                     selectedew = false
-                                } else if (pointer.x.toDp() >= 156.dp && pointer.x.toDp() <= 246.dp &&
-                                    pointer.y.toDp() >= 526.dp && pointer.y.toDp() <= 573.dp
+                                } else if (pointer.x.toDp() >= 156.dp && pointer.x.toDp() <= 240.dp &&
+                                    pointer.y.toDp() >= 451.dp && pointer.y.toDp() <= 494.dp
                                 ) {
+
+                                    navController.navigate("game/${itt}")
+
                                 }
                             }
                             scrollY -= 1f
@@ -297,6 +300,10 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
 
             coroutineScope.run {
                 Canvas(modifier = Modifier.fillMaxSize()) {
+
+
+
+
 
                     //
                     drawRoundRect(
@@ -328,6 +335,26 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                         }
                     }
 
+                    drawContext.canvas.nativeCanvas.apply {
+                        drawText(
+                            "  ${pointer.x.toDp()} ${pointer.y.toDp()}",
+                            0f,
+                            220f,
+                            android.graphics.Paint().apply {
+                                color = android.graphics.Color.WHITE
+                                textSize = 20.sp.toPx()
+                            }
+                        )
+                    }
+                    drawCircle(
+                        color = Color(80, 89, 196, 255),
+                        radius = 50f,
+                        center = Offset( pointer.x,  pointer.y)
+                    )
+
+
+
+
                 }
             }
             Box(
@@ -335,12 +362,8 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                     .fillMaxSize()
                     .offset {
                         IntOffset(
-                            x = ((tela.getTamanhoTela().x / 2) - 170.dp
-                                .toPx()
-                                .toInt()).toInt(),
-                            y = 0.dp
-                                .toPx()
-                                .toInt()
+                            x = ((tela.getTamanhoTela().x / 2) - 150.dp.toPx()).toInt(),
+                            y =   (tela.getTamanhoTela().x / 2).toInt()
                         )
                     }
             ) {
@@ -429,6 +452,12 @@ fun DrawScope.drawLevels(
         if (adjustedY >= -100 && adjustedY <= size.height.toInt() + 100) {
             // Desenhar o círculo do nível
             drawContext.canvas.save()
+
+
+
+
+
+
             drawCircle(
                 color = Color(80, 89, 196, 255),
                 radius = 50f,

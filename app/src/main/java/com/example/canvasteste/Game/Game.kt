@@ -68,9 +68,17 @@ val formas:Formas = Formas()
             var flores = formas.pegarFlores(k)
             var maze = formas.pegarMaze(k)
             var flechas = formas.pegarFlecha(k)
-            var listt = mutableListOf(quadrado,circulos,maze,flores,flechas)
+            var maim = formas.pegarMain(k)
+
+
+            var listt = mutableListOf(quadrado,circulos,maze,flores,flechas,maim)
+
 
             if(k>listt.size-1) k=listt.size-1
+
+            if((maim[0].size>30 && fase.toInt()<6)){
+                if(k>5)k==2
+            }
 
         abilite.onUpdate(listt[k][0])
         cores.onUpdate(listt[k][1])

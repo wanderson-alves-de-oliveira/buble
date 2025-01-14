@@ -32,7 +32,7 @@ internal fun Background(timeManager: TimeManager,tela: Tela, i :Int) {
 
         val paint = Paint().asFrameworkPaint().apply {
             shader = BitmapShader(
-                ImageBitmap.imageResource(id = R.drawable.coelhosfofos).asAndroidBitmap()
+                ImageBitmap.imageResource(id = R.drawable.gatinhasfofasc).asAndroidBitmap()
                     .resizeTo((tela.getTamanhoTela().y*1.18).toInt()),
                 Shader.TileMode.DECAL,
                 Shader.TileMode.MIRROR
