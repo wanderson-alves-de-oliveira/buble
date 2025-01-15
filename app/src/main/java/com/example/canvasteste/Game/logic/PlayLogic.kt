@@ -28,7 +28,7 @@ class PlayLogic(viewport: Viewport,context: Context) {
     private var dim: MediaPlayer = MediaPlayer.create(this.context, R.raw.dim)
     private var zom: MediaPlayer = MediaPlayer.create(this.context, R.raw.zom)
     var fim: MediaPlayer = MediaPlayer.create(this.context, R.raw.finalyy)
-    var top: MediaPlayer = MediaPlayer.create(this.context, R.raw.top)
+    var top: MediaPlayer = MediaPlayer.create(this.context, R.raw.topw)
     var topb: MediaPlayer = MediaPlayer.create(this.context, R.raw.topb)
 
     val player: StateFlow<Player> = _playPosition
