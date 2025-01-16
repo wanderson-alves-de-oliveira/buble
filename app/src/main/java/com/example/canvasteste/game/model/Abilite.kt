@@ -1,5 +1,5 @@
-package com.example.canvasteste.Game.model
-import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
+package com.example.canvasteste.game.model
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Offset3
 data class Abilite(
     val pos:MutableList<Int>,
     val posRamo:MutableList<Int> = mutableListOf( 0),

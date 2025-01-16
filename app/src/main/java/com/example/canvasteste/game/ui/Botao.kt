@@ -1,4 +1,4 @@
-package com.example.canvasteste.Game.ui
+package com.example.canvasteste.game.ui
 
 import android.content.Context
 import android.graphics.BitmapFactory
@@ -40,7 +40,6 @@ import com.example.canvasteste.R
 internal fun Botao(
     context: Context,
     onClick: () -> Unit,
-    modifier: Modifier,
     text: String = "",
     imageBt: Int = R.drawable.seta
 ) {
@@ -74,7 +73,7 @@ internal fun Botao(
     }
     val res = context.resources
 
-    var b1 = BitmapFactory.decodeResource(res, imageBt)
+    val b1 = BitmapFactory.decodeResource(res, imageBt)
 
     val paint = Paint().asFrameworkPaint().apply {
         shader = BitmapShader(
@@ -130,30 +129,14 @@ internal fun Botao(
                         blendMode = DefaultBlendMode
                     )
 
-                    if (text != "") {
+
                         drawText(
                             textLayoutResult = result,
                             topLeft = Offset(15.dp.toPx(), 5.dp.toPx()),
 
 
                         )
-                    } else {
 
-
-                        drawIntoCanvas {
-                            it.save()
-                            it.translate((25.dp.toPx()), 10.dp.toPx())
-
-                            it.nativeCanvas.drawPaint(
-                                paint
-                            )
-
-                            it.restore()
-
-                        }
-
-
-                    }
                 } else {
                     drawRoundRect(
                         color = Color(0xFF75ACDA),

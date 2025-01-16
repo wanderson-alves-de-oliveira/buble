@@ -14,11 +14,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.canvasteste.Game.Game
-import com.example.canvasteste.Game.InfiniteMapScreen
-import com.example.canvasteste.Game.di.GameDI.Companion.rememberDI
-import com.example.canvasteste.Game.logic.PlayLogic
-import com.example.canvasteste.Game.model.Viewport
+import com.example.canvasteste.game.Game
+import com.example.canvasteste.game.InfiniteMapScreen
+import com.example.canvasteste.game.di.GameDI.Companion.rememberDI
+import com.example.canvasteste.game.logic.PlayLogic
+import com.example.canvasteste.game.model.Viewport
 import com.example.canvasteste.ui.theme.CanvasTesteTheme
 
 @Suppress("DEPRECATION")
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                                     playerLogic.topb.pause()
 
                                 }
-                                    playerLogic.OnMusica(true)
+                                    playerLogic.onMusica(true)
 
                             }
                         }
@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
                         LaunchedEffect(key1 = Unit) {
                             di.timeManager.deltaTime.collect {
 
-                                playerLogic.OnMusicaB(true)
+                                playerLogic.onMusicaB(true)
                                 if( playerLogic.top.isPlaying) {
                                     playerLogic.top.pause()
 

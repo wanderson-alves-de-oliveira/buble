@@ -1,10 +1,10 @@
-package com.example.canvasteste.Game.di
+package com.example.canvasteste.game.di
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import com.example.canvasteste.Game.di.engeni.TimeManager
-import com.example.canvasteste.Game.model.Viewport
+import com.example.canvasteste.game.di.engeni.TimeManager
+import com.example.canvasteste.game.model.Viewport
     class GameDI(val timeManager: TimeManager) {
        companion object {
             @Composable

@@ -1,4 +1,4 @@
-package com.example.canvasteste.Game.di.engeni.ferramentas
+package com.example.canvasteste.game.di.engeni.ferramentaUx
 
 import android.content.Context
 import android.os.Build
@@ -8,7 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
-import com.example.canvasteste.Game.ui.toPx
+import com.example.canvasteste.game.ui.toPx
 
 
 class Tela(context: Context) {

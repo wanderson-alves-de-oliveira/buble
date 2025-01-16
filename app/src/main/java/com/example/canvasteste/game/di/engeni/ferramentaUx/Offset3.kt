@@ -1,4 +1,4 @@
-package com.example.canvasteste.Game.di.engeni.ferramentas
+package com.example.canvasteste.game.di.engeni.ferramentaUx
 
 data class Offset3(var x: Float,
                    var y: Float,

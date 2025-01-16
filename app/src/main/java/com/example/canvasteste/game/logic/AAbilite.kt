@@ -1,16 +1,16 @@
-package com.example.canvasteste.Game.logic
+package com.example.canvasteste.game.logic
 
 
 import android.content.Context
-import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
-import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Offset3
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Tela
 
-import com.example.canvasteste.Game.model.Abilite
+import com.example.canvasteste.game.model.Abilite
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 class AAbilite(context: Context ) {
-     val context: Context = context
+
       val tela : Tela = Tela(context)
     private val default : Abilite = Abilite(mutableListOf( 0,1,2,
     3,
@@ -35,62 +35,61 @@ class AAbilite(context: Context ) {
     23,
     24,
     25),mutableListOf( 0),setonUpdateMoveDefault()  )
-private val _AAbilite = MutableStateFlow<Abilite>(default)
-    val Abilite: StateFlow<Abilite> = _AAbilite
+private val AAbilite = MutableStateFlow(default)
+    val abilite: StateFlow<Abilite> = AAbilite
      fun onUpdate(list: MutableList<Int>) {
-         _AAbilite.update { abilite ->
-            var new =  list
+         AAbilite.update { abilite ->
 
-             abilite.copy(pos = new)
+
+             abilite.copy(pos = list)
         }
     }
     fun onUpdateRamos(list: MutableList<Int>) {
-        _AAbilite.update { abilite ->
-            var new =  list
+        AAbilite.update { abilite ->
 
-            abilite.copy(posRamo = new)
+
+            abilite.copy(posRamo = list)
         }
     }
     fun onUpdateMove(list: MutableList<Offset3>) {
-        _AAbilite.update { abilite ->
-            var new = list
+        AAbilite.update { abilite ->
 
-            abilite.copy(posMove = new)
+
+            abilite.copy(posMove = list)
         }
     }
     fun onUpdateMoveReset(list: MutableList<Offset3>) {
-        _AAbilite.update { abilite ->
-            var new = list
+        AAbilite.update { abilite ->
 
-            abilite.copy(posMoveReset = new)
+
+            abilite.copy(posMoveReset = list)
         }
     }
     fun onUpdateUltimaLinha(it : Int) {
-        _AAbilite.update { abilite ->
-            var new = it
+        AAbilite.update { abilite ->
 
-            abilite.copy(ultimaLinha = new)
+
+            abilite.copy(ultimaLinha = it)
         }
     }
 
     fun onUpdatePosRef(it : Offset3) {
-        _AAbilite.update { abilite ->
-            var new = it
+        AAbilite.update { abilite ->
 
-            abilite.copy(posRef = new)
+
+            abilite.copy(posRef = it)
         }
     }
-    fun setonUpdateMoveDefault() : MutableList<Offset3>{
+    private fun setonUpdateMoveDefault() : MutableList<Offset3>{
 
         var interi = 0
         var interiy = 1
-        var tam = 100f
-        var tamMeio = 50f
-        var litOffsetExtFI = mutableListOf<Int>(10, 31, 52, 73, 94, 115, 136, 157)
-        var litOffsetExtFI2 = mutableListOf<Int>(21, 42, 63, 84, 105, 126, 147, 168)
-        var litOffsetExtS = mutableListOf<Int>()
-        var m:Float =15 * tela.densidade
-        var litOffset = MutableList<Offset3>(179) { Offset3(0f, 1000f, false, 0) }
+        val tam = 100f
+        val tamMeio = 50f
+        val litOffsetExtFI = mutableListOf(10, 31, 52, 73, 94, 115, 136, 157)
+        val litOffsetExtFI2 = mutableListOf(21, 42, 63, 84, 105, 126, 147, 168)
+        val m:Float =15 * tela.densidade
+        val litOffset = MutableList(179) { Offset3(0f, 1000f, false, 0) }
         for (i in 0..178) {
             var xp = tam *interi
             var yp = tam *interiy
@@ -110,9 +109,9 @@ private val _AAbilite = MutableStateFlow<Abilite>(default)
                     yp = tam *interiy
                 }
             }
-            var vazio = true
+            val vazio = true
 
-            var offf: Offset3 = Offset3(
+            val offf = Offset3(
                  xp + m,
                 yp + m,
                 vazio,

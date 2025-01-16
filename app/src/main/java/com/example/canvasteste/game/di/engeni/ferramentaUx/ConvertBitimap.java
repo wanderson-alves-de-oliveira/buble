@@ -1,4 +1,4 @@
-package com.example.canvasteste.Game.di.engeni.ferramentas;
+package com.example.canvasteste.game.di.engeni.ferramentaUx;
 
 import android.annotation.TargetApi;
 import android.content.Context;

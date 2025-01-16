@@ -1,4 +1,4 @@
-package com.example.canvasteste.Game.model
+package com.example.canvasteste.game.model
 
 data class Level(
     val number: Int, // Número da fase

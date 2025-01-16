@@ -1,4 +1,4 @@
-package com.example.canvasteste.Game.di.engeni
+package com.example.canvasteste.game.di.engeni
 
 import androidx.compose.runtime.withFrameMillis
 import kotlinx.coroutines.CoroutineScope

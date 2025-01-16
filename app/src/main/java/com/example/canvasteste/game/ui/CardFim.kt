@@ -1,11 +1,9 @@
-package com.example.canvasteste.Game.ui
+package com.example.canvasteste.game.ui
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,11 +40,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Tela
 import com.example.canvasteste.R
 
 
-@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 internal fun CardFim(
     img: Bitmap,
@@ -55,8 +54,7 @@ internal fun CardFim(
     imageBt: Int = R.drawable.seta,
     onclick: () -> Unit
 ) {
-    val context: Context = context
-    var tela: Tela = Tela(context)
+    val tela = Tela(context)
 //    var sons: SonsDoCard = SonsDoCard(context)
 //    var tocou1: Boolean by remember { mutableStateOf(false) }
 //    var tocou2: Boolean by remember { mutableStateOf(false) }
@@ -76,14 +74,14 @@ internal fun CardFim(
         }
 
 
-        val yfinal = ((tela.getTamanhoTela().y / 2) - 100.dp.toPx()).toFloat().toInt()
+        val yfinal = ((tela.getTamanhoTela().y / 2) - 100.dp.toPx()).toInt()
         val fy = 1200.dp.toPx()
-        var yfinalP: Float by remember { mutableStateOf(fy) }
+        var yfinalP: Float by remember { mutableFloatStateOf(fy) }
         var fimp: Boolean by remember { mutableStateOf(false) }
 
 
         if (yfinalP > yfinal) {
-            var dist = yfinalP - yfinal
+            val dist = yfinalP - yfinal
             yfinalP -= (dist / 8).dp.toPx()
 
             if (dist < 10) {
@@ -93,19 +91,19 @@ internal fun CardFim(
         }
 
 
-        var time: Int by remember { mutableStateOf(0) }
-        var xvc: Float by remember { mutableStateOf(0f) }
-        var xvc2: Float by remember { mutableStateOf(0f) }
-        var xvc3: Float by remember { mutableStateOf(0f) }
+        var time: Int by remember { mutableIntStateOf(0) }
+        var xvc: Float by remember { mutableFloatStateOf(0f) }
+        var xvc2: Float by remember { mutableFloatStateOf(0f) }
+        var xvc3: Float by remember { mutableFloatStateOf(0f) }
 
-        var xvcP: Float by remember { mutableStateOf(20f) }
-        var yvcP: Float by remember { mutableStateOf(0f) }
+        var xvcP: Float by remember { mutableFloatStateOf(20f) }
+        var yvcP: Float by remember { mutableFloatStateOf(0f) }
 
-        var xvcP2: Float by remember { mutableStateOf(85f) }
-        var yvcP2: Float by remember { mutableStateOf(20f) }
+        var xvcP2: Float by remember { mutableFloatStateOf(85f) }
+        var yvcP2: Float by remember { mutableFloatStateOf(20f) }
 
-        var xvcP3: Float by remember { mutableStateOf(170f) }
-        var yvcP3: Float by remember { mutableStateOf(0f) }
+        var xvcP3: Float by remember { mutableFloatStateOf(170f) }
+        var yvcP3: Float by remember { mutableFloatStateOf(0f) }
 
 
         val msgem2 = remember {
@@ -157,8 +155,8 @@ internal fun CardFim(
 
 
 
-                    var b = BitmapFactory.decodeResource(res, R.drawable.estrela)
-                    var bf = BitmapFactory.decodeResource(res, R.drawable.estrelafosca)
+                    val b = BitmapFactory.decodeResource(res, R.drawable.estrela)
+                    val bf = BitmapFactory.decodeResource(res, R.drawable.estrelafosca)
 
 
                     val paint5 = Paint().asFrameworkPaint().apply {
@@ -240,7 +238,7 @@ internal fun CardFim(
                             drawIntoCanvas {
                                 it.save()
                                 it.translate((xvcP.dp.toPx()), (yvcP.dp.toPx()))
-                                it.scale(xvc.toFloat(), xvc.toFloat())
+                                it.scale(xvc, xvc)
 
                                 it.nativeCanvas.drawPaint(
                                     paint5
@@ -273,7 +271,7 @@ internal fun CardFim(
                                 it.save()
                                 it.translate((xvcP2.dp.toPx()), (yvcP2.dp.toPx()))
 
-                                it.scale(xvc2.toFloat(), xvc2.toFloat())
+                                it.scale(xvc2, xvc2)
                                 it.nativeCanvas.drawPaint(
                                     paint5
 
@@ -309,7 +307,7 @@ internal fun CardFim(
                                 it.save()
                                 it.translate((xvcP3.dp.toPx()), (yvcP3.dp.toPx()))
 
-                                it.scale(xvc3.toFloat(), xvc3.toFloat())
+                                it.scale(xvc3, xvc3)
 
                                 it.nativeCanvas.drawPaint(
                                     paint5
@@ -425,7 +423,6 @@ internal fun CardFim(
                 Botao(
                     context = context,
                     onClick = onclick,
-                    modifier = Modifier,
                     text = textButton,
                     imageBt = imageBt
                 )

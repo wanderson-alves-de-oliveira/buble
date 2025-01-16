@@ -1,9 +1,6 @@
-package com.example.canvasteste.Game.ui
+package com.example.canvasteste.game.ui
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -11,10 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
@@ -27,30 +21,23 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Tela
 import com.example.canvasteste.R
 
 
-@RequiresApi(Build.VERSION_CODES.S)
+@JvmOverloads
 @Composable
 internal fun Card(
-    img: Bitmap,
     context: Context,
     modifier: Modifier,
-    textButton: String,
     textCard: String,
-    msg: String = "",
-    imageBt: Int = R.drawable.seta,
-    onclick: () -> Unit,
-    onclickX: () -> Unit
+    msg: String = ""
 ) {
-    val context: Context = context
-    var tela: Tela = Tela(context)
-    var escala: Float by remember { mutableStateOf(0f) }
+    Tela(context)
 
 
     val textMeasurer = rememberTextMeasurer()
-    val res = context.resources
+    context.resources
     Box {
 
 

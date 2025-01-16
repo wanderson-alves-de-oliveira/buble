@@ -1,8 +1,8 @@
-package com.example.canvasteste.Game.model
+package com.example.canvasteste.game.model
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Offset3
 data class Player(
     val y: Dp,
     val h: Dp,

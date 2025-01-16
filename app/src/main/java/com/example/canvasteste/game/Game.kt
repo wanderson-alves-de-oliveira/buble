@@ -1,8 +1,6 @@
-package com.example.canvasteste.Game
+package com.example.canvasteste.game
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,18 +8,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.canvasteste.Game.di.GameDI.Companion.rememberDI
-import com.example.canvasteste.Game.di.engeni.ferramentas.Formas
-import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
-import com.example.canvasteste.Game.logic.AAbilite
-import com.example.canvasteste.Game.logic.CCores
-import com.example.canvasteste.Game.logic.CCoresSeparacao
-import com.example.canvasteste.Game.logic.PlayLogic
-import com.example.canvasteste.Game.model.Viewport
-import com.example.canvasteste.Game.ui.Background
-import com.example.canvasteste.Game.ui.Player
+import com.example.canvasteste.game.di.GameDI.Companion.rememberDI
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Formas
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Tela
+import com.example.canvasteste.game.logic.AAbilite
+import com.example.canvasteste.game.logic.CCores
+import com.example.canvasteste.game.logic.CCoresSeparacao
+import com.example.canvasteste.game.logic.PlayLogic
+import com.example.canvasteste.game.model.Viewport
+import com.example.canvasteste.game.ui.Background
+import com.example.canvasteste.game.ui.Player
 
-@RequiresApi(Build.VERSION_CODES.R)
 @Composable
 fun Game(navController: NavController,context: Context,param: String?="" ) {
 
@@ -36,10 +33,10 @@ fun Game(navController: NavController,context: Context,param: String?="" ) {
         val playerLogic = PlayLogic(viewPort,context)
         val abilite = AAbilite(context)
         val cores = CCores(context)
-        val coresSeparacao = CCoresSeparacao(context)
+        val coresSeparacao = CCoresSeparacao()
 
-         val fase:String= if(param!=null) param else ""
-        val di = rememberDI(viewPort)
+         val fase:String= param ?: ""
+        rememberDI(viewPort)
 
 //
 //        LaunchedEffect(key1 = Unit) {
@@ -52,7 +49,7 @@ fun Game(navController: NavController,context: Context,param: String?="" ) {
 
 
 
-val formas:Formas = Formas()
+val formas = Formas()
 
         Box(
             modifier = Modifier.fillMaxSize()
@@ -63,28 +60,26 @@ val formas:Formas = Formas()
 
 
             var k = fase.toInt()-1
-            var quadrado = formas.pegarQuadrado(k)
-            var circulos = formas.pegarCirculos(k)
-            var flores = formas.pegarFlores(k)
-            var maze = formas.pegarMaze(k)
-            var flechas = formas.pegarFlecha(k)
-            var maim = formas.pegarMain(k)
+            val quadrado = formas.pegarQuadrado()
+            val circulos = formas.pegarCirculos(k)
+            val flores = formas.pegarFlores(k)
+            val maze = formas.pegarMaze(k)
+            val flechas = formas.pegarFlecha(k)
+            val maim = formas.pegarMain(k)
 
 
-            var listt = mutableListOf(quadrado,circulos,maze,flores,flechas,maim)
+            val listt = mutableListOf(quadrado,circulos,maze,flores,flechas,maim)
 
 
             if(k>listt.size-1) k=listt.size-1
 
-            if((maim[0].size>30 && fase.toInt()<6)){
-                if(k>5)k==2
-            }
+
 
         abilite.onUpdate(listt[k][0])
         cores.onUpdate(listt[k][1])
 
 
-var i = if(k%3==0) {
+val i = if(k%3==0) {
     0
 } else if(k%2==0){
     1
@@ -93,7 +88,7 @@ var i = if(k%3==0) {
         }
 
 
-            Background(di.timeManager,tela,i)
+            Background(tela, i)
             Player( Modifier, playerLogic,abilite,cores,coresSeparacao,viewPort,tela,navController,fase)
 
 

@@ -1,4 +1,4 @@
-package com.example.canvasteste.Game.ui
+package com.example.canvasteste.game.ui
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapShader
@@ -16,14 +16,12 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.Dp
-import com.example.canvasteste.Game.di.engeni.TimeManager
-import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Tela
  import com.example.canvasteste.R
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-internal fun Background(timeManager: TimeManager,tela: Tela, i :Int) {
-    val scrollAmount = 0.2f
+internal fun Background(tela: Tela, i: Int) {
 
 
     BoxWithConstraints {
@@ -58,7 +56,7 @@ internal fun Background(timeManager: TimeManager,tela: Tela, i :Int) {
         }
 
 
- var lista = mutableListOf(paint,paint2,paint3)
+ val lista = mutableListOf(paint,paint2,paint3)
 
         Canvas(modifier = Modifier.fillMaxSize()) {
             drawIntoCanvas {

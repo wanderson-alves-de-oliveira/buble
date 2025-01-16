@@ -1,12 +1,12 @@
-package com.example.canvasteste.Game.logic
+package com.example.canvasteste.game.logic
 import android.content.Context
 import android.media.MediaPlayer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
-import com.example.canvasteste.Game.model.Player
-import com.example.canvasteste.Game.model.Viewport
-import com.example.canvasteste.Game.ui.toPx
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Offset3
+import com.example.canvasteste.game.model.Player
+import com.example.canvasteste.game.model.Viewport
+import com.example.canvasteste.game.ui.toPx
 import com.example.canvasteste.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,18 +16,17 @@ import kotlinx.coroutines.flow.update
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class PlayLogic(viewport: Viewport,context: Context) {
+class PlayLogic(viewport: Viewport, private val context: Context) {
     private var posLI: MutableList<Int> = mutableListOf()
     private var posLIR: MutableList<Int> = mutableListOf()
     private val default: Player = Player(viewport.height, 36.dp, 70.dp, 0f)
-    private val _playPosition = MutableStateFlow<Player>(default)
-    private val context: Context = context
+    private val _playPosition = MutableStateFlow(default)
 
     private var efeitoSonoro: MediaPlayer = MediaPlayer.create(this.context, R.raw.buble)
     private var efeitoSonoro2: MediaPlayer = MediaPlayer.create(this.context, R.raw.buble)
     private var dim: MediaPlayer = MediaPlayer.create(this.context, R.raw.dim)
     private var zom: MediaPlayer = MediaPlayer.create(this.context, R.raw.zom)
-    var fim: MediaPlayer = MediaPlayer.create(this.context, R.raw.finalyy)
+    private var fim: MediaPlayer = MediaPlayer.create(this.context, R.raw.finalyy)
     var top: MediaPlayer = MediaPlayer.create(this.context, R.raw.topw)
     var topb: MediaPlayer = MediaPlayer.create(this.context, R.raw.topb)
 
@@ -36,8 +35,8 @@ class PlayLogic(viewport: Viewport,context: Context) {
 
     fun updatePrev(posL: List<Int>) {
         _playPosition.update { player ->
-            var new = posL
-            player.copy(posprev = new)
+
+            player.copy(posprev = posL)
         }
     }
 
@@ -48,33 +47,32 @@ class PlayLogic(viewport: Viewport,context: Context) {
         init: Int
     ): MutableList<Int> {
         posLI.clear()
-        updateLimpar(listaAtual, posL, init)
+        UpdateLimpar(listaAtual, posL, init)
         return posLI
     }
 
     @Composable
-    fun updateLimpar(listaAtual: MutableList<Offset3>, posL: List<Int>, init: Int) {
+    fun UpdateLimpar(listaAtual: MutableList<Offset3>, posL: List<Int>, init: Int) {
 
         val coroutineScope = CoroutineScope(Dispatchers.Default)
 
         coroutineScope.run {
             if (posLI.contains(init)) return
             posLI.add(init)
-            var lista = listaAtual
-            var listaI = posL.filter { it -> !posLI.contains(it) && it != 0 }
-            var posLD: MutableList<Int> = mutableListOf()
+            val listaI = posL.filter { !posLI.contains(it) && it != 0 }
+            val posLD: MutableList<Int> = mutableListOf()
 
-            for (i in 0..listaI.size - 1) {
-                var m1 = (lista[listaI[i]].x - lista[init].x).pow(2)
-                var m2 = (lista[listaI[i]].y - lista[init].y).pow(2)
-                var d: Float = sqrt((m1 + m2))
+            for (i in listaI.indices) {
+                val m1 = (listaAtual[listaI[i]].x - listaAtual[init].x).pow(2)
+                val m2 = (listaAtual[listaI[i]].y - listaAtual[init].y).pow(2)
+                val d: Float = sqrt((m1 + m2))
                 if (d < 50.dp.toPx()) {
                     posLD.add(listaI[i])
                 }
             }
 
-            for (i in 0..posLD.size - 1) {
-                updateLimpar(listaAtual, posL, posLD[i])
+            for (i in 0..<posLD.size) {
+                UpdateLimpar(listaAtual, posL, posLD[i])
             }
         }
 
@@ -88,12 +86,12 @@ class PlayLogic(viewport: Viewport,context: Context) {
     ): MutableList<Int> {
         posLIR.clear()
 
-        updateLimparRamos(listaAtual, posL, init)
+        UpdateLimparRamos(listaAtual, posL, init)
         return posLIR
     }
 
     @Composable
-    fun updateLimparRamos(listaAtual: MutableList<Offset3>, posL: List<Int>, init: Int) {
+    fun UpdateLimparRamos(listaAtual: MutableList<Offset3>, posL: List<Int>, init: Int) {
 
 
         val coroutineScope = CoroutineScope(Dispatchers.Default)
@@ -106,21 +104,20 @@ class PlayLogic(viewport: Viewport,context: Context) {
                 return
             }
             posLIR.add(init)
-            var lista = listaAtual
-            var listaI = posL.filter { it -> !posLIR.contains(it) && it != 0 }
-            var posLD: MutableList<Int> = mutableListOf()
+            val listaI = posL.filter { !posLIR.contains(it) && it != 0 }
+            val posLD: MutableList<Int> = mutableListOf()
 
-            for (i in 0..listaI.size - 1) {
-                var m1 = (lista[listaI[i]].x - lista[init].x).pow(2)
-                var m2 = (lista[listaI[i]].y - lista[init].y).pow(2)
-                var d: Float = sqrt((m1 + m2))
+            for (i in listaI.indices) {
+                val m1 = (listaAtual[listaI[i]].x - listaAtual[init].x).pow(2)
+                val m2 = (listaAtual[listaI[i]].y - listaAtual[init].y).pow(2)
+                val d: Float = sqrt((m1 + m2))
                 if (d < 60.dp.toPx()) {
                     posLD.add(listaI[i])
                 }
             }
-            if (init < 10 && posLD.size == 0) updateLimparRamos(listaAtual, posL, init + 1)
-            for (i in 0..posLD.size - 1) {
-                updateLimparRamos(listaAtual, posL, posLD[i])
+            if (init < 10 && posLD.size == 0) UpdateLimparRamos(listaAtual, posL, init + 1)
+            for (i in 0..<posLD.size) {
+                UpdateLimparRamos(listaAtual, posL, posLD[i])
             }
         }
 
@@ -168,7 +165,7 @@ class PlayLogic(viewport: Viewport,context: Context) {
     }
 
 
-    fun OnZom() {
+    fun onZom() {
         val coroutineScope = CoroutineScope(Dispatchers.Default)
 
         coroutineScope.run {
@@ -195,13 +192,13 @@ class PlayLogic(viewport: Viewport,context: Context) {
 
             coroutineScope.run {
 
-                listCoresR = listCores.filter { it -> lista.contains(it) } as MutableList<Int>
+                listCoresR = listCores.filter { lista.contains(it) } as MutableList<Int>
 
 
             }
             return listCoresR
         }
-    fun OnFim(tocou:Boolean) {
+    fun onFim(tocou:Boolean) {
         val coroutineScope = CoroutineScope(Dispatchers.Default)
 
         coroutineScope.run {
@@ -217,7 +214,7 @@ class PlayLogic(viewport: Viewport,context: Context) {
         }
     }
 
-    fun OnMusica(continuar:Boolean) {
+    fun onMusica(continuar:Boolean) {
         val coroutineScope = CoroutineScope(Dispatchers.Default)
 
         coroutineScope.run {
@@ -235,7 +232,7 @@ class PlayLogic(viewport: Viewport,context: Context) {
         }
     }
 
-    fun OnMusicaB(continuar:Boolean) {
+    fun onMusicaB(continuar:Boolean) {
         val coroutineScope = CoroutineScope(Dispatchers.Default)
 
         coroutineScope.run {
@@ -257,16 +254,6 @@ class PlayLogic(viewport: Viewport,context: Context) {
     }
 
 
-    fun OnMusicaBP() {
-
-
-            if(!topb.isPlaying ) {
-
-                topb.stop()
-            }
-
-
-    }
 
 
 

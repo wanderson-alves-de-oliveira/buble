@@ -1,4 +1,4 @@
-package com.example.canvasteste.Game.model
+package com.example.canvasteste.game.model
 
 import com.example.canvasteste.R
 

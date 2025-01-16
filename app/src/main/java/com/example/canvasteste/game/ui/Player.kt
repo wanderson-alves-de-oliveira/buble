@@ -1,4 +1,4 @@
-package com.example.canvasteste.Game.ui
+package com.example.canvasteste.game.ui
 
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
@@ -34,13 +34,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.canvasteste.Game.di.engeni.ferramentas.Offset3
-import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
-import com.example.canvasteste.Game.logic.AAbilite
-import com.example.canvasteste.Game.logic.CCores
-import com.example.canvasteste.Game.logic.CCoresSeparacao
-import com.example.canvasteste.Game.logic.PlayLogic
-import com.example.canvasteste.Game.model.Viewport
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Offset3
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Tela
+import com.example.canvasteste.game.logic.AAbilite
+import com.example.canvasteste.game.logic.CCores
+import com.example.canvasteste.game.logic.CCoresSeparacao
+import com.example.canvasteste.game.logic.PlayLogic
+import com.example.canvasteste.game.model.Viewport
 import com.example.canvasteste.R
 import kotlinx.coroutines.launch
 import kotlin.math.pow
@@ -65,9 +65,9 @@ internal fun Player(
     var tocar: Boolean by remember { mutableStateOf(true) }
 
     val player = playerLogic.player.collectAsState()
-    val ab = abilite.Abilite.collectAsState()
-    val cr = cores.Cores.collectAsState()
-    val cs = coresSeparacao.Cores.collectAsState()
+    val ab = abilite.abilite.collectAsState()
+    val cr = cores.kores.collectAsState()
+    val cs = coresSeparacao.coresStateFlow.collectAsState()
     val off = tela.getTamanhoTela()
     var ii: Float = (viewport.width / 2).toPx()
     var offsetX: Float by remember { mutableStateOf(ii) }
@@ -185,7 +185,7 @@ internal fun Player(
                                             go = true
                                             tocou = false
 
-                                            playerLogic.OnZom()
+                                            playerLogic.onZom()
 
                                         }
 
@@ -752,7 +752,7 @@ internal fun Player(
 
         } else {
 
-            playerLogic.OnFim(tocar)
+            playerLogic.onFim(tocar)
             tocar = false
             Column(
                 modifier = modifier
@@ -771,7 +771,7 @@ internal fun Player(
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         CardFim(b, tela.context, modifier = modifier, "", fase, onclick = {
 
-                            playerLogic.OnMusica(false)
+                            playerLogic.onMusica(false)
                          //   navController.navigate("mapa")
 
                             var initnew = fase.toInt()+1

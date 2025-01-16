@@ -1,5 +1,6 @@
-package com.example.canvasteste.Game
+package com.example.canvasteste.game
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -43,17 +44,17 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.canvasteste.Game.di.GameDI.Companion.rememberDI
-import com.example.canvasteste.Game.di.engeni.ferramentas.Tela
-import com.example.canvasteste.Game.model.Level
-import com.example.canvasteste.Game.model.Viewport
-import com.example.canvasteste.Game.ui.Card
-import com.example.canvasteste.Game.ui.resizeTo
-import com.example.canvasteste.Game.ui.toPx
+import com.example.canvasteste.game.di.engeni.ferramentaUx.Tela
+import com.example.canvasteste.game.model.Level
+import com.example.canvasteste.game.ui.Card
+import com.example.canvasteste.game.ui.resizeTo
+import com.example.canvasteste.game.ui.toPx
 import com.example.canvasteste.R
 import kotlinx.coroutines.launch
+import kotlin.math.sqrt
 
 
+@SuppressLint("AutoboxingStateCreation")
 @Composable
 fun InfiniteMapScreen(navController: NavController, context: Context) {
     var scrollOffset by remember { mutableStateOf(0f) } // Controle da rolagem
@@ -67,14 +68,14 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
     var selectede by remember { mutableStateOf(100.dp) }
     var selectedew by remember { mutableStateOf(false) }
     var pointer by remember { mutableStateOf(Offset(0f, 0f)) }
-    var ultimaFase by remember { mutableStateOf(0) }
-    var b = BitmapFactory.decodeResource(res, R.drawable.blue)
-    val yfinal = ((tela.getTamanhoTela().y / 2) - 100.dp.toPx()).toFloat().toInt()
+    val ultimaFase by remember { mutableStateOf(0) }
+    BitmapFactory.decodeResource(res, R.drawable.blue)
+    val yfinal = ((tela.getTamanhoTela().y / 2) - 100.dp.toPx()).toInt()
     val fy = 1000.dp.toPx()
     var yfinalP: Float by remember { mutableStateOf(fy) }
     var fimp: Boolean by remember { mutableStateOf(false) }
     val dirX: Float = 1.dp.toPx()
-    var scrollXList: MutableList<Float> = mutableListOf(
+    val scrollXList: MutableList<Float> = mutableListOf(
         (dirX * 200f),
         (dirX * 300f),
         (dirX * 220f),
@@ -127,10 +128,7 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
         (dirX * 110),
     )
 
-    val viewPort = remember {
-        Viewport(tela.getTamanhoTela().x.dp, tela.getTamanhoTela().y.dp)
-    }
-    val di = rememberDI(viewPort)
+
 
     var indexPosX by remember { mutableStateOf(0) }
     var pos by remember { mutableStateOf(0) }
@@ -185,7 +183,7 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
         Modifier
             .fillMaxSize()
             .pointerInput(Unit) {
-                var interaction: DragInteraction.Start? = null
+                var interaction: DragInteraction.Start?
                 detectDragGestures(
                     onDragStart = {
                         coroutineScope.launch {
@@ -195,8 +193,8 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                             }
                         }
                     },
-                    onDrag = { change: PointerInputChange, dragAmount: Offset ->
-                        var dist = dragAmount.getDistance()
+                    onDrag = { _: PointerInputChange, dragAmount: Offset ->
+                        val dist = dragAmount.getDistance()
                         if (dragAmount.y > 0) {
                             scrollY += dist
                             distancia += dist
@@ -219,7 +217,7 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                 )
             }
             .pointerInput(Unit) {
-                var interaction: DragInteraction.Start? = null
+                var interaction: DragInteraction.Start?
                 detectTapGestures { tapOffset ->
                     coroutineScope.launch {
                         interaction = DragInteraction.Start()
@@ -229,14 +227,14 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                             pointer = Offset(tapOffset.x, tapOffset.y)
                             if (!selectedew) {
                                 var index = ((scrollOffset) / (100.dp.toPx())).toInt()
-                                var lista = mutableListOf<Level>()
+                                val lista = mutableListOf<Level>()
                                 lista.addAll(levels)
                                 if (index > 50) {
-                                    var vox = index / 50
-                                    for (i in 0..lista.size - 1) {
-                                        var l: Level = lista[0]
-                                        var novoNum = (vox * 50) + i
-                                        var novo = Level(
+                                    val vox = index / 50
+                                    for (i in 0..<lista.size) {
+                                        val l: Level = lista[0]
+                                        val novoNum = (vox * 50) + i
+                                        val novo = Level(
                                             novoNum,
                                             l.x,
                                             initialOffset - (novoNum * 100.dp.toPx())
@@ -247,10 +245,10 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                                     }
                                     index -= (vox * 50)
                                 }
-                                for (i in 0..index - 1) {
-                                    var l: Level = lista[0]
-                                    var novoNum = lista[lista.lastIndex].number + 1
-                                    var novo = Level(
+                                for (i in 0..<index) {
+                                    val l: Level = lista[0]
+                                    val novoNum = lista[lista.lastIndex].number + 1
+                                    val novo = Level(
                                         novoNum,
                                         l.x,
                                         initialOffset - (novoNum * 100.dp.toPx())
@@ -267,7 +265,7 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                                     isTapped
                                 }
                                 itt = tappedLevel?.number.toString()
-                                if (itt != null && itt != "null") {
+                                if (itt != "null") {
                                     selectede = 40.dp
                                     selectedew = true
                                 }
@@ -326,7 +324,7 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                     drawLevels(levels, scrollOffset, size.width, res, initialOffset)
                     if (selectedew) {
                         if (yfinalP > yfinal) {
-                            var dist = yfinalP - yfinal
+                            val dist = yfinalP - yfinal
                             yfinalP -= (dist / 10).dp.toPx()
                             if (dist < 10) {
                                 fimp = true
@@ -372,25 +370,12 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
 
                     if (selectedew) {
                         Card(
-                            b,
                             tela.context,
                             modifier = Modifier,
-                            "",
                             itt,
-                            "Derrube todas as bolas",
-                            onclick = {
-//
-//                                playerLogic.OnMusicaB(false)
-//                                Thread.sleep(100)
-//
-//                                playerLogic.OnMusicaBP()
-                                navController.navigate("game/${itt}")
-                            },
-                            onclickX = {
-                                yfinalP = fy
-                                selectedew = false
-                            })
-                        if (!(edd.toInt() % 2 == 0)) edd++
+                            "Derrube todas as bolas"
+                        )
+                        if (edd.toInt() % 2 != 0) edd++
                     }
                 }
             }
@@ -409,27 +394,26 @@ fun DrawScope.drawLevels(
     res: Resources,
     initialOffset: Float
 ) {
-    var scrollOffset = scrollOffsetM
 
-    var index = ((scrollOffset) / (100.dp.toPx())).toInt()
-    var levels = mutableListOf<Level>()
+    var index = ((scrollOffsetM) / (100.dp.toPx())).toInt()
+    val levels = mutableListOf<Level>()
     levels.addAll(lista)
     if (index > 50) {
-        var vox = index / 50
-        for (i in 0..levels.size - 1) {
-            var l: Level = levels[0]
-            var novoNum = (vox * 50) + i
-            var novo = Level(novoNum, l.x, initialOffset - (novoNum * 100.dp.toPx()))
+        val vox = index / 50
+        for (i in 0..<levels.size) {
+            val l: Level = levels[0]
+            val novoNum = (vox * 50) + i
+            val novo = Level(novoNum, l.x, initialOffset - (novoNum * 100.dp.toPx()))
             levels.add(1, novo)
             levels.removeAt(0)
             levels.sortBy { it.number }
         }
         index -= (vox * 50)
     }
-    for (i in 0..index - 1) {
-        var l: Level = levels[0]
-        var novoNum = levels[levels.lastIndex].number + 1
-        var novo = Level(novoNum, l.x, initialOffset - (novoNum * 100.dp.toPx()))
+    for (i in 0..<index) {
+        val l: Level = levels[0]
+        val novoNum = levels[levels.lastIndex].number + 1
+        val novo = Level(novoNum, l.x, initialOffset - (novoNum * 100.dp.toPx()))
         levels.add(1, novo)
         levels.removeAt(0)
         levels.sortBy { it.number }
@@ -438,7 +422,7 @@ fun DrawScope.drawLevels(
     roud(levels, scrollOffsetM)
 
     levels.forEach { level ->
-        val adjustedY = level.y + scrollOffset
+        val adjustedY = level.y + scrollOffsetM
         val pincel = android.graphics.Paint()
         pincel.color = android.graphics.Color.argb(
             255,
@@ -512,12 +496,12 @@ fun DrawScope.roud(
     drawContext.canvas.nativeCanvas.apply {
         val pincel = android.graphics.Paint()
         pincel.color = android.graphics.Color.rgb(112, 128, 144)
-        pincel.setStrokeWidth(78f)
+        pincel.strokeWidth = 78f
         this.save()
         for (ii in 0..levels.size - 2) {
             this.drawLine(
-                levels[ii].x.toFloat(), levels[ii].y.toFloat() + scrollOffsetM,
-                levels[ii + 1].x.toFloat(), levels[ii + 1].y.toFloat() + scrollOffsetM,
+                levels[ii].x, levels[ii].y + scrollOffsetM,
+                levels[ii + 1].x, levels[ii + 1].y + scrollOffsetM,
                 pincel
             )
         }
@@ -526,7 +510,7 @@ fun DrawScope.roud(
 }
 
 fun Offset.getDistance(other: Offset): Float {
-    return Math.sqrt(
+    return sqrt(
         ((x - other.x) * (x - other.x) + (y - other.y) * (y - other.y)).toDouble()
     ).toFloat()
 }
