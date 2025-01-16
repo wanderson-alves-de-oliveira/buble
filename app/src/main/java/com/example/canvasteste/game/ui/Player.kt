@@ -2,9 +2,7 @@ package com.example.canvasteste.game.ui
 
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -19,6 +17,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -47,7 +48,6 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 @SuppressLint("SuspiciousIndentation")
-@RequiresApi(Build.VERSION_CODES.R)
 @Composable
 internal fun Player(
 
@@ -69,53 +69,53 @@ internal fun Player(
     val cr = cores.kores.collectAsState()
     val cs = coresSeparacao.coresStateFlow.collectAsState()
     val off = tela.getTamanhoTela()
-    var ii: Float = (viewport.width / 2).toPx()
-    var offsetX: Float by remember { mutableStateOf(ii) }
-    var offsetX2: Float by remember { mutableStateOf(ii) }
-    var offsetX3: Float by remember { mutableStateOf(ii) }
-    var offsetY by remember { mutableStateOf(off.y * 0.9) }
+    val ii: Float = (viewport.width / 2).toPx()
+    var offsetX: Float by remember { mutableFloatStateOf(ii) }
+    var offsetX2: Float by remember { mutableFloatStateOf(ii) }
+    var offsetX3: Float by remember { mutableFloatStateOf(ii) }
+    var offsetY by remember { mutableDoubleStateOf(off.y * 0.9) }
     val listCores = cr.value.listCores
-    var intPreviewCor: Int by remember { mutableStateOf(listCores[(0..3).random()]) }
-    var intPreviewCor2: Int by remember { mutableStateOf(listCores[(0..3).random()]) }
+    var intPreviewCor: Int by remember { mutableIntStateOf(listCores[(0..3).random()]) }
+    var intPreviewCor2: Int by remember { mutableIntStateOf(listCores[(0..3).random()]) }
     var pointer by remember { mutableStateOf(Offset(0f, 0f)) }
 
     var up: Dp by remember { mutableStateOf(1000.dp) }
-    var rotation: Float by remember { mutableStateOf(-90f) }
-    var intPreview: Int by remember { mutableStateOf(0) }
-    var intPreviewMarcado: Int by remember { mutableStateOf(0) }
-    var listPrev: List<Int> = player.value.posprev
+    var rotation: Float by remember { mutableFloatStateOf(-90f) }
+    var intPreview: Int by remember { mutableIntStateOf(0) }
+    var intPreviewMarcado: Int by remember { mutableIntStateOf(0) }
+    player.value.posprev
     var subir: Boolean by remember { mutableStateOf(false) }
     var listaCoresOff: MutableList<Int> = cs.value.cores
     var listaCorteRamos: MutableList<Int> = ab.value.posRamo
     var litOffsetExt: MutableList<Int> = ab.value.pos
     litOffsetExt.sort()
-    var listCoresExt: MutableList<Int> = cr.value.cores
-    var qtd: Int = 30
-    var unidadeT = (off.y * 0.9) / qtd
-    var telaw = (off.x)
-    var xi: Int = (((offsetX - ii) / qtd)).toInt()
+    val listCoresExt: MutableList<Int> = cr.value.cores
+    val qtd = 30
+    val unidadeT = (off.y * 0.9) / qtd
+    val telaw = (off.x)
+    val xi: Int = (((offsetX - ii) / qtd)).toInt()
     val posRef: Offset3 = ab.value.posRef
     var i = qtd
     var go: Boolean by remember { mutableStateOf(false) }
-    var xxiu = (ii + (xi * (qtd))).toInt()
-    var xc = if (i == qtd) xxiu - ((30 / 2) / 2) else xxiu
-    var dir: Float by remember { mutableStateOf(70f) }
-    var xxPlay: Float by remember { mutableStateOf(xc.toFloat()) }
+    val xxiu = (ii + (xi * (qtd))).toInt()
+    val xc =  xxiu - ((30 / 2) / 2)
+    var dir: Float by remember { mutableFloatStateOf(70f) }
+    var xxPlay: Float by remember { mutableFloatStateOf(xc.toFloat()) }
     var tocou: Boolean by remember { mutableStateOf(false) }
     var fim: Boolean by remember { mutableStateOf(false) }
-    var modo: Int by remember { mutableStateOf(0) }
-    var ultimaLinha: Int = ab.value.ultimaLinha
-    var yyPlay: Float by remember { mutableStateOf((qtd * unidadeT).toFloat()) }
-    var litOffset2 = mutableListOf<Offset>()
-    var litORef = mutableListOf<Offset3>(
+    var modo: Int by remember { mutableIntStateOf(0) }
+    val ultimaLinha: Int = ab.value.ultimaLinha
+    var yyPlay: Float by remember { mutableFloatStateOf((qtd * unidadeT).toFloat()) }
+    val litOffset2 = mutableListOf<Offset>()
+    val litORef = mutableListOf(
         Offset3(0f, 0f, true, -1),
         Offset3(0f, 0f, true, -1),
         Offset3(0f, 0f, true, -1)
     )
-    var litOffsetExtFI = mutableListOf<Int>(10, 31, 52, 73, 94, 115, 136, 157)
-    var litOffsetExtFI2 = mutableListOf<Int>(21, 42, 63, 84, 105, 126, 147, 168)
+    val litOffsetExtFI = mutableListOf(10, 31, 52, 73, 94, 115, 136, 157)
+    val litOffsetExtFI2 = mutableListOf(21, 42, 63, 84, 105, 126, 147, 168)
 
-    var lt = mutableListOf<Offset3>()
+    var lt: MutableList<Offset3>
     var valorinicio: Boolean by remember { mutableStateOf(false) }
     var valorinicioTotal: Boolean by remember { mutableStateOf(true) }
     val interactionSource = remember { MutableInteractionSource() }
@@ -126,7 +126,7 @@ internal fun Player(
     }
     val posMoveReset: MutableList<Offset3> = ab.value.posMoveReset
 
-    var litOffsetMove = ab.value.posMove
+    val litOffsetMove = ab.value.posMove
 
         if (!fim) {
 
@@ -135,7 +135,13 @@ internal fun Player(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .offset(-10.dp, up)
+                    .offset {
+                        IntOffset(
+                            x = -10.dp.toPx().toInt(),
+                            y = up.toPx().toInt()
+                        )
+                    }
+
                     .pointerInput(Unit) {
                         var interaction: DragInteraction.Start? = null
                         detectDragGestures(
@@ -147,7 +153,7 @@ internal fun Player(
                                     }
                                 }
                             },
-                            onDrag = { change: PointerInputChange, dragAmount: Offset ->
+                            onDrag = { _: PointerInputChange, dragAmount: Offset ->
                                 if (up <= 0.dp) {
 
                                         offsetX += dragAmount.x * 7
@@ -200,7 +206,7 @@ internal fun Player(
                     .pointerInput(Unit) {
 
 
-                        var interaction: DragInteraction.Start? = null
+                        var interaction: DragInteraction.Start?
                         detectTapGestures { tapOffset ->
                             coroutineScope.launch {
                                 interaction = DragInteraction.Start()
@@ -213,7 +219,7 @@ internal fun Player(
                                         pointer.y.toDp() >= 700.dp && pointer.y.toDp() <= 760.dp
                                     ) {
 
-                                        var aux = intPreviewCor
+                                        val aux = intPreviewCor
                                         intPreviewCor = intPreviewCor2
                                         intPreviewCor2 = aux
 
@@ -284,24 +290,24 @@ internal fun Player(
                             litORef[2].pos = 2
                         }
                         var s = 10.dp
-                        var xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
+                        var xcux = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
                         var yc = (i * unidadeT).toInt()
                         if (yc <= 0) yc = 0
                         if (i == qtd || (yyPlay.toInt() < yc && yyPlay.toInt() >= yc - 30.dp.toPx())) {
                             s = 36.dp
-                            xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
+                            xcux = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
                         }
-                        litOffset2.add(Offset(xc.toFloat(), yc.toFloat()))
+                        litOffset2.add(Offset(xcux.toFloat(), yc.toFloat()))
 
                         if (subir) {
-                            for (j in 0..litOffsetMove.size - 1) {
+                            for (j in 0..<litOffsetMove.size) {
                                 if (!litOffsetMove[j].vazio) {
-                                    var m1 = (litOffsetMove[j].x - xc.toFloat()).pow(2)
-                                    var m2 = (litOffsetMove[j].y - yc.toFloat()).pow(2)
-                                    var d: Float = sqrt((m1 + m2))
+                                    val m1 = (litOffsetMove[j].x - xcux.toFloat()).pow(2)
+                                    val m2 = (litOffsetMove[j].y - yc.toFloat()).pow(2)
+                                    val d: Float = sqrt((m1 + m2))
                                     if (d < 30.dp.toPx()) {
                                         mostrar = false
-                                        var litOffset3 = mutableListOf<Offset3>()
+                                        val litOffset3 = mutableListOf<Offset3>()
                                         var lado = j
                                         try {
                                             if (!litOffsetExtFI.contains(j + 1) && !litOffsetExtFI2.contains(
@@ -310,7 +316,7 @@ internal fun Player(
                                             ) {
                                                 litOffset3.add(litOffsetMove[j + 1])
                                             }
-                                        } catch (e: Exception) {
+                                        } catch (_: Exception) {
                                         }
                                         try {
                                             if (!litOffsetExtFI.contains(j) && !litOffsetExtFI2.contains(
@@ -319,31 +325,31 @@ internal fun Player(
                                             ) {
                                                 litOffset3.add(litOffsetMove[j - 1])
                                             }
-                                        } catch (e: Exception) {
+                                        } catch (_: Exception) {
                                         }
                                         try {
                                             if (!litOffsetExtFI.contains(j)) {
                                                 litOffset3.add(litOffsetMove[j + 10])
                                             }
-                                        } catch (e: Exception) {
+                                        } catch (_: Exception) {
                                         }
                                         try {
                                             if (!litOffsetExtFI.contains(j + 11)) {
                                                 litOffset3.add(litOffsetMove[j + 11])
                                             }
-                                        } catch (e: Exception) {
+                                        } catch (_: Exception) {
                                         }
-                                        var litOffset4 =
-                                            litOffset3.filter { it -> it.vazio == true }
-                                        if (litOffset4.size > 0) {
-                                            for (k in 0..litOffset4.size - 1) {
-                                                var posArray =
+                                        val litOffset4 =
+                                            litOffset3.filter { it.vazio }
+                                        if (litOffset4.isNotEmpty()) {
+                                            for (k in litOffset4.indices) {
+                                                val posArray =
                                                     if (litOffset2.size > 2) litOffset2.size - 2 else 0
-                                                var m3 =
+                                                val m3 =
                                                     (litOffset4[k].x - litOffset2[posArray].x).pow(2)
-                                                var m4 =
+                                                val m4 =
                                                     (litOffset4[k].y - litOffset2[posArray].y).pow(2)
-                                                var d2: Float = sqrt((m3 + m4))
+                                                val d2: Float = sqrt((m3 + m4))
                                                 if (d2 < 30.dp.toPx()) {
                                                     lado = litOffsetMove.indexOf(litOffset4[k])
 
@@ -355,8 +361,8 @@ internal fun Player(
                                         if (j < 1200 && !go) {
                                             intPreview = lado
                                         }
-                                        var mesmaCorf =
-                                            litOffsetExt.filter { it ->
+                                        val mesmaCorf =
+                                            litOffsetExt.filter {
                                                 listCoresExt[litOffsetExt.indexOf(
                                                     it
                                                 )] == intPreviewCor
@@ -381,8 +387,8 @@ internal fun Player(
                                 modifier = modifier
                                     .offset {
                                         IntOffset(
-                                            x = xc.toInt(),
-                                            y = yc.toInt()
+                                            x = xcux.toInt(),
+                                            y = yc
                                         )
                                     }
                                     .size(s)
@@ -399,7 +405,7 @@ internal fun Player(
                                 modifier = modifier
                                     .offset {
                                         IntOffset(
-                                            x = (xc.toInt() + 35.dp.toPx()).toInt(),
+                                            x = (xcux.toInt() + 35.dp.toPx()).toInt(),
                                             y = (yc + 20.dp.toPx()).toInt()
                                         )
                                     }
@@ -431,7 +437,7 @@ internal fun Player(
 //
 //                        }
 
-                    for (i in 0..178) {
+                    for (iux in 0..178) {
 
 //
 //                        LaunchedEffect(Unit) {
@@ -442,22 +448,22 @@ internal fun Player(
                         val coroutineScope3= rememberCoroutineScope()
                         coroutineScope3.run {
 
-                        if (litOffsetExt.contains(i)) {
-                            litOffsetMove[i].vazio = false
+                        if (litOffsetExt.contains(iux)) {
+                            litOffsetMove[iux].vazio = false
                         }
-                        var litOffsetMoveR = litOffsetMove[i]
-                        if (i == 0) {
+                            val litOffsetMoveR = litOffsetMove[iux]
+                        if (iux == 0) {
                             valorinicio = true
                         }
                         if (modo > -1 && valorinicio) {
-                            var velocidade = 36.dp.toPx()
-                            var difLinha =
-                                (ultimaLinha - litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].linha) + litOffsetMove[i].linha
-                            if (modo == 0 && litOffsetMove[i].y > 300.dp.toPx() + (difLinha * velocidade)) {
-                                litOffsetMove[i].y -= velocidade
+                            val velocidade = 36.dp.toPx()
+                            val difLinha =
+                                (ultimaLinha - litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].linha) + litOffsetMove[iux].linha
+                            if (modo == 0 && litOffsetMove[iux].y > 300.dp.toPx() + (difLinha * velocidade)) {
+                                litOffsetMove[iux].y -= velocidade
                                 offsetX2 -= 0.001f
-                            } else if (litOffsetMove[0].y < velocidade * 8 && modo == 1 && difLinha > 0 && litOffsetMove[i].y < posRef.y + (difLinha * velocidade)) {
-                                litOffsetMove[i].y += velocidade
+                            } else if (litOffsetMove[0].y < velocidade * 8 && modo == 1 && difLinha > 0 && litOffsetMove[iux].y < posRef.y + (difLinha * velocidade)) {
+                                litOffsetMove[iux].y += velocidade
                                 offsetX2 -= 0.001f
                             } else {
                                 modo = -1
@@ -466,19 +472,19 @@ internal fun Player(
                             //  abilite.onUpdateMove(litOffsetMove)
                         }
 
-                        if (listaCorteRamos.contains(i)) {
-                            var op = 20.dp.toPx().toInt()
+                        if (listaCorteRamos.contains(iux)) {
+                            val op = 20.dp.toPx().toInt()
 
-                            if (litOffsetMove[i].y >= 700.dp.toPx()) {
+                            if (litOffsetMove[iux].y >= 700.dp.toPx()) {
 
-                                if (litOffsetExt.indexOf(i) != -1) {
-                                    listCoresExt.removeAt(litOffsetExt.indexOf(i))
+                                if (litOffsetExt.indexOf(iux) != -1) {
+                                    listCoresExt.removeAt(litOffsetExt.indexOf(iux))
                                 }
-                                if (listaCorteRamos.indexOf(i) != -1) {
-                                    listaCorteRamos.removeAt(listaCorteRamos.indexOf(i))
+                                if (listaCorteRamos.indexOf(iux) != -1) {
+                                    listaCorteRamos.removeAt(listaCorteRamos.indexOf(iux))
                                 }
-                                if (litOffsetExt.indexOf(i) != -1) {
-                                    litOffsetExt.removeAt(litOffsetExt.indexOf(i))
+                                if (litOffsetExt.indexOf(iux) != -1) {
+                                    litOffsetExt.removeAt(litOffsetExt.indexOf(iux))
                                 }
                                 cores.onUpdate(listCoresExt)
                                 abilite.onUpdate(litOffsetExt)
@@ -488,7 +494,7 @@ internal fun Player(
 
 
                             } else {
-                                litOffsetMove[i].y += op
+                                litOffsetMove[iux].y += op
                                 offsetX2 -= 0.001f
                             }
                             if (listaCorteRamos.size == 0) {
@@ -501,12 +507,12 @@ internal fun Player(
                                 }
                                 posMoveReset.sortBy { it.pos }
                                 abilite.onUpdateUltimaLinha(posMoveReset[posMoveReset.lastIndex].linha)
-                                for (iu in 0..posMoveReset.size - 1) {
-                                    var move: Offset3 = posMoveReset[iu]
+                                for (iu in 0..<posMoveReset.size) {
+                                    val move: Offset3 = posMoveReset[iu]
                                     litOffsetMove[move.pos] = move
                                 }
                                 if (posMoveReset.size > 0) {
-                                    var obj =
+                                    val obj =
                                         Offset3(
                                             0f + litOffsetMove[0].x,
                                             0f + litOffsetMove[0].y,
@@ -529,30 +535,30 @@ internal fun Player(
 
                         var id = R.drawable.car
                         var image = R.drawable.car
-                        if (litOffsetExt.contains(i)) {
-                            var corT: Int = listCoresExt[litOffsetExt.indexOf(i)]
+                        if (litOffsetExt.contains(iux)) {
+                            val corT: Int = listCoresExt[litOffsetExt.indexOf(iux)]
                             id = corT
                         }
 
                         if (!litOffsetMoveR.vazio) {
                             image = id
                         }
-                        if (i <= 9) {
+                        if (iux <= 9) {
                             image = R.drawable.car
                         }
 
-                        if ((listaCorteRamos.contains(i)// ||
-                                    //   listaCoresOff.contains(i) ||
-                                    //  (i > 9 && listPrev.contains(i) && tocou)   ||
-                                    || (i == intPreview && tocou)
-                                    ) && i > 9
+                        if ((listaCorteRamos.contains(iux)// ||
+                                    //   listaCoresOff.contains(iux) ||
+                                    //  (iux > 9 && listPrev.contains(iux) && tocou)   ||
+                                    || (iux == intPreview && tocou)
+                                    ) && iux > 9
                         ) {
                             image = R.drawable.tranp
                         }
 
 
-                        var limite = 10.dp.toPx()
-                        if ((!litOffsetMoveR.vazio || i == intPreview) && litOffsetMoveR.y > limite && litOffsetMoveR.y < tela.getTamanhoTela().y - (limite * 15)) {
+                            val limite = 10.dp.toPx()
+                        if ((!litOffsetMoveR.vazio || iux == intPreview) && litOffsetMoveR.y > limite && litOffsetMoveR.y < tela.getTamanhoTela().y - (limite * 15)) {
                             Image(
                                 painterResource(id = image),
                                 contentDescription = null,
@@ -565,11 +571,11 @@ internal fun Player(
                                     }
                                     .size(36.dp)
                                     .graphicsLayer {
-                                        rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
+                                        rotationZ = iux.toFloat()//(op * 90f).coerceIn(-60f, 60f)
                                     }
                             )
                         }
-                        var yc = (qtd * unidadeT).toInt()
+                            val yc = (qtd * unidadeT).toInt()
                         Image(
                             painterResource(id = R.drawable.arcos),
                             contentDescription = null,
@@ -587,7 +593,7 @@ internal fun Player(
                         )
 
 
-//                 Text(i.toString(), modifier = modifier
+//                 Text(iux.toString(), modifier = modifier
 //                     .offset {
 //                        IntOffset(
 //                             x = litOffsetMoveR.x.toInt(),
@@ -635,7 +641,7 @@ internal fun Player(
                     val coroutineScope6 = rememberCoroutineScope()
                     coroutineScope6.run {
 
-                        var lpp = mutableListOf(0)
+                        val lpp = mutableListOf(0)
                         coresSeparacao.onUpdate(lpp)
                         lt = player.value.posRebote
                         dir =
@@ -658,10 +664,10 @@ internal fun Player(
                             litOffsetExt.sort()
                             litOffsetExt = removendoDuplicados(litOffsetExt)
                             listCoresExt.add(litOffsetExt.indexOf(intPreview), intPreviewCor)
-                            listaCoresOff = listaCoresOff.filter { it -> it > 9 }.toMutableList()
+                            listaCoresOff = listaCoresOff.filter { it > 9 }.toMutableList()
                             if (listaCoresOff.size == 1 && listaCoresOff[0] == 0) {
-                                var mesmaCorf =
-                                    litOffsetExt.filter { it -> listCoresExt[litOffsetExt.indexOf(it)] == intPreviewCor }
+                                val mesmaCorf =
+                                    litOffsetExt.filter { listCoresExt[litOffsetExt.indexOf(it)] == intPreviewCor }
                                 listaCoresOff =
                                     playerLogic.updateLimparnit(
                                         litOffsetMove,
@@ -676,46 +682,46 @@ internal fun Player(
                                 posL = litOffsetExt,
                                 init = 0
                             )
-                            var listd =
-                                litOffsetExt.filter { it -> !listaCorteRamos.contains(it) } as MutableList<Int>
-                            var lista1 = listd.filter { it -> !listaCoresOff.contains(it) }
-                            var listRA: MutableList<Int> = listaCoresOff
+                            val listd =
+                                litOffsetExt.filter { !listaCorteRamos.contains(it) } as MutableList<Int>
+                            val lista1 = listd.filter { !listaCoresOff.contains(it) }
+                            val listRA: MutableList<Int> = listaCoresOff
                             listRA.addAll(lista1)
                             var novalista: MutableList<Int> =
-                                litOffsetExt.filter { it -> !listRA.contains(it) } as MutableList<Int>
-                            var listaCorteRamosNovo = playerLogic.updateLimparRamosinit(
+                                litOffsetExt.filter { !listRA.contains(it) } as MutableList<Int>
+                            val listaCorteRamosNovo = playerLogic.updateLimparRamosinit(
                                 listaAtual = litOffsetMove,
                                 posL = novalista,
                                 init = 0
                             )
 
-                            for (iy in 0..listaCoresOff.size - 1) {
+                            for (iy in 0..<listaCoresOff.size) {
                                 if (listaCoresOff.size < 3) break
                                 litOffsetMove[listaCoresOff[iy]].vazio = false
 
 
                                 novalista =
-                                    litOffsetExt.filter { it -> !listaCorteRamosNovo.contains(it) }
+                                    litOffsetExt.filter { !listaCorteRamosNovo.contains(it) }
                                         .toMutableList()
 
-                                var incluirRemovidosLeft =
-                                    listRA.filter { it -> !novalista.contains(it) }
+                                val incluirRemovidosLeft =
+                                    listRA.filter { !novalista.contains(it) }
 
                                 novalista.addAll(incluirRemovidosLeft)
-                                var rest: MutableList<Offset3> = mutableListOf()
-                                for (iu in 0..novalista.size - 1) {
-                                    var move: Offset3 = litOffsetMove[novalista[iu]]
-                                    var o: Offset3 =
+                                val rest: MutableList<Offset3> = mutableListOf()
+                                for (iu in 0..<novalista.size) {
+                                    val move: Offset3 = litOffsetMove[novalista[iu]]
+                                    val o =
                                         Offset3(move.x + 0, move.y + 0, true, move.pos, move.linha)
                                     rest.add(o)
                                 }
-                                var listakkk = litOffsetMove.filter { it -> it.vazio == false }
-                                var listakkk2 =
-                                    listakkk.filter { it -> !litOffsetExt.contains(it.pos) }
-                                for (t in 0..listakkk2.size - 1) {
-                                    litOffsetMove[listakkk2[t].pos].vazio = true
+                                val listakkk = litOffsetMove.filter { !it.vazio }
+                                val listakkk2 =
+                                    listakkk.filter { !litOffsetExt.contains(it.pos) }
+                                for (element in listakkk2) {
+                                    litOffsetMove[element.pos].vazio = true
                                 }
-                                if (listakkk2.size > 0) {
+                                if (listakkk2.isNotEmpty()) {
                                     abilite.onUpdateMove(litOffsetMove)
                                 }
                                 novalista.sort()
@@ -726,10 +732,10 @@ internal fun Player(
 
                             playerLogic.OnDim()
 
-                            var newListCor = playerLogic.verificarCorPresente(listCoresExt)
+                            val newListCor = playerLogic.verificarCorPresente(listCoresExt)
                             intPreviewCor = intPreviewCor2
 
-                            intPreviewCor2 = newListCor[(0..newListCor.size - 1).random()]
+                            intPreviewCor2 = newListCor[(0..<newListCor.size).random()]
                             cores.onUpdate(listCoresExt)
                             abilite.onUpdate(litOffsetExt)
                             xxPlay = 0f
@@ -767,19 +773,17 @@ internal fun Player(
 
                     val res = tela.context.resources
                  //   var restMedia = 300.dp.toPx()
-                    var b = BitmapFactory.decodeResource(res, R.drawable.blue)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        CardFim(b, tela.context, modifier = modifier, "", fase, onclick = {
+                    val b = BitmapFactory.decodeResource(res, R.drawable.blue)
+                    CardFim(b, tela.context, modifier = modifier, "", fase, onclick = {
 
-                            playerLogic.onMusica(false)
-                         //   navController.navigate("mapa")
+                        playerLogic.onMusica(false)
+                     //   navController.navigate("mapa")
 
-                            var initnew = fase.toInt()+1
-                            navController.navigate("game/${initnew}")
+                        val initnew = fase.toInt()+1
+                        navController.navigate("game/${initnew}")
 
 
-                        })
-                    }
+                    })
                 }
 
                 //////////////////
@@ -792,22 +796,21 @@ internal fun Player(
 
 @Composable
 fun removendoDuplicados(litOffsetExt: MutableList<Int>): MutableList<Int> {
-    var litOffsetExtAux = litOffsetExt
-    var litOffsetExtAuxCop: MutableList<Int> = litOffsetExt.cop()
-    var litOffsetExtAuxCopR: MutableList<Int> = mutableListOf()
+    val litOffsetExtAuxCop: MutableList<Int> = litOffsetExt.cop()
+    val litOffsetExtAuxCopR: MutableList<Int> = mutableListOf()
 
 
 
-    for (i in 1..litOffsetExt.size - 1) {
+    for (i in 1..<litOffsetExt.size) {
 
-            if (litOffsetExtAux[i] == litOffsetExt[i - 1]) {
-                litOffsetExtAuxCopR.add(litOffsetExtAux[i])
+            if (litOffsetExt[i] == litOffsetExt[i - 1]) {
+                litOffsetExtAuxCopR.add(litOffsetExt[i])
             }
         }
 
 
     if (litOffsetExtAuxCopR.size > 0) {
-        for (j in 0..litOffsetExtAuxCopR.size - 1) {
+        for (j in 0..<litOffsetExtAuxCopR.size) {
 
 
 
@@ -828,8 +831,8 @@ fun removendoDuplicados(litOffsetExt: MutableList<Int>): MutableList<Int> {
 
 fun MutableList<Int>.cop(): MutableList<Int> {
   //  var litOffsetExtAux = this
-    var litOffsetExtAuxCop: MutableList<Int> = mutableListOf()
-    for (i in 0..this.size - 1) {
+    val litOffsetExtAuxCop: MutableList<Int> = mutableListOf()
+    for (i in 0..<this.size) {
         litOffsetExtAuxCop.add(this[i] + 0)
     }
     return litOffsetExtAuxCop
