@@ -37,9 +37,7 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -513,14 +511,6 @@ fun Offset.getDistance(other: Offset): Float {
     return sqrt(
         ((x - other.x) * (x - other.x) + (y - other.y) * (y - other.y)).toDouble()
     ).toFloat()
-}
-
-
-@Composable
-fun Dp.toPx(): Float {
-    return with(LocalDensity.current) {
-        toPx()
-    }
 }
 
 

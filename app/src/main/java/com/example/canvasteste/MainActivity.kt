@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                 val viewPort = remember {
                     Viewport(40.dp, 40.dp)
                 }
-                val di = rememberDI(viewPort)
+                val di = rememberDI()
                 val playerLogic = PlayLogic(viewPort, this)
 
                 val navController = rememberNavController()

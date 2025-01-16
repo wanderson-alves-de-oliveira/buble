@@ -1,29 +1,23 @@
 package com.example.canvasteste.game.di.engeni.ferramentaUx
 
 import android.content.Context
-import android.os.Build
 import android.util.DisplayMetrics
 import android.view.WindowManager
-import androidx.annotation.RequiresApi
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.Dp
-import com.example.canvasteste.game.ui.toPx
 
 
-class Tela(context: Context) {
+@Suppress("DEPRECATION")
+class Tela(val context: Context) {
 
-      val context: Context = context
-     var densidade:Float = 0f
+    var densidade:Float = 0f
 
     val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     val displayMetrics = DisplayMetrics()
 
-    @RequiresApi(Build.VERSION_CODES.R)
     fun getTamanhoTela(): Offset {
 
 
-        windowManager.getDefaultDisplay().getMetrics(displayMetrics)
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
         val w = displayMetrics.widthPixels
         val h = displayMetrics.heightPixels
         densidade = displayMetrics.density
@@ -33,18 +27,6 @@ class Tela(context: Context) {
     }
 
     companion object {
-
-        @Composable
-        fun Dp.toF(context: Context): Float {
-            val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            val displayMetrics = DisplayMetrics()
-            windowManager.getDefaultDisplay().getMetrics(displayMetrics)
-
-            val scale = displayMetrics.density
-            return (this / scale).toPx()
-        }
-
-
 
 
     }

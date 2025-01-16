@@ -36,7 +36,7 @@ fun Game(navController: NavController,context: Context,param: String?="" ) {
         val coresSeparacao = CCoresSeparacao()
 
          val fase:String= param ?: ""
-        rememberDI(viewPort)
+        rememberDI()
 
 //
 //        LaunchedEffect(key1 = Unit) {
