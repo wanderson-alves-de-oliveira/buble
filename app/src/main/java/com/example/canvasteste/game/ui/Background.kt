@@ -55,14 +55,58 @@ internal fun Background(tela: Tela, i: Int) {
             )
         }
 
+        val paint4 = Paint().asFrameworkPaint().apply {
+            shader = BitmapShader(
+                ImageBitmap.imageResource(id = R.drawable.coelhos).asAndroidBitmap()
+                    .resizeTo((tela.getTamanhoTela().y*1.18).toInt()),
+                Shader.TileMode.DECAL,
+                Shader.TileMode.MIRROR
+            )
+        }
 
- val lista = mutableListOf(paint,paint2,paint3)
+
+        val paint5 = Paint().asFrameworkPaint().apply {
+            shader = BitmapShader(
+                ImageBitmap.imageResource(id = R.drawable.urso).asAndroidBitmap()
+                    .resizeTo((tela.getTamanhoTela().y*1.18).toInt()),
+                Shader.TileMode.DECAL,
+                Shader.TileMode.MIRROR
+            )
+        }
+
+        val paint6 = Paint().asFrameworkPaint().apply {
+            shader = BitmapShader(
+                ImageBitmap.imageResource(id = R.drawable.pinguim).asAndroidBitmap()
+                    .resizeTo((tela.getTamanhoTela().y*1.18).toInt()),
+                Shader.TileMode.DECAL,
+                Shader.TileMode.MIRROR
+            )
+        }
+
+        val paint7 = Paint().asFrameworkPaint().apply {
+            shader = BitmapShader(
+                ImageBitmap.imageResource(id = R.drawable.cao).asAndroidBitmap()
+                    .resizeTo((tela.getTamanhoTela().y*1.18).toInt()),
+                Shader.TileMode.DECAL,
+                Shader.TileMode.MIRROR
+            )
+        }
+        val paint8= Paint().asFrameworkPaint().apply {
+            shader = BitmapShader(
+                ImageBitmap.imageResource(id = R.drawable.ovelha).asAndroidBitmap()
+                    .resizeTo((tela.getTamanhoTela().y*1.18).toInt()),
+                Shader.TileMode.DECAL,
+                Shader.TileMode.MIRROR
+            )
+        }
+
+        val lista = mutableListOf(paint,paint2,paint3,paint4,paint5,paint6,paint7,paint8)
 
         Canvas(modifier = Modifier.fillMaxSize()) {
             drawIntoCanvas {
                 it.translate(0f, 0f)
                 it.nativeCanvas.drawPaint(
-                    lista[i]
+                    lista[generateFixedNumber(i)]
                 )
                 it.translate(0f, 0f)
             }
@@ -87,6 +131,10 @@ fun Dp.toPx(): Float {
 }
 
 
+
+fun generateFixedNumber(input: Int): Int {
+    return input % 8 // Garante um número entre 0 e 7
+}
 
 
 

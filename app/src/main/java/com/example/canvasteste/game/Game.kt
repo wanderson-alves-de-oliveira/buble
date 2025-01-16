@@ -79,16 +79,9 @@ val formas = Formas()
         cores.onUpdate(listt[k][1])
 
 
-val i = if(k%3==0) {
-    0
-} else if(k%2==0){
-    1
-        }else{
-            2
-        }
 
 
-            Background(tela, i)
+            Background(tela, fase.toInt()-1)
             Player( Modifier, playerLogic,abilite,cores,coresSeparacao,viewPort,tela,navController,fase)
 
 
