@@ -3,8 +3,6 @@ package com.example.canvasteste.Game.logic
 import android.content.Context
 import android.media.MediaPlayer
 import com.example.canvasteste.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 
 class SonsDoCard(context: Context) {
 

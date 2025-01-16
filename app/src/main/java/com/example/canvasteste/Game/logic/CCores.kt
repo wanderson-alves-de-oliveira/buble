@@ -1,6 +1,5 @@
 package com.example.canvasteste.Game.logic
 import android.content.Context
-import com.example.canvasteste.Game.di.engeni.ferramentas.ConvertBitimap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
