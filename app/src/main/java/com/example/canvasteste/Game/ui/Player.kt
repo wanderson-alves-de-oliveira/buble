@@ -237,16 +237,18 @@ internal fun Player(
 
 
 
-
-                val coroutineScope2 = rememberCoroutineScope()
-                coroutineScope2.run {
-
-
                     ///////////////////////////////////////////
 
                     if (!(tocou || go)) i = qtd
 
                     while (i > 0) {
+
+                        var mostrar = true
+                        val coroutineScope2 = rememberCoroutineScope()
+                        coroutineScope2.run {
+
+
+
                         var xxi = (ii + (xi * (qtd - i))).toInt()
                         if (xxi <= 0) {
                             xxi *= -1
@@ -299,7 +301,7 @@ internal fun Player(
                             xc = if (i == qtd) xxi - ((s / 2) / 2).toPx() else xxi
                         }
                         litOffset2.add(Offset(xc.toFloat(), yc.toFloat()))
-                        var mostrar = true
+
                         if (subir) {
                             for (j in 0..litOffsetMove.size - 1) {
                                 if (!litOffsetMove[j].vazio) {
@@ -340,7 +342,8 @@ internal fun Player(
                                             }
                                         } catch (e: Exception) {
                                         }
-                                        var litOffset4 = litOffset3.filter { it -> it.vazio == true }
+                                        var litOffset4 =
+                                            litOffset3.filter { it -> it.vazio == true }
                                         if (litOffset4.size > 0) {
                                             for (k in 0..litOffset4.size - 1) {
                                                 var posArray =
@@ -369,15 +372,17 @@ internal fun Player(
                                             }
                                         playerLogic.updatePrev(listaCoresOff)
                                         listaCoresOff =
-                                            playerLogic.updateLimparnit(litOffsetMove, mesmaCorf, lado)
+                                            playerLogic.updateLimparnit(
+                                                litOffsetMove,
+                                                mesmaCorf,
+                                                lado
+                                            )
                                         break
                                     }
                                 }
                             }
                         }
-                        if (!mostrar) {
-                            break
-                        }
+
                         if (tocou || go || i == qtd) {
                             Image(
                                 painterResource(id = intPreviewCor),
@@ -396,7 +401,7 @@ internal fun Player(
                             )
                         }
 
-                        if ( i == qtd) {
+                        if (i == qtd) {
                             Image(
                                 painterResource(id = intPreviewCor2),
                                 contentDescription = null,
@@ -417,18 +422,34 @@ internal fun Player(
 
 
                         i--
+
+
+                    }
+
+                        if (!mostrar) {
+                            break
+                        }
+
                         //////////////////////////////////////
                     }
 
-                }
 
 
-                val coroutineScope3= rememberCoroutineScope()
-                coroutineScope3.run {
+
+//                        LaunchedEffect(Unit) {
+//
+//                        }
 
                     for (i in 0..178) {
 
+//
+//                        LaunchedEffect(Unit) {
+//
+//                        }
 
+
+                        val coroutineScope3= rememberCoroutineScope()
+                        coroutineScope3.run {
 
                         if (litOffsetExt.contains(i)) {
                             litOffsetMove[i].vazio = false
@@ -451,7 +472,7 @@ internal fun Player(
                                 modo = -1
                                 litOffsetMove[0].y = litOffsetMove[1].y
                             }
-                          //  abilite.onUpdateMove(litOffsetMove)
+                            //  abilite.onUpdateMove(litOffsetMove)
                         }
 
                         if (listaCorteRamos.contains(i)) {
@@ -482,9 +503,9 @@ internal fun Player(
                             if (listaCorteRamos.size == 0) {
                                 valorinicio = false
 
-                                if (litOffsetExt.size>1 && litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y > 300.dp.toPx()) {
+                                if (litOffsetExt.size > 1 && litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y > 300.dp.toPx()) {
                                     modo = 0
-                                } else if (litOffsetExt.size>1 && litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y < 300.dp.toPx()) {
+                                } else if (litOffsetExt.size > 1 && litOffsetMove[litOffsetExt[litOffsetExt.lastIndex]].y < 300.dp.toPx()) {
                                     modo = 1
                                 }
                                 posMoveReset.sortBy { it.pos }
@@ -510,7 +531,7 @@ internal fun Player(
                                     offsetX2 -= 0.001f
                                 }
                             }
-                         //   abilite.onUpdateMove(litOffsetMove)
+                            //   abilite.onUpdateMove(litOffsetMove)
                         }
                         abilite.onUpdateMove(litOffsetMove)
 
@@ -530,33 +551,33 @@ internal fun Player(
                         }
 
                         if ((listaCorteRamos.contains(i)// ||
-                          //   listaCoresOff.contains(i) ||
-                           //  (i > 9 && listPrev.contains(i) && tocou)   ||
+                                    //   listaCoresOff.contains(i) ||
+                                    //  (i > 9 && listPrev.contains(i) && tocou)   ||
                                     || (i == intPreview && tocou)
-                                ) && i >9
+                                    ) && i > 9
                         ) {
                             image = R.drawable.tranp
                         }
 
 
                         var limite = 10.dp.toPx()
-                       if( (!litOffsetMoveR.vazio ||  i == intPreview )&& litOffsetMoveR.y>limite && litOffsetMoveR.y < tela.getTamanhoTela().y-(limite*15)) {
-                           Image(
-                               painterResource(id = image),
-                               contentDescription = null,
-                               modifier = modifier
-                                   .offset {
-                                       IntOffset(
-                                           x = litOffsetMoveR.x.toInt(),
-                                           y = litOffsetMoveR.y.toInt()
-                                       )
-                                   }
-                                   .size(36.dp)
-                                   .graphicsLayer {
-                                       rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
-                                   }
-                           )
-                       }
+                        if ((!litOffsetMoveR.vazio || i == intPreview) && litOffsetMoveR.y > limite && litOffsetMoveR.y < tela.getTamanhoTela().y - (limite * 15)) {
+                            Image(
+                                painterResource(id = image),
+                                contentDescription = null,
+                                modifier = modifier
+                                    .offset {
+                                        IntOffset(
+                                            x = litOffsetMoveR.x.toInt(),
+                                            y = litOffsetMoveR.y.toInt()
+                                        )
+                                    }
+                                    .size(36.dp)
+                                    .graphicsLayer {
+                                        rotationZ = i.toFloat()//(op * 90f).coerceIn(-60f, 60f)
+                                    }
+                            )
+                        }
                         var yc = (qtd * unidadeT).toInt()
                         Image(
                             painterResource(id = R.drawable.arcos),
@@ -604,7 +625,7 @@ internal fun Player(
 //
 //                        }
 
-
+                    }
 
                     }
 
@@ -616,7 +637,7 @@ internal fun Player(
                     }
 
 
-                }
+
 
 
                 if (go) {
@@ -732,7 +753,7 @@ internal fun Player(
             }
             if (!subir) {
 
-           //     Thread.sleep(100)
+               Thread.sleep(100)
 
                 subir = true
 
@@ -778,6 +799,7 @@ internal fun Player(
     //////////////////////////////
 }
 
+@Composable
 fun removendoDuplicados(litOffsetExt: MutableList<Int>): MutableList<Int> {
     var litOffsetExtAux = litOffsetExt
     var litOffsetExtAuxCop: MutableList<Int> = litOffsetExt.cop()
@@ -786,19 +808,28 @@ fun removendoDuplicados(litOffsetExt: MutableList<Int>): MutableList<Int> {
 
 
     for (i in 1..litOffsetExt.size - 1) {
-        if (litOffsetExtAux[i] == litOffsetExt[i - 1]) {
-            litOffsetExtAuxCopR.add(litOffsetExtAux[i])
+
+            if (litOffsetExtAux[i] == litOffsetExt[i - 1]) {
+                litOffsetExtAuxCopR.add(litOffsetExtAux[i])
+            }
         }
-    }
+
+
     if (litOffsetExtAuxCopR.size > 0) {
         for (j in 0..litOffsetExtAuxCopR.size - 1) {
+
+
+
+
             try {
                 litOffsetExtAuxCop.removeAt(litOffsetExtAuxCopR[j])
             } catch (e: Exception) {
                 Log.e("WWW", e.stackTrace.toString())
             }
+            }
+
         }
-    }
+
 
 
     return litOffsetExtAuxCop

@@ -238,7 +238,7 @@ class PlayLogic(viewport: Viewport,context: Context) {
     fun OnMusicaB(continuar:Boolean) {
         val coroutineScope = CoroutineScope(Dispatchers.Default)
 
-     //   coroutineScope.run {
+        coroutineScope.run {
 
             if(!topb.isPlaying && continuar && !top.isPlaying) {
 
@@ -253,7 +253,7 @@ class PlayLogic(viewport: Viewport,context: Context) {
             }
 
 
-      //  }
+        }
     }
 
 
