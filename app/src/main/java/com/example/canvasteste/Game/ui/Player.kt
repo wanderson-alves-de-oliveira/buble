@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -234,13 +235,17 @@ internal fun Player(
                     }
             ) {
 
+
+
+
                 val coroutineScope2 = rememberCoroutineScope()
                 coroutineScope2.run {
 
 
-
-
                     ///////////////////////////////////////////
+
+                    if (!(tocou || go)) i = qtd
+
                     while (i > 0) {
                         var xxi = (ii + (xi * (qtd - i))).toInt()
                         if (xxi <= 0) {
@@ -415,7 +420,11 @@ internal fun Player(
                         //////////////////////////////////////
                     }
 
+                }
 
+
+                val coroutineScope3= rememberCoroutineScope()
+                coroutineScope3.run {
 
                     for (i in 0..178) {
 

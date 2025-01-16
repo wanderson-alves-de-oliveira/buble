@@ -5,7 +5,14 @@ import kotlin.random.Random
 
 class Formas() {
 
-
+    val listCores = mutableListOf(
+        // R.drawable.red,R.drawable.blue,R.drawable.yaelow,R.drawable.green
+        R.drawable.red,
+        R.drawable.blue,
+        R.drawable.yaelow,
+        R.drawable.pink,
+        R.drawable.green
+    )
     var litOffsetExtFI = mutableListOf<Int>(42, 73, 105, 136)
 
 
@@ -144,13 +151,7 @@ class Formas() {
     )
 
     fun pegarFlores(fase: Int): MutableList<MutableList<Int>> {
-        val listCores = mutableListOf(
-            R.drawable.red,
-            R.drawable.blue,
-            R.drawable.yaelow,
-            R.drawable.green,
-            R.drawable.pink
-        )
+
         var floresX: MutableList<Int> = mutableListOf()
         var floresXC: MutableList<Int> = mutableListOf()
         var nivel = if (fase < 51) 1 else if (fase < 101) 2 else 3
@@ -291,13 +292,7 @@ class Formas() {
 
 
     fun pegarQuadrado(fase: Int): MutableList<MutableList<Int>> {
-        val listCores = mutableListOf(
-            R.drawable.red,
-            R.drawable.blue,
-            R.drawable.yaelow,
-            R.drawable.green,
-            R.drawable.pink
-        )
+
         var floresX: MutableList<Int> = mutableListOf()
         var floresXC: MutableList<Int> = mutableListOf()
         for (i in 0..quadrado.size - 1) {
@@ -338,13 +333,7 @@ class Formas() {
     }
 
     fun pegarCirculos(fase: Int): MutableList<MutableList<Int>> {
-        val listCores = mutableListOf(
-            R.drawable.red,
-            R.drawable.blue,
-            R.drawable.yaelow,
-            R.drawable.green,
-            R.drawable.pink
-        )
+
         var floresX: MutableList<Int> = mutableListOf()
         var floresXC: MutableList<Int> = mutableListOf()
         var nivel = if (fase < 51) 1 else if (fase < 101) 2 else 3
@@ -484,13 +473,7 @@ class Formas() {
     }
 
     fun pegarMaze(fase: Int): MutableList<MutableList<Int>> {
-        val listCores = mutableListOf(
-            R.drawable.red,
-            R.drawable.blue,
-            R.drawable.yaelow,
-            R.drawable.green,
-            R.drawable.pink
-        )
+
         var floresX: MutableList<Int> = mutableListOf()
         var floresXC: MutableList<Int> = mutableListOf()
 
@@ -563,13 +546,7 @@ class Formas() {
 
 
     fun pegarFlecha(fase: Int): MutableList<MutableList<Int>> {
-        val listCores = mutableListOf(
-            R.drawable.red,
-            R.drawable.blue,
-            R.drawable.yaelow,
-            R.drawable.green,
-            R.drawable.pink
-        )
+
         var floresX: MutableList<Int> = mutableListOf()
         var floresXC: MutableList<Int> = mutableListOf()
 
@@ -665,13 +642,7 @@ class Formas() {
 
 
     fun pegarMain(fase: Int): MutableList<MutableList<Int>> {
-        val listCores = mutableListOf(
-            R.drawable.red,
-            R.drawable.blue,
-            R.drawable.yaelow,
-            R.drawable.green,
-            R.drawable.pink
-        )
+
 
         var sequencia = gerarSequencia(fase,60,167).toMutableList()
        val incluir: List<Int> = listOf(0,1,2,3,4,5,6,7,8,9)
