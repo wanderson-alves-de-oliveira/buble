@@ -750,7 +750,7 @@ internal fun Player(
             }
             if (!subir) {
 
-               Thread.sleep(100)
+               Thread.sleep(60)
 
                 subir = true
 
@@ -776,7 +776,7 @@ internal fun Player(
                     val b = BitmapFactory.decodeResource(res, R.drawable.blue)
                     CardFim(b, tela.context, modifier = modifier, "", fase, onclick = {
 
-                        playerLogic.onMusica(false)
+                    //    playerLogic.onMusica(false)
                      //   navController.navigate("mapa")
 
                         val initnew = fase.toInt()+1

@@ -1,5 +1,6 @@
 package com.example.canvasteste
 
+import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.WindowManager
@@ -23,9 +24,15 @@ import com.example.canvasteste.ui.theme.CanvasTesteTheme
 
 @Suppress("DEPRECATION")
 class MainActivity : ComponentActivity() {
+
+
+    lateinit var playerLogic: PlayLogic
+      var  son = 0
+    var continuarSon = true
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //        getSupportActionBar().hide();//tira a barra de titulo
+
         this.window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -35,16 +42,15 @@ class MainActivity : ComponentActivity() {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
+         playerLogic = PlayLogic(Viewport(40.dp, 40.dp), this)
+
         enableEdgeToEdge()
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         setContent {
             CanvasTesteTheme {
 
-                val viewPort = remember {
-                    Viewport(40.dp, 40.dp)
-                }
+
                 val di = rememberDI()
-                val playerLogic = PlayLogic(viewPort, this)
 
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "mapa") {
@@ -53,13 +59,15 @@ class MainActivity : ComponentActivity() {
                     })) { backStackEntry ->
                         val param = backStackEntry.arguments?.getString("param")
                         LaunchedEffect(key1 = Unit) {
+
+                            son =2
                             di.timeManager.deltaTime.collect {
 
                                 if( playerLogic.topb.isPlaying) {
                                     playerLogic.topb.pause()
 
                                 }
-                                    playerLogic.onMusica(true)
+                                    playerLogic.onMusica(continuarSon,2)
 
                             }
                         }
@@ -69,9 +77,11 @@ class MainActivity : ComponentActivity() {
                     composable(route = "mapa") {
 
                         LaunchedEffect(key1 = Unit) {
-                            di.timeManager.deltaTime.collect {
 
-                                playerLogic.onMusicaB(true)
+
+                            son =1
+                            di.timeManager.deltaTime.collect {
+                                playerLogic.onMusica(continuarSon,1)
                                 if( playerLogic.top.isPlaying) {
                                     playerLogic.top.pause()
 
@@ -92,6 +102,37 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+if(son>0) {
+    continuarSon = true
+    playerLogic.continuarSon()
+}
+
+
+    }
+    override fun onPause() {
+        super.onPause()
+        continuarSon = false
+        if( playerLogic.top.isPlaying) {
+
+            playerLogic.top.pause()
+
+        }else   if( playerLogic.topb.isPlaying) {
+
+            playerLogic.topb.pause()
+
+        }
+
+    }
+
+
+
+
+
+
+
 }
 
 

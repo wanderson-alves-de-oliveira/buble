@@ -2,6 +2,10 @@ package com.example.canvasteste.game.logic
 import android.content.Context
 import android.media.MediaPlayer
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import com.example.canvasteste.game.di.engeni.ferramentaUx.Offset3
 import com.example.canvasteste.game.model.Player
@@ -29,7 +33,8 @@ class PlayLogic(viewport: Viewport, private val context: Context) {
     private var fim: MediaPlayer = MediaPlayer.create(this.context, R.raw.finalyy)
     var top: MediaPlayer = MediaPlayer.create(this.context, R.raw.topw)
     var topb: MediaPlayer = MediaPlayer.create(this.context, R.raw.topb)
-
+    var son: Int = 1
+    var reiniciarSom:Boolean = false
     val player: StateFlow<Player> = _playPosition
     private var songs: Int = 0
 
@@ -214,46 +219,56 @@ class PlayLogic(viewport: Viewport, private val context: Context) {
         }
     }
 
-    fun onMusica(continuar:Boolean) {
+    fun onMusica(continuar:Boolean,tipo:Int) {
         val coroutineScope = CoroutineScope(Dispatchers.Default)
 
         coroutineScope.run {
 
-            if(!top.isPlaying && continuar) {
-                top.setVolume(0.5f, 0.5f)
-                top.seekTo(0)
-                top.start()
-            }else  if(!top.isPlaying && !continuar) {
 
-                top.pause()
+            if(tipo == 1) {
+son=1
+                if (!topb.isPlaying && continuar || reiniciarSom) {
+                    reiniciarSom = false
+
+                    topb.setVolume(0.5f, 0.5f)
+                    topb.seekTo(0)
+                    topb.start()
+                } else if (!topb.isPlaying && !continuar) {
+
+                    topb.pause()
+                }
+            }else{
+son=2
+                if(!top.isPlaying && continuar || reiniciarSom) {
+
+                    reiniciarSom = false
+
+                    top.setVolume(0.5f, 0.5f)
+                    top.seekTo(0)
+                    top.start()
+                }else  if(!top.isPlaying && !continuar) {
+
+                    top.pause()
+                }
+
             }
 
 
         }
     }
 
-    fun onMusicaB(continuar:Boolean) {
-        val coroutineScope = CoroutineScope(Dispatchers.Default)
 
-        coroutineScope.run {
+fun continuarSon(){
+    reiniciarSom=true
 
-            if(!topb.isPlaying && continuar && !top.isPlaying) {
+    if(son==1){
 
+        onMusica(true,1)
+    }else{
 
-
-                topb.setVolume(0.5f, 0.5f)
-                topb.seekTo(0)
-                topb.start()
-            }else  if(!topb.isPlaying && !continuar) {
-
-                topb.pause()
-            }
-
-
-        }
+        onMusica(true,2)
     }
-
-
+}
 
 
 

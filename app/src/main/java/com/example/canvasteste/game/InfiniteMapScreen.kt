@@ -2,6 +2,7 @@ package com.example.canvasteste.game
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -42,13 +43,17 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.canvasteste.R
 import com.example.canvasteste.game.di.engeni.ferramentaUx.Tela
+import com.example.canvasteste.game.model.BackgroundL
+import com.example.canvasteste.game.model.Casa
 import com.example.canvasteste.game.model.Level
+import com.example.canvasteste.game.model.Ponto
 import com.example.canvasteste.game.ui.Card
 import com.example.canvasteste.game.ui.resizeTo
 import com.example.canvasteste.game.ui.toPx
-import com.example.canvasteste.R
 import kotlinx.coroutines.launch
+import kotlin.math.atan2
 import kotlin.math.sqrt
 
 
@@ -61,7 +66,6 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
     val res = context.resources
     var scrollY by remember { mutableStateOf(0f) }
     val initialOffset = tela.getTamanhoTela().y + 100.dp.toPx()
-    var distancia by remember { mutableStateOf(0f) }
     var itt by remember { mutableStateOf("") }
     var selectede by remember { mutableStateOf(100.dp) }
     var selectedew by remember { mutableStateOf(false) }
@@ -75,55 +79,56 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
     val dirX: Float = 1.dp.toPx()
     val scrollXList: MutableList<Float> = mutableListOf(
         (dirX * 200f),
+        (dirX * 290f),
         (dirX * 300f),
         (dirX * 220f),
-        (dirX * 210f),
-        (dirX * 320f),
-        (dirX * 250f),//6
-        (dirX * 230f),
-        (dirX * 220f),
-        (dirX * 180f),
-        (dirX * 320f),
-        (dirX * 202f),
-        (dirX * 228f),
-        (dirX * 225f),
-        (dirX * 260f),
-        (dirX * 180f),
-        (dirX * 170f),
-        (dirX * 110f),//17
-        (dirX * 110f),
-        (dirX * 225f),
-        (dirX * 225f),//20
-        (dirX * 225f),
-        (dirX * 225f),
-        (dirX * 270f),//23
-        (dirX * 235f),
-        (dirX * 160f),
         (dirX * 140f),
-        (dirX * 170f),
-        (dirX * 150f),
-        (dirX * 120f),
-        (dirX * 100f),
+        (dirX * 120f),//6
+        (dirX * 190f),
+        (dirX * 300f),
+        (dirX * 320f),
+        (dirX * 290f),
+        (dirX * 210f),
         (dirX * 180f),
-        (dirX * 200f),
-        (dirX * 190f),
-        (dirX * 190f),
-        (dirX * 215f),
-        (dirX * 130f),
-        (dirX * 150f),
-        (dirX * 200f),
-        (dirX * 200),//39
-        (dirX * 180),
-        (dirX * 245),
-        (dirX * 220),
-        (dirX * 230),
-        (dirX * 270),
-        (dirX * 230),//45
-        (dirX * 230),
-        (dirX * 230),
-        (dirX * 230),
-        (dirX * 130),
-        (dirX * 110),
+        (dirX * 220f),
+        (dirX * 290f),
+        (dirX * 280f),
+     //   (dirX * 260f),
+//
+//        (dirX * 110f),//17
+//        (dirX * 110f),
+//        (dirX * 225f),
+//        (dirX * 225f),//20
+//        (dirX * 225f),
+//        (dirX * 225f),
+//        (dirX * 270f),//23
+//        (dirX * 235f),
+//        (dirX * 160f),
+//        (dirX * 140f),
+//        (dirX * 170f),
+//        (dirX * 150f),
+//        (dirX * 120f),
+//        (dirX * 100f),
+//        (dirX * 180f),
+//        (dirX * 200f),
+//        (dirX * 190f),
+//        (dirX * 190f),
+//        (dirX * 215f),
+//        (dirX * 130f),
+//        (dirX * 150f),
+//        (dirX * 200f),
+//        (dirX * 200),//39
+//        (dirX * 180),
+//        (dirX * 245),
+//        (dirX * 220),
+//        (dirX * 230),
+//        (dirX * 270),
+//        (dirX * 230),//45
+//        (dirX * 230),
+//        (dirX * 230),
+//        (dirX * 230),
+//        (dirX * 130),
+//        (dirX * 110),
     )
 
 
@@ -142,18 +147,12 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
     }
     var my = 0f
 
-//    val playerLogic = PlayLogic(viewPort,context)
-//    LaunchedEffect(key1 = Unit) {
-//        di.timeManager.deltaTime.collect { it ->
-//            playerLogic.OnMusicaB(true)
-//        }
-//    }
-
+ val limitFases:Int = 15
 
 
     // Gerar posições aleatórias para os níveis
     val levels = remember {
-        List(50) { index ->
+        List(limitFases) { index ->
             var xx: Float = (dirX * 100f)
             if (indexPosX < scrollXList.size) {
                 xx = scrollXList[indexPosX]
@@ -162,7 +161,7 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                 indexPosX = 0
             }
             pos++
-            if (pos == 50) {
+            if (pos == limitFases) {
                 pos = 1
                 my += (dirX * 100f)
             }
@@ -192,21 +191,23 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                         }
                     },
                     onDrag = { _: PointerInputChange, dragAmount: Offset ->
-                        val dist = dragAmount.getDistance()
-                        if (dragAmount.y > 0) {
-                            scrollY += dist
-                            distancia += dist
-                            scrollOffset += dist
-                        } else if (distancia > 0f) {
-                            scrollY -= dist
-                            distancia -= dist
-                            scrollOffset -= dist
-                        }
-                        if (distancia < 0f) {
-                            scrollY = 0f
-                            distancia = 0f
-                            scrollOffset = 0f
-                        }
+//                        val dist = dragAmount.getDistance()
+//                        if (dragAmount.y > 0) {
+//                            scrollY += dist
+//                            distancia += dist
+//                            scrollOffset += dist
+//                        } else if (distancia > 0f) {
+//                            scrollY -= dist
+//                            distancia -= dist
+//                            scrollOffset -= dist
+//                        }
+//                        if (distancia < 0f) {
+//                            scrollY = 0f
+//                            distancia = 0f
+//                            scrollOffset = 0f
+//                        }
+                        scrollOffset += dragAmount.y
+                        scrollY+= dragAmount.y
                     },
                     onDragCancel = {
                     },
@@ -227,22 +228,7 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                                 var index = ((scrollOffset) / (100.dp.toPx())).toInt()
                                 val lista = mutableListOf<Level>()
                                 lista.addAll(levels)
-                                if (index > 50) {
-                                    val vox = index / 50
-                                    for (i in 0..<lista.size) {
-                                        val l: Level = lista[0]
-                                        val novoNum = (vox * 50) + i
-                                        val novo = Level(
-                                            novoNum,
-                                            l.x,
-                                            initialOffset - (novoNum * 100.dp.toPx())
-                                        )
-                                        lista.add(1, novo)
-                                        lista.removeAt(0)
-                                        lista.sortBy { it.number }
-                                    }
-                                    index -= (vox * 50)
-                                }
+
                                 for (i in 0..<index) {
                                     val l: Level = lista[0]
                                     val novoNum = lista[lista.lastIndex].number + 1
@@ -331,23 +317,23 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                         }
                     }
 
-                    drawContext.canvas.nativeCanvas.apply {
-                        drawText(
-                            "  ${pointer.x.toDp()} ${pointer.y.toDp()}",
-                            0f,
-                            220f,
-                            android.graphics.Paint().apply {
-                                color = android.graphics.Color.WHITE
-                                textSize = 20.sp.toPx()
-                            }
-                        )
-                    }
-                    drawCircle(
-                        color = Color(80, 89, 196, 255),
-                        radius = 50f,
-                        center = Offset( pointer.x,  pointer.y)
-                    )
-
+//                    drawContext.canvas.nativeCanvas.apply {
+//                        drawText(
+//                            "  ${pointer.x.toDp()} ${pointer.y.toDp()}",
+//                            0f,
+//                            220f,
+//                            android.graphics.Paint().apply {
+//                                color = android.graphics.Color.WHITE
+//                                textSize = 20.sp.toPx()
+//                            }
+//                        )
+//                    }
+//                    drawCircle(
+//                        color = Color(80, 89, 196, 255),
+//                        radius = 50f,
+//                        center = Offset( pointer.x,  pointer.y)
+//                    )
+//
 
 
 
@@ -359,7 +345,7 @@ fun InfiniteMapScreen(navController: NavController, context: Context) {
                     .offset {
                         IntOffset(
                             x = ((tela.getTamanhoTela().x / 2) - 150.dp.toPx()).toInt(),
-                            y =   (tela.getTamanhoTela().x / 2).toInt()
+                            y = (tela.getTamanhoTela().x / 2).toInt()
                         )
                     }
             ) {
@@ -396,30 +382,26 @@ fun DrawScope.drawLevels(
     var index = ((scrollOffsetM) / (100.dp.toPx())).toInt()
     val levels = mutableListOf<Level>()
     levels.addAll(lista)
-    if (index > 50) {
-        val vox = index / 50
-        for (i in 0..<levels.size) {
+
+
+
+        for (i in 0..<index) {
             val l: Level = levels[0]
-            val novoNum = (vox * 50) + i
+            val novoNum = levels[levels.lastIndex].number + 1
             val novo = Level(novoNum, l.x, initialOffset - (novoNum * 100.dp.toPx()))
             levels.add(1, novo)
             levels.removeAt(0)
             levels.sortBy { it.number }
         }
-        index -= (vox * 50)
-    }
-    for (i in 0..<index) {
-        val l: Level = levels[0]
-        val novoNum = levels[levels.lastIndex].number + 1
-        val novo = Level(novoNum, l.x, initialOffset - (novoNum * 100.dp.toPx()))
-        levels.add(1, novo)
-        levels.removeAt(0)
-        levels.sortBy { it.number }
-    }
 
-    roud(levels, scrollOffsetM)
+
+
+    roud(levels, scrollOffsetM,res)
+
 
     levels.forEach { level ->
+
+
         val adjustedY = level.y + scrollOffsetM
         val pincel = android.graphics.Paint()
         pincel.color = android.graphics.Color.argb(
@@ -430,6 +412,9 @@ fun DrawScope.drawLevels(
         )
         var b4 = BitmapFactory.decodeResource(res, R.drawable.estrela)
         b4 = Bitmap.createScaledBitmap(b4, 25.dp.toPx().toInt(), 25.dp.toPx().toInt(), true)
+
+
+
         // Ignorar se o ponto está fora da tela
         if (adjustedY >= -100 && adjustedY <= size.height.toInt() + 100) {
             // Desenhar o círculo do nível
@@ -441,17 +426,19 @@ fun DrawScope.drawLevels(
 
 
             drawCircle(
-                color = Color(80, 89, 196, 255),
-                radius = 50f,
+                color = Color(147, 199, 232, 255),
+                radius = 100f,
                 center = Offset(level.x.coerceIn(100f, screenWidth - 100f), adjustedY)
             )
             drawCircle(
                 color = Color(134, 196, 80, 255),
-                radius = 40f,
+                radius = 90f,
                 center = Offset(level.x.coerceIn(100f, screenWidth - 100f), adjustedY)
             )
             // Adicionar texto do número da fase
             drawContext.canvas.nativeCanvas.apply {
+
+
                 var tamLetra = 20.sp.toPx()
                 if (level.number > 99) tamLetra = 15.sp.toPx()
                 drawText(
@@ -481,31 +468,146 @@ fun DrawScope.drawLevels(
                     adjustedY,
                     pincel
                 )
+
+
+
+
             }
+
+
+
+
             drawContext.canvas.restore()
         }
     }
+
+
+    houses(scrollOffsetM,res,initialOffset)
 }
 
 fun DrawScope.roud(
-    levels: List<Level>, scrollOffsetM: Float
+    levels: List<Level>, scrollOffsetM: Float, res: Resources
 
 ) {
+
+
+
+
     drawContext.canvas.nativeCanvas.apply {
         val pincel = android.graphics.Paint()
         pincel.color = android.graphics.Color.rgb(112, 128, 144)
-        pincel.strokeWidth = 78f
+        pincel.strokeWidth = 100f
         this.save()
         for (ii in 0..levels.size - 2) {
-            this.drawLine(
-                levels[ii].x, levels[ii].y + scrollOffsetM,
-                levels[ii + 1].x, levels[ii + 1].y + scrollOffsetM,
-                pincel
-            )
+
+            val adjustedY = levels[ii].y + scrollOffsetM
+
+            if (adjustedY >= 200 && adjustedY <= size.height.toInt() + 100) {
+
+                this.drawLine(
+                    levels[ii].x, levels[ii].y + scrollOffsetM,
+                    levels[ii + 1].x, levels[ii + 1].y + scrollOffsetM,
+                    pincel
+                )
+            }
+
         }
         this.restore()
     }
 }
+
+
+fun DrawScope.houses(
+    scrollOffsetM: Float,
+    res: Resources,
+    initialOffset: Float
+) {
+
+        val pincel = android.graphics.Paint()
+        pincel.color = android.graphics.Color.rgb(112, 128, 144)
+        pincel.strokeWidth = 78f
+
+
+        var c1 = BitmapFactory.decodeResource(res, R.drawable.casaia)
+        c1 = Bitmap.createScaledBitmap(c1, 255.dp.toPx().toInt(), 255.dp.toPx().toInt(), true)
+
+
+        var c2 = BitmapFactory.decodeResource(res, R.drawable.casaib)
+        c2 = Bitmap.createScaledBitmap(c2, 265.dp.toPx().toInt(), 265.dp.toPx().toInt(), true)
+
+
+        var c3 = BitmapFactory.decodeResource(res, R.drawable.casaic)
+        c3 = Bitmap.createScaledBitmap(c3, 255.dp.toPx().toInt(), 255.dp.toPx().toInt(), true)
+
+
+
+        var c4 = BitmapFactory.decodeResource(res, R.drawable.casaid)
+        c4 = Bitmap.createScaledBitmap(c4, 255.dp.toPx().toInt(), 255.dp.toPx().toInt(), true)
+
+
+        var c5 = BitmapFactory.decodeResource(res, R.drawable.casaie)
+        c5 = Bitmap.createScaledBitmap(c5, 255.dp.toPx().toInt(), 255.dp.toPx().toInt(), true)
+
+        var casas:MutableList<Casa> = mutableListOf(
+            Casa(c1,Offset( -50.dp.toPx(),1400f),1f,1),
+            Casa(c2,Offset( 200.dp.toPx(),600f),1f,2),
+            Casa(c3,Offset( -40.dp.toPx(),-200f),1f,3),
+            Casa(c4,Offset( 230.dp.toPx(),-1000f),1f,4),
+            Casa(c5,Offset( 0.dp.toPx(),-2000f),1f,5))
+
+
+    var index = (scrollOffsetM / ( 300.dp.toPx())     ).toInt()
+
+
+
+    for (i in 0..<index) {
+        val c: Casa = casas[0]
+        val novoNum = casas[casas.lastIndex].numero + 1
+        val novoOffset = Offset(c.offset.x, initialOffset- ((novoNum * 300.dp.toPx()) +100.dp.toPx()))
+        val novo = Casa( c.bitmap, novoOffset,c.escala,novoNum)
+        casas.removeAt(0)
+        casas.add(0, novo)
+
+        casas.sortBy { it.numero }
+    }
+
+
+    drawContext.canvas.nativeCanvas.apply {
+
+
+            this.save()
+            for (i in 0..<casas.size) {
+
+
+                val adjustedY = casas[i].offset.y + scrollOffsetM
+
+                if (adjustedY >= -400 && adjustedY <= size.height.toInt() + 100) {
+                    drawBitmap(
+                        casas[i].bitmap,
+                        casas[i].offset.x,
+                        adjustedY,
+                        pincel
+                    )
+                }
+
+            }
+
+            this.restore()
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 fun Offset.getDistance(other: Offset): Float {
     return sqrt(
@@ -513,4 +615,20 @@ fun Offset.getDistance(other: Offset): Float {
     ).toFloat()
 }
 
-
+//
+//fun calcularAnguloRotacao(pontoA: Ponto, pontoB: Ponto): Double {
+//    // Calculando a diferença entre as coordenadas x e y
+//    val deltaX = pontoB.x - pontoA.x
+//    val deltaY = pontoB.y - pontoA.y
+//
+//    // Calculando o ângulo em radianos usando a função arcotangente
+//    var angulo = atan2(deltaY, deltaX)
+//
+//    // Convertendo para graus (se necessário)
+//    angulo = Math.toDegrees(angulo)
+//
+//    // Ajustando o ângulo de acordo com o quadrante
+//    // ... (implementar a lógica para ajustar o ângulo de acordo com o quadrante)
+//
+//    return angulo
+//}
