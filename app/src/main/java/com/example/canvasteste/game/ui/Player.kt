@@ -137,8 +137,12 @@ internal fun Player(
                     .fillMaxSize()
                     .offset {
                         IntOffset(
-                            x = -10.dp.toPx().toInt(),
-                            y = up.toPx().toInt()
+                            x = -10.dp
+                                .toPx()
+                                .toInt(),
+                            y = up
+                                .toPx()
+                                .toInt()
                         )
                     }
 
@@ -156,10 +160,10 @@ internal fun Player(
                             onDrag = { _: PointerInputChange, dragAmount: Offset ->
                                 if (up <= 0.dp) {
 
-                                        offsetX += dragAmount.x * 7
-                                        offsetX2 += dragAmount.x * 7
-                                        offsetX3 += dragAmount.x * 7
-                                        offsetY += dragAmount.y
+                                    offsetX += dragAmount.x * 7
+                                    offsetX2 += dragAmount.x * 7
+                                    offsetX3 += dragAmount.x * 7
+                                    offsetY += dragAmount.y
 
 
                                     tocou = true
@@ -731,11 +735,20 @@ internal fun Player(
                             }
 
                             playerLogic.OnDim()
-
                             val newListCor = playerLogic.verificarCorPresente(listCoresExt)
-                            intPreviewCor = intPreviewCor2
 
-                            intPreviewCor2 = newListCor[(0..<newListCor.size).random()]
+                            if(litOffsetExt.size>25) {
+                                intPreviewCor = intPreviewCor2
+                                intPreviewCor2 = newListCor[(0..<newListCor.size).random()]
+                            }else{
+                                val disponiveis  = litOffsetExt.filter { !litOffsetMove[it].vazio && it>9}
+                                val idd = (0..<disponiveis.size).random()
+                                val iddd = litOffsetExt.indexOf(disponiveis[idd])
+                                intPreviewCor = intPreviewCor2
+                                intPreviewCor2 = listCoresExt[iddd]
+                            }
+
+
                             cores.onUpdate(listCoresExt)
                             abilite.onUpdate(litOffsetExt)
                             xxPlay = 0f
